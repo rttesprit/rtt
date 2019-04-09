@@ -2,9 +2,9 @@ package edu.fundup.model.service;
 
 
 
-import edu.esprit.entities.Reclamation;
-import edu.esprit.iservices.IReclamationService;
-import edu.esprit.utils.DataSource;
+import edu.fundup.model.entity.Reclamation;
+import edu.fundup.model.iservice.IReclamationService;
+import edu.fundup.utils.DataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
