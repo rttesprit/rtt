@@ -1,0 +1,27 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/lib/TrayNotification.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/hk2-api-2.4.0-b12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/httpclient-4.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/GMapsFX-2.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/mail-1.4.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/pdfbox-2.0.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/tilesfx-1.6.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/fontawesomefx-8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/controlsfx-8.40.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/fontawesomefx-fontawesome-4.7.0-9.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/mysql-connector-java-8.0.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/hk2-locator-2.4.0-b12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/jfoenix-8.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/hk2-utils-2.4.0-b12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/restfb-1.6.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/httpcore-4.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/gson-2.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/itextpdf-5.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dist/lib/commons-logging-1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
