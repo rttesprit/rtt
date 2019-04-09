@@ -8,6 +8,7 @@ package edu.fundup.model.iservice;
 import edu.fundup.exception.DataBaseException;
 import edu.fundup.model.entity.Categorie;
 import edu.fundup.model.entity.Post;
+
 import java.util.ArrayList;
 
 /**
