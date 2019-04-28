@@ -6,6 +6,7 @@ package edu.fundup.controller;
  * and open the template in the editor.
  */
 
+import com.jfoenix.controls.JFXButton;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.MemberService;
 import javafx.event.ActionEvent;
@@ -68,8 +69,8 @@ public class LoginController extends VBox {
         img.setFitHeight(20);
         img.setFitWidth(20);
         goBack.setGraphic(img);*/
-        goBack.setPrefSize(100,100);
-        goBack.getStyleClass().add("success");
+
+
         goBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -77,16 +78,14 @@ public class LoginController extends VBox {
             }
         });
         Button loginButton = new Button("Se connecter");
-        loginButton.setFont(new Font(20));
-        loginButton.setPrefSize(150,150);
-        loginButton.setMinHeight(50);
-        loginButton.getStyleClass().add("primary");
-
+        loginButton.getStyleClass().add("sk-btn");
+        loginButton.getStyleClass().add("sk-btn-toolbar");
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 MemberService ms = new MemberService();
                 Member m = new Member(login.getText(),password.getText());
+                System.out.println("login : "+m.getlogin()+" "+"pass :"+m.getPassword());
                 try {
                     ms.SignIn(m);
                 } catch (SQLException e) {
@@ -100,7 +99,7 @@ public class LoginController extends VBox {
         loginComponent.setAlignment(Pos.CENTER);
 
         loginComponent.setPadding(new Insets(20,20,20,20));
-        this.getStylesheets().add("/edu/fundup/ressources/stylesheet/loginComponent.css");
+        this.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         this.getChildren().add(loginComponent);
     }
 }

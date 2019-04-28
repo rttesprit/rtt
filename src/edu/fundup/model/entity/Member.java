@@ -68,7 +68,7 @@ public class Member {
     }
 
     // CONSTRUCTOR for ASSOCIATION and ENTREPRISE WITHOUT ID
-    public Member(String login, String name, String password, String mail, String address, String city, String country,int enable, String description, String photo, String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
+    public Member(String login, String name, String password, String mail, String address, String city, String country, String photo, String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
         this.login=login;
         this.name = name;
         this.password = password;
@@ -81,15 +81,14 @@ public class Member {
         this.cvv_num = cvv_num;
         this.president = president;
         this.foundation_date = foundation_date;
-        this.enable = enable;
-        this.description = description;
         this.photo = photo;
     }
     // CONSTRUCTOR for ASSOCIATION and ENTREPRISE
-    public Member(int id, String login, String name, String password, String mail, String address, String city, String country, int enable, String description, String photo,String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
-        this(login,name,password,mail,address,city,country,enable,description,photo,payment_type,credit_card_number,cvv_num,president,foundation_date);
+    public Member(int id, String login, String name, String password, String mail, String address, String city, String country, String photo,String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
+        this(login,name,password,mail,address,city,country,photo,payment_type,credit_card_number,cvv_num,president,foundation_date);
         this.id=id;
     }
+
 
     // for login
     public Member(String login,String password){
@@ -97,6 +96,14 @@ public class Member {
         this.password=password;
     }
 
+    public Member(String nom, String mail, String role, String last_name, String first_name, String photo_path) {
+        this.name = nom;
+        this.mail = mail;
+        this.role=role;
+        this.last_name= last_name;
+        this.first_name = first_name;
+        this.photo = photo_path;
+    }
 
 
     public int getId(){

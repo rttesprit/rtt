@@ -8,6 +8,7 @@ package edu.fundup.model.service;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.iservice.IMemberService;
 import edu.fundup.utils.DataSource;
+import edu.fundup.utils.UserSession;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -26,6 +27,7 @@ public class MemberService implements IMemberService {
     private PreparedStatement pst;
     private ResultSet rs;
     Connection connection;
+    String role;
 
 
     public MemberService() {
@@ -35,20 +37,30 @@ public class MemberService implements IMemberService {
 
     @Override
     public int SignIn(Member m) throws SQLException {
+        boolean b = false;
         String query = "SELECT * FROM member WHERE login=? and password= ?";
-        pst = connection.prepareStatement(query);
-        pst.setString(1, m.getlogin());
-        pst.setString(2, m.getPassword());
-        rs = pst.executeQuery();
+        try
+        {
+            pst = connection.prepareStatement(query);
+            pst.setString(1, m.getlogin());
+            pst.setString(2, m.getPassword());
+            rs = pst.executeQuery();
+            } catch (SQLException e) {
+            e.printStackTrace(System.err);
+        }
+        b = rs.next(); // if user exists
+        System.out.println("user exists : "+ b);
 
-        boolean v = rs.next(); // if exists
-
-        if (v == true && (rs.getInt("enable")==1) ) {
+        if (b == true && (rs.getInt("enable")==1) ) {
             System.out.println("userConnectedTreatement");
-             m = new Member(rs.getInt("id"),rs.getString("login"),rs.getString("name"), rs.getString("password"),rs.getString("mail"), rs.getString("address"), rs.getString("city"),rs.getString("country"),rs.getInt("enable"), rs.getString("description"),rs.getString("photo_path"),rs.getString("payment_type"),rs.getString("credit_card_number"),rs.getString("cvv_num"),rs.getString("president"),rs.getString("foundation_date"));
-            //FundUp.USER_ONLINE=m;
-        return 1;
-
+            // TO DO TO GET INFO AFTER LOGIN
+            Member connectedMember = new Member(rs.getString("name"),rs.getString("mail"),rs.getString("role"),
+                    rs.getString("last_name"),rs.getString("first_name"),rs.getString("photo_path"));
+            UserSession.getInstance().setMember(connectedMember);
+            System.out.println(connectedMember.getRole());
+        }
+        else{
+            System.out.println("mdp wala login ghalet, wala compte désactivé");
         }
 
         return 0; // compte utilisateur n'existe pas
@@ -65,20 +77,20 @@ public class MemberService implements IMemberService {
 
     @Override
     public void RegisterPaperlessMember(Member m) {
-        //String md5 = m.getPassword();
-        String role = "Paperles member";
-        String query = "INSERT INTO member (login,mail,password,first_name,last_name,address,city,country,register_date,role,photo_path) VALUES (?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,role,?)";
+        String md5 = m.getPassword();
+        String query = "INSERT INTO member (login,mail,password,first_name,last_name,address,city,country,photo_path,role,register_date) VALUES (?,?,?,?,?,?,?,?,?,?,CURRENT_DATE)";
         try {
             pst = connection.prepareStatement(query);
             pst.setString(1, m.getlogin());
             pst.setString(2, m.getmail());
-            pst.setString(3, m.getPassword());
+            pst.setString(3, md5);
             pst.setString(4, m.getfirst_name());
             pst.setString(5, m.getlast_name());
             pst.setString(6, m.getAddress());
             pst.setString(7, m.getCity());
             pst.setString(8, m.getCountry());
             pst.setString(9, m.getPhoto());
+            pst.setString(10,m.getRole());
 
             pst.executeUpdate();
         } catch (SQLException e) {
@@ -88,7 +100,7 @@ public class MemberService implements IMemberService {
 
     @Override
     public void RegisterContributor(Member m) {
-        String query = "INSERT INTO member (login,mail,password,first_name,last_name,address,city,country,register_date,role,photo_path,payment_type,credit_card_number,cvv_num) VALUES (?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?,?,?,?,?)";
+        String query = "INSERT INTO member (login,mail,password,first_name,last_name,address,city,country,photo_path,payment_type,credit_card_number,cvv_num,role,register_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_DATE)";
         try {
             pst = connection.prepareStatement(query);
             pst.setString(1, m.getlogin());
@@ -99,13 +111,13 @@ public class MemberService implements IMemberService {
             pst.setString(6, m.getAddress());
             pst.setString(7, m.getCity());
             pst.setString(8, m.getCountry());
-            pst.setString(9, m.getRole());
-            pst.setString(10, m.getPhoto());
+            pst.setString(9, m.getPhoto());
 
             // Payment INFOS
-            pst.setString(11, m.getPayment_type());
-            pst.setString(12, m.getCredit_card_number());
-            pst.setString(13, m.getCvv_num());
+            pst.setString(10, m.getPayment_type());
+            pst.setString(11, m.getCredit_card_number());
+            pst.setString(12, m.getCvv_num());
+            pst.setString(13,m.getRole());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.err);
@@ -114,7 +126,7 @@ public class MemberService implements IMemberService {
 
     @Override
     public void RegisterEntreprise(Member m) {
-        String query = "INSERT INTO member (login,mail,password,name,address,city,country,register_date,role,photo_path,payment_type,credit_card_number,cvv_num,president,foundation_date) VALUES (?,?,?,?,?,?,?,CURRENT_TIMESTAMP,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO member (login,mail,password,name,address,city,country,photo_path,payment_type,credit_card_number,cvv_num,president,foundation_date,register_date,role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_DATE,?)";
         try {
             pst = connection.prepareStatement(query);
             pst.setString(1, m.getlogin());
@@ -124,24 +136,24 @@ public class MemberService implements IMemberService {
             pst.setString(5, m.getAddress());
             pst.setString(6, m.getCity());
             pst.setString(7, m.getCountry());
-            pst.setString(8, m.getRole());
-            pst.setString(9, m.getPhoto());
+            pst.setString(8, m.getPhoto());
 
             // Payment INFOS
-            pst.setString(10, m.getPayment_type());
-            pst.setString(11, m.getCredit_card_number());
-            pst.setString(12, m.getCvv_num());
+            pst.setString(9, m.getPayment_type());
+            pst.setString(10, m.getCredit_card_number());
+            pst.setString(11, m.getCvv_num());
 
             // Entreprise INFOS
-            pst.setString(13, m.getPresident());
-            pst.setString(14, m.getFoundation_date());
+            pst.setString(12, m.getPresident());
+            pst.setString(13, m.getFoundation_date());
+            pst.setString(14,m.getRole());
 
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.err);
         }
     }
-
+    // Paperless / Contributor or Entreprise
     @Override
     public ArrayList<Member> getByRole(String role) {
         ArrayList<Member> members = new ArrayList<>();
@@ -158,7 +170,7 @@ public class MemberService implements IMemberService {
                 e.printStackTrace();
             }
         }
-        else if (role.equals("Contributor member")) {
+        else if (role.equals("Contributor")) {
             String query = "SELECT * FROM member WHERE role='" + role + "'";
             try {
                 pst = connection.prepareStatement(query);
@@ -177,8 +189,12 @@ public class MemberService implements IMemberService {
                 pst = connection.prepareStatement(query);
                 rs = pst.executeQuery(query);
                 while (rs.next()) {
+                    // TO DO CONSTRUCTOR
+                    /*
                     members.add(new Member(rs.getString("login"),rs.getString("name"), rs.getString("password"),rs.getString("mail"), rs.getString("address"), rs.getString("city"),rs.getString("country"),rs.getInt("enable"), rs.getString("description"),rs.getString("photo_path"),rs.getString("payment_type"),rs.getString("credit_card_number"),rs.getString("cvv_num"),rs.getString("president"),rs.getString("foundation_date")));
+                    */
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
