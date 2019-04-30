@@ -7,6 +7,7 @@ import edu.fundup.model.service.SendMail;
 import edu.fundup.utils.RegisterValidation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -37,10 +38,12 @@ public class RegisterEntrepriseController  extends HBox {
         /******* VBox 1 **********/
         VBox box1 = new VBox();
 
-        TextField login = new TextField();
         Label username = new Label(" Username :");
         Label passwordLabel = new Label("Password :");
         Label passwordConfirmationLabel = new Label("Re-enter pass :");
+        Label emailLabel = new Label("Email : ");
+
+        TextField login = new TextField();
         login.setPromptText("Username");
         PasswordField password = new PasswordField();
         password.setPromptText("Password");
@@ -66,7 +69,7 @@ public class RegisterEntrepriseController  extends HBox {
         grid1.add(passwordConfirmationLabel, 0, 3);
         grid1.add(passwordConfirmation, 1, 3);
 
-        grid1.add(new Label("Email : "), 0, 4);
+        grid1.add(emailLabel, 0, 4);
         grid1.add(email, 1, 4);
 
         Button nextToBox2 = new Button();
@@ -87,6 +90,13 @@ public class RegisterEntrepriseController  extends HBox {
 
         /******* VBox 2 **********/
         VBox box2 = new VBox();
+
+        Label nameLabel = new Label("Name : ");
+        Label presidentLabel = new Label("President : ");
+        Label addressLabel = new Label("Address : ");
+        Label countryLabel = new Label("Country : ");
+        Label cityLabel = new Label("City : ");
+        Label foundation_dateLabel = new Label("Foundation : ");
 
         TextField name = new TextField();
         name.setPromptText("Name");
@@ -109,22 +119,22 @@ public class RegisterEntrepriseController  extends HBox {
 
         grid2.add(new Label("Profile data"),0,0);
 
-        grid2.add(new Label("Name : "),0,1);
+        grid2.add(nameLabel,0,1);
         grid2.add(name,1,1);
 
-        grid2.add(new Label("President : "),0,2);
+        grid2.add(presidentLabel,0,2);
         grid2.add(president,1,2);
 
-        grid2.add(new Label("Foundation : "),0,3);
+        grid2.add(foundation_dateLabel,0,3);
         grid2.add(foundation_date,1,3);
 
-        grid2.add(new Label("Country : "),0,4);
+        grid2.add(countryLabel,0,4);
         grid2.add(country,1,4);
 
-        grid2.add(new Label("City : "),0,5);
+        grid2.add(cityLabel,0,5);
         grid2.add(city,1,5);
 
-        grid2.add(new Label("Address : "),0,6);
+        grid2.add(addressLabel,0,6);
         grid2.add(address,1,6);
 
         box2.setMinWidth(500);
@@ -158,8 +168,10 @@ public class RegisterEntrepriseController  extends HBox {
         grid3.setHgap(15);
         grid3.setAlignment(Pos.CENTER);
 
-        TextField payment_type = new TextField();
-        payment_type.setPromptText("Payment type");
+        ChoiceBox payment_type = new ChoiceBox(FXCollections.observableArrayList(
+                "Master card", "Visa", "Paypal")
+        );
+
         TextField credit_card_num = new TextField();
         credit_card_num.setPromptText("Credit card number");
         TextField cvv_num = new TextField();
@@ -195,7 +207,7 @@ public class RegisterEntrepriseController  extends HBox {
                         Member m = new Member(
                                 login.getText(), name.getText(), password.getText(), email.getText(),
                                 address.getText(), city.getText(), country.getText(),
-                                "photopath", payment_type.getText(), credit_card_num.getText(), cvv_num.getText(), president.getText(), foundation_date.getValue().toString()
+                                "photopath", payment_type.toString(), credit_card_num.getText(), cvv_num.getText(), president.getText(), foundation_date.getValue().toString()
                         );
                         m.setRole("Entreprise");
                         m.setEnable(1);
@@ -227,7 +239,14 @@ public class RegisterEntrepriseController  extends HBox {
 
         nextToBox3.setOnAction(event -> {
             try {
-                if (RegisterValidation.validateDate(foundation_date.getValue()) && RegisterValidation.validateDateAlreadyPassed(foundation_date.getValue())) {
+                if (RegisterValidation.validateDate(foundation_date.getValue()) &&
+                        RegisterValidation.validateDateAlreadyPassed(foundation_date.getValue()) &&
+                        RegisterValidation.fieldNotNull(country.getText())&&
+                        RegisterValidation.fieldNotNull(address.getText())&&
+                        RegisterValidation.fieldNotNull(city.getText())&&
+                        RegisterValidation.fieldNotNull(president.getText())&&
+                        RegisterValidation.fieldNotNull(name.getText()))
+                {
                     this.getChildren().remove(stack2);
                     this.getChildren().add(stack3);
                 }
@@ -262,7 +281,6 @@ public class RegisterEntrepriseController  extends HBox {
         logErrorLab.getStyleClass().add("wronglabel");
         identicErrorLab.getStyleClass().add("wronglabel");
         passwordErrorLab.getStyleClass().add("wronglabel");
-
         login.focusedProperty().addListener(new ChangeListener<Boolean>()
         {
             @Override

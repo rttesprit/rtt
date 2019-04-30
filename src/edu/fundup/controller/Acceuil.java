@@ -209,7 +209,7 @@ public class Acceuil extends HBox {
         // ------------Logic------------
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
-        RegisterEntrepriseController logc = new RegisterEntrepriseController();
+        RegisterPaperlessMember logc = new RegisterPaperlessMember();
         rightPane.getChildren()
                 .addAll(right,logc);
 
