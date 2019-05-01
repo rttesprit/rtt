@@ -77,6 +77,7 @@ public class LoginController extends VBox {
                 System.out.println("back");
             }
         });
+
         Button loginButton = new Button("Se connecter");
         loginButton.getStyleClass().add("sk-btn");
         loginButton.getStyleClass().add("sk-btn-toolbar");

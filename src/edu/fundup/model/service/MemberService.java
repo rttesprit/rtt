@@ -54,10 +54,9 @@ public class MemberService implements IMemberService {
         if (b == true && (rs.getInt("enable")==1) ) {
             System.out.println("userConnectedTreatement");
             // TO DO TO GET INFO AFTER LOGIN
-            Member connectedMember = new Member(rs.getString("name"),rs.getString("mail"),rs.getString("role"),
-                    rs.getString("last_name"),rs.getString("first_name"),rs.getString("photo_path"));
+            Member connectedMember = new Member(rs.getInt("id"),rs.getString("role"),rs.getString("login"),rs.getString("name"),rs.getString("mail"),rs.getString("password"),rs.getString("first_name"),rs.getString("last_name"),rs.getString("address"),rs.getString("city"),rs.getString("payment_type"),rs.getString("credit_card_number"),rs.getString("cvv_num"),rs.getString("president"),rs.getString("foundation_date"),rs.getInt("enable"),rs.getString("photo_path"),rs.getString("register_date"));
             UserSession.getInstance().setMember(connectedMember);
-            System.out.println(connectedMember.getRole());
+            System.out.println(connectedMember.toString());
         }
         else{
             System.out.println("mdp wala login ghalet, wala compte désactivé");
