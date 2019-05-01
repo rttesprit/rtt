@@ -2,6 +2,8 @@ package edu.fundup.controller;
 
 import com.jfoenix.controls.JFXButton;
 import edu.fundup.model.entity.Member;
+import edu.fundup.utils.UserSession;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,42 +14,70 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class UserProfile extends HBox {
 
-    static Member user;
+    public Member connectedm;
 
     public UserProfile() {
 
+        connectedm = UserSession.getInstance().getMember();
 
         // ------ LEFT VOBX -----------
 
         VBox left = new VBox();
-
-        left.setStyle("-fx-background-color: blue");
+        left.getStyleClass().add("left");
 
         ImageView pic = new ImageView();
         pic.setFitWidth(250);
         pic.setFitHeight(250);
+
+        File file = new File("C:/wamp64/www/charity/user/photos/" + connectedm.getPhoto());
+        BufferedImage bufferedImage = null;
+        try {
+            bufferedImage = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        pic.setImage(image);
+        Circle circle = new Circle(120);
+        ImagePattern pattern = new ImagePattern(image);
+        circle.setFill(pattern);
+        VBox.setMargin(circle, new Insets(20,20,0,20));
+
         Image img = new Image("/edu/fundup/ressources/images/images.jpg");
 
-        pic.setImage(img);
 
-        pic.getStyleClass().add("pic");
 
-        Label usernameLabel = new Label("Skander Jenhani");
+        Label label = new Label(""); // initializeing
+
+        if(connectedm !=null) {
+            if (!(connectedm.getName() == null)) {
+                label = new Label(connectedm.getName());
+            } else {
+                label = new Label(connectedm.getfirst_name() + " " + connectedm.getlast_name());
+            }
+        }
+
+
         Button editBtn = new Button("Edit");
-        left.getChildren().addAll(pic,usernameLabel,editBtn);
+        left.getChildren().addAll(circle,label,editBtn);
+        editBtn.getStyleClass().add("edit");
         // ---------------------------------
 
         VBox right = new VBox();
 
-        left.setStyle("-fx-background-color: green");
         HBox navbar = new HBox();
         HBox content = new HBox();
         right.getChildren().addAll(navbar,content);
-
-        navbar.setStyle("-fx-background-color: yellow");
 
 
         content.setStyle("-fx-background-color: saddlebrown");
@@ -67,14 +97,11 @@ public class UserProfile extends HBox {
 
         //-------- this root & background -----------
 
-        user = new Member("login","pass",  "mail",  "first name",  "last name", "address",  "city",  "country", "photo");
-
         left.setPrefSize(6000,6000);
         left.setMinWidth(300);
         left.setMaxWidth(300);
         left.setAlignment(Pos.TOP_CENTER);
-        VBox.setMargin(usernameLabel, new Insets(50,0,20,0));
-        VBox.setMargin(pic, new Insets(20,0,0,0));
+        VBox.setMargin(label, new Insets(50,0,20,0));
 
         right.setPrefSize(6000,6000);
         HBox.setMargin(right,new Insets(0,0,0,20));
@@ -83,8 +110,9 @@ public class UserProfile extends HBox {
         navbar.setPrefSize(6000,6000);
         VBox.setMargin(navbar, new Insets(0, 0,20,0));
         navbar.setMaxHeight(100);
-        navbar.setMinWidth(1200);
+        navbar.setMinWidth(800);
         navbar.setAlignment(Pos.CENTER);
+        navbar.getStyleClass().add("navbar");
         content.setPrefSize(6000,6000);
         this.getStyleClass().add("background");
 
