@@ -1,0 +1,12 @@
+.UserInfoBox{
+    -fx-border-color: black;
+}
+Label{
+    -fx-font: normal bold 18 Langdon; -fx-base: #fff;
+}
+ChoiceBox{
+    -fx-background-color: none;
+}
+
+ChoiceBox .context-menu {  }
+
