@@ -95,6 +95,8 @@ public class RegisterValidation {
         }
     }
 
-
+    public static boolean fieldNotNull(String field){
+        return !(field.isEmpty());
+    }
     // *****************************************
 }

@@ -155,7 +155,7 @@ public class RegisterPaperlessMember extends HBox {
         btn.getStyleClass().add("sk-btn-toolbar");
 
 
-        ImageView pi = new ImageView("/edu/fundup/ressources/images/pi.png");
+        ImageView pi = new ImageView();
 
         pi.setFitWidth(50);
         pi.setFitHeight(50);

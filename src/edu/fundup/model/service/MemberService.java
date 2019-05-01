@@ -5,11 +5,15 @@
  */
 package edu.fundup.model.service;
 
+import edu.fundup.controller.Acceuil;
+import edu.fundup.controller.UserInfoBoxController;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.iservice.IMemberService;
 import edu.fundup.utils.DataSource;
+import edu.fundup.utils.ObservableUser;
 import edu.fundup.utils.UserSession;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -52,11 +56,21 @@ public class MemberService implements IMemberService {
         System.out.println("user exists : "+ b);
 
         if (b == true && (rs.getInt("enable")==1) ) {
+
             System.out.println("userConnectedTreatement");
-            // TO DO TO GET INFO AFTER LOGIN
             Member connectedMember = new Member(rs.getInt("id"),rs.getString("role"),rs.getString("login"),rs.getString("name"),rs.getString("mail"),rs.getString("password"),rs.getString("first_name"),rs.getString("last_name"),rs.getString("address"),rs.getString("city"),rs.getString("payment_type"),rs.getString("credit_card_number"),rs.getString("cvv_num"),rs.getString("president"),rs.getString("foundation_date"),rs.getInt("enable"),rs.getString("photo_path"),rs.getString("register_date"));
             UserSession.getInstance().setMember(connectedMember);
-            System.out.println(connectedMember.toString());
+
+            Acceuil.rightPaneChild.getChildren().clear();
+            UserInfoBoxController usbox = null;
+            try {
+                usbox = new UserInfoBoxController();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Acceuil.rightPaneChild.getChildren().add(usbox);
+
+            System.out.println("USER ONLINE :"+ UserSession.getInstance().getMember().toString());
         }
         else{
             System.out.println("mdp wala login ghalet, wala compte désactivé");

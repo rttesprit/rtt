@@ -31,6 +31,7 @@ import java.sql.SQLException;
  */
 public class LoginController extends VBox {
 
+
     public LoginController(){
 
 
@@ -81,6 +82,7 @@ public class LoginController extends VBox {
         Button loginButton = new Button("Se connecter");
         loginButton.getStyleClass().add("sk-btn");
         loginButton.getStyleClass().add("sk-btn-toolbar");
+
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

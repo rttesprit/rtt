@@ -34,6 +34,10 @@ public class Member {
     private String register_date;
     // REGISTER DATE IS ONLY ON BDD
 
+    // Constructor to test Observable
+    public Member(int id){
+        this.id=id;
+    }
 
     // CONSTRUCTOR for SIGNED IN MEMBER
     public Member(int id,String role,String login,String name,String mail,String password,String first_name,String last_name,String address,String city,String payment_type,String credit_card_number,String cvv_num,String president,String foundation_date,int enable,String photo,String register_date){
