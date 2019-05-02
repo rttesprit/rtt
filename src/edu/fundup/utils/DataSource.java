@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class DataSource {
     String myDriver = "com.mysql.jdbc.Driver";
 
-    String url = "jdbc:mysql://localhost:3306/charity";
+    String url = "jdbc:mysql://localhost:3306/charity?autoReconnect=true&useSSL=false";
 
     String login = "root";
     String password = "";

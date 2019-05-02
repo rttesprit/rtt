@@ -79,13 +79,14 @@ public class TypeReclamationService implements ITypeReclamation {
 
     @Override
     public void addType(TypeReclamation tr) {
-
+        if(tr.getObjet().equalsIgnoreCase("post") || tr.getObjet().equalsIgnoreCase("event"))
         try {
-            String query = "INSERT INTO `reclamation` VALUES (null, ? );";
+            String query = "INSERT INTO `typereclamation` VALUES (null, ? ,? );";
 
             PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1,tr.getDescription());
+            ps.setString(2,tr.getObjet());
 
 
             System.out.println(ps);
@@ -101,6 +102,7 @@ public class TypeReclamationService implements ITypeReclamation {
 
     @Override
     public void updateType(TypeReclamation tr) {
+
 
     }
 

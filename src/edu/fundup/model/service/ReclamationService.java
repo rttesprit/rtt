@@ -30,7 +30,7 @@ public class ReclamationService implements IReclamationService {
 
             PreparedStatement ps = connection.prepareStatement(query);
 
-            //ps.setInt(1,reclamation.getId());
+
             ps.setInt(1,reclamation.getIduser());
             ps.setInt(2,reclamation.getIdobjet());
             ps.setInt(3,reclamation.getIdtr());
