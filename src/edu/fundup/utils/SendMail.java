@@ -27,14 +27,14 @@ public class SendMail {
         return red;
     }
 
-    public void SendEmail(String email) {
+    public void SendEmail(String email, String name) {
         int code = GenerateCode();
         PreparedStatement pst, pst2;
         ResultSet rs, rs2;
         DataSource con;
 
         try {
-            String req = "INSERT INTO sendmail VALUES (null ,code=?,email=?)";
+            String req = "INSERT INTO sendmail(id,code,mail) VALUES (null ,?,?)";
             try {
                 pst2 = DataSource.getInstance().getConnection().prepareStatement(req);
                 pst2.setInt(1, code);
@@ -46,11 +46,12 @@ public class SendMail {
             }
             System.out.println("code " + code + " ");
             String host = "smtp.gmail.com";
-            String user = "skander.jenhani@esprit.tn";
-            String pass = "183JMT2042";
+            String user = "tun.charity@gmail.com";
+            String pass = "tunisiacharity";
             String to = email;
-            String from = "nassim.gastli@esprit.tn";
-            String messageText = "This is confirmation number for your Tunisia Charity account. Please insert this number to activate your account = " + code + " ";
+            String from = "tun.charity@gmail.com";
+            String messageText = name+",\n\n"+"Welcome to Tunisia Charity. Please take a second to confirm your email to make sure we've got it right.\n" +
+                    "Confirmation Code : " + code + " ";
             String subject = "Tunisia Charity Email Confirmation ";
             boolean sessionDebug = false;
 

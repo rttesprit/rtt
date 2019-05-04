@@ -1,10 +1,9 @@
 package edu.fundup.controller;
 
-import com.jfoenix.controls.JFXButton;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.MemberService;
-import edu.fundup.model.service.SendMail;
 import edu.fundup.utils.RegisterValidation;
+import edu.fundup.utils.SendMail;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -12,19 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import java.text.ParseException;
-import java.time.LocalDate;
 
 public class RegisterEntrepriseController  extends HBox {
     public RegisterEntrepriseController(){
@@ -207,14 +200,14 @@ public class RegisterEntrepriseController  extends HBox {
                         Member m = new Member(
                                 login.getText(), name.getText(), password.getText(), email.getText(),
                                 address.getText(), city.getText(), country.getText(),
-                                "photopath", payment_type.toString(), credit_card_num.getText(), cvv_num.getText(), president.getText(), foundation_date.getValue().toString()
+                                "head.png", payment_type.getValue().toString(), credit_card_num.getText(), cvv_num.getText(), president.getText(), foundation_date.getValue().toString()
                         );
+                        System.out.println("Entreprise :"+ m.toString());
                         m.setRole("Entreprise");
                         m.setEnable(1);
                         System.out.println(m.getPresident() + " " + m.getFoundation_date());
-                        ms.RegisterEntreprise(m);
-
-
+                        SendMail sm = new SendMail();
+                        sm.SendEmail(email.getText(),login.getText());
                     } // Validation Testing End
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -364,7 +357,7 @@ public class RegisterEntrepriseController  extends HBox {
                 }
                 else
                 {
-                    if((!(RegisterValidation.validatePassword(password.getText()))) && (newPropertyValue!=true) ){
+                    if((!(RegisterValidation.validatePassword(password.getText()))) && (!newPropertyValue) ){
                         password.getStyleClass().remove("va");
                         password.getStyleClass().add("error");
                         passwordLabel.getStyleClass().add("wronglabel");
