@@ -34,7 +34,6 @@ public class RegisterValidation {
             return false;
         }
     }
-
     public static boolean validateName(String name) {
         Pattern p = Pattern.compile("[a-zA-Z]+");
         Matcher m = p.matcher(name);
@@ -45,7 +44,6 @@ public class RegisterValidation {
             return false;
         }
     }
-
     public static boolean validateDate(LocalDate localdate) {
         if (localdate == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -72,7 +70,6 @@ public class RegisterValidation {
 
         }
     }
-
     public static boolean validateDateAlreadyPassed(LocalDate date)  throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -94,7 +91,6 @@ public class RegisterValidation {
             return true;
         }
     }
-
     public static boolean fieldNotNull(String field){
         return !(field.isEmpty());
     }
