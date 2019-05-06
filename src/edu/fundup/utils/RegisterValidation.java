@@ -1,5 +1,6 @@
 package edu.fundup.utils;
 
+import edu.fundup.model.service.MemberService;
 import javafx.scene.control.Alert;
 
 import java.text.DateFormat;
@@ -8,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -17,8 +19,32 @@ public class RegisterValidation {
 
     // Validation Methods **********************
 
+    // Mail
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validateMail(String mail) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(mail);
+        return matcher.find();
+    }
+
+    public static boolean checkUsername(String username,ArrayList<String> logins){
+        Pattern p = Pattern.compile("[a-zA-Z]+");
+        Matcher m = p.matcher(username);
+        if (!username.isEmpty() && m.find() && m.group().equals(username)) {
+            for (String e : logins) {
+                if (e.equals(username)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
     public static boolean identicPassword(String pass1,String pass2){
-        if (pass1.equals(pass2)){
+        if (pass1.equalsIgnoreCase(pass2)){
             return true;
         }
         else {
@@ -34,16 +60,7 @@ public class RegisterValidation {
             return false;
         }
     }
-    public static boolean validateName(String name) {
-        Pattern p = Pattern.compile("[a-zA-Z]+");
-        Matcher m = p.matcher(name);
-            if (m.find() && m.group().equals(name)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+
     public static boolean validateDate(LocalDate localdate) {
         if (localdate == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);

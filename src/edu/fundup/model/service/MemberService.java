@@ -12,6 +12,7 @@ import edu.fundup.model.iservice.IMemberService;
 import edu.fundup.utils.DataSource;
 import edu.fundup.utils.ObservableUser;
 import edu.fundup.utils.UserSession;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -72,11 +73,22 @@ public class MemberService implements IMemberService {
 
             System.out.println("USER ONLINE :"+ UserSession.getInstance().getMember().toString());
         }
-        else{
-            System.out.println("mdp wala login ghalet, wala compte désactivé");
+        else if (b == true && (rs.getInt("enable")==0)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Disabled Account");
+            alert.setHeaderText("Your account is disabled");
+            alert.setContentText("For more information, please contact us via our Email :\n tun.charity@gmail.com");
+            alert.showAndWait();
         }
 
-        return 0; // compte utilisateur n'existe pas
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid fields");
+            alert.setHeaderText("Your credentials are false");
+            alert.setContentText("Your username or password may be false, Please try again.");
+            alert.showAndWait();
+        }
+        return 0;
     }
 
 
@@ -171,7 +183,7 @@ public class MemberService implements IMemberService {
     public ArrayList<Member> getByRole(String role) {
         ArrayList<Member> members = new ArrayList<>();
 
-        if (role.equals("Paperless member")) {
+        if (role.equals("Paperless")) {
             String query = "SELECT * FROM member WHERE role='" + role + "'";
             try {
                 pst = connection.prepareStatement(query);
@@ -215,7 +227,23 @@ public class MemberService implements IMemberService {
         return members;
     }
 
+    @Override
+    public String getCode(String mail) {
+        String query = "SELECT code FROM sendmail where mail LIKE '"+mail+"'";
+        try {
+            pst = connection.prepareStatement(query);
+            rs = pst.executeQuery(query);
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     //MD5 Encryption password for DataBase
+    @Override
     public String getMd5(String pwd) {
         try {
             // Static getInstance method is called with hashing MD5
@@ -240,4 +268,43 @@ public class MemberService implements IMemberService {
         }
     }
 
+    @Override
+    public void BecomeContributorMember(String type,String ccnumber,String cvv,Member connectedMember){
+        String query="UPDATE member SET payment_type=?, credit_card_number=? ,cvv_num=?, role=? WHERE id="+connectedMember.getId();
+        try {
+            pst = connection.prepareStatement(query);
+            pst.setString(1, type);
+            pst.setString(2, ccnumber);
+            pst.setString(3, cvv);
+            pst.setString(4, "Contributor");
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void disableUser(Member m){
+        String query = "UPDATE member SET enable=0 WHERE id="+m.getId();
+        try {
+            pst = connection.prepareStatement(query);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public ArrayList<String> getAllLogin(){
+        ArrayList<String> logins = new ArrayList<>();
+        String query = "SELECT login FROM member";
+        try {
+            pst = connection.prepareStatement(query);
+            rs = pst.executeQuery(query);
+            while (rs.next()) {
+                logins.add(rs.getString("login"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return logins;
+    }
 }
