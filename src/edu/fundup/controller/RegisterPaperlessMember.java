@@ -3,9 +3,7 @@ package edu.fundup.controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.MemberService;
-import edu.fundup.utils.CustomAnimation;
 import edu.fundup.utils.RegisterValidation;
-import javafx.animation.Animation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -13,8 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -23,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
 import java.sql.SQLException;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
@@ -34,8 +29,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
-import java.util.ResourceBundle;
-import java.util.function.Supplier;
+import java.util.ArrayList;
 
 
 public class RegisterPaperlessMember extends HBox {
@@ -44,19 +38,22 @@ public class RegisterPaperlessMember extends HBox {
 
     public RegisterPaperlessMember() {
 
+        MemberService ms = new MemberService();
+        ArrayList<String> logins = ms.getAllLogin();
+
         /*3 STEPS*/
         Label step1 = new Label("Step 1/3");
         Label step2 = new Label("Step 2/3");
         Label step3 = new Label("Step 3/3");
         /********/
-        FontAwesomeIcon icon = new FontAwesomeIcon();
+
         /******* VBox 1 **********/
         VBox box1 = new VBox();
 
         Label username = new Label(" Username :");
         Label passwordLabel = new Label("Password :");
         Label passwordConfirmationLabel = new Label("Re-enter pass :");
-        Label emailLabel = new Label("Email : ");
+        Label emailLabel = new Label("E-Mail : ");
 
         TextField login = new TextField();
         login.setPromptText("Username");
@@ -65,7 +62,7 @@ public class RegisterPaperlessMember extends HBox {
         PasswordField passwordConfirmation = new PasswordField();
         passwordConfirmation.setPromptText("Password");
         TextField email = new TextField();
-        email.setPromptText("Email");
+        email.setPromptText("E-Mail");
 
         GridPane grid1 = new GridPane();
         grid1.getStyleClass().add("grid");
@@ -88,7 +85,10 @@ public class RegisterPaperlessMember extends HBox {
         grid1.add(email, 1, 4);
 
         Button nextToBox2 = new Button();
+        nextToBox2.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat.png'); -fx-border-width: 0;" +
+                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
         nextToBox2.getStyleClass().add("rounded");
+
 
         box1.setMinWidth(500);
         box1.setMinHeight(500);
@@ -205,7 +205,7 @@ public class RegisterPaperlessMember extends HBox {
         backToBox1.getStyleClass().add("rounded");
 
         nextToBox2.setOnAction(event -> {
-            if (RegisterValidation.validateName(login.getText()) &&
+            if (RegisterValidation.checkUsername(login.getText(),logins) &&
                     RegisterValidation.validatePassword(password.getText()) &&
                     RegisterValidation.identicPassword(password.getText(), passwordConfirmation.getText())
             ) {
@@ -231,19 +231,17 @@ public class RegisterPaperlessMember extends HBox {
         login.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
-                if (RegisterValidation.validateName(login.getText())) {
+                if (RegisterValidation.checkUsername(login.getText(),logins)) {
 
                     login.getStyleClass().remove("error");
-                    login.getStyleClass().add("va");
 
                     stack1.getChildren().remove(logErrorLab);
-                    username.getStyleClass().remove("wronglabel");
+                    username.getStyleClass().clear();
 
                     System.out.println("esm shih");
 
                 } else {
-                    if ((!(RegisterValidation.validateName(login.getText()))) && (newPropertyValue != true)) {
-                        login.getStyleClass().remove("va");
+                    if ((!RegisterValidation.checkUsername(login.getText(),logins))) {
                         login.getStyleClass().add("error");
                         username.getStyleClass().add("wronglabel");
                         stack1.getChildren().add(logErrorLab);
@@ -263,16 +261,14 @@ public class RegisterPaperlessMember extends HBox {
 
                     passwordConfirmation.getStyleClass().remove("error");
 
-                    passwordConfirmation.getStyleClass().add("va");
-
                     stack1.getChildren().remove(identicErrorLab);
-                    passwordConfirmationLabel.getStyleClass().remove("wronglabel");
+                    passwordConfirmationLabel.getStyleClass().clear();
 
                     System.out.println("pass identiques");
 
                 } else {
                     if ((!(RegisterValidation.identicPassword(password.getText(), passwordConfirmation.getText()))) && (newPropertyValue != true)) {
-                        passwordConfirmation.getStyleClass().remove("va");
+
                         passwordConfirmation.getStyleClass().add("error");
                         passwordConfirmationLabel.getStyleClass().add("wronglabel");
                         stack1.getChildren().add(identicErrorLab);
@@ -291,16 +287,14 @@ public class RegisterPaperlessMember extends HBox {
                 if (RegisterValidation.validatePassword(password.getText())) {
 
                     password.getStyleClass().remove("error");
-                    password.getStyleClass().add("va");
 
                     stack1.getChildren().remove(passwordErrorLab);
-                    passwordLabel.getStyleClass().remove("wronglabel");
+                    passwordLabel.getStyleClass().clear();
 
                     System.out.println("pass shih");
 
                 } else {
                     if ((!(RegisterValidation.validatePassword(password.getText()))) && (newPropertyValue != true)) {
-                        password.getStyleClass().remove("va");
                         password.getStyleClass().add("error");
                         passwordLabel.getStyleClass().add("wronglabel");
                         stack1.getChildren().add(passwordErrorLab);
