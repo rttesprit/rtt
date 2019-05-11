@@ -10,6 +10,7 @@ TextField{
     -fx-background-position: right center;
     -fx-font-size: 15;
 }
+
 PasswordField{
     -fx-border-radius: 30!important;
     -fx-background-radius: 30!important;
@@ -84,5 +85,15 @@ Label{
     -fx-background-insets: -0.2, 1, -1.4, 3;
     -fx-background-radius: 3, 2, 4, 0;
     -fx-prompt-text-fill: transparent;
+}
+
+.tag{
+    -fx-font-size: 20px;
+    -fx-font-family: Perpetua;
+    -fx-text-fill: #e80000;
+    -fx-background-color: rgba(255, 0, 0, 0.15);
+    -fx-border-color: rgba(255, 0, 0, 0.7);
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
 }
 
