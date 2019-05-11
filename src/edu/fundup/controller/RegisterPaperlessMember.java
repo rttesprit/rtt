@@ -4,6 +4,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.MemberService;
 import edu.fundup.utils.RegisterValidation;
+import edu.fundup.utils.SendMail;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -148,39 +149,15 @@ public class RegisterPaperlessMember extends HBox {
         grid2.add(address, 1, 5);
 
         Button backToBox1 = new Button();
+        backToBox1.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat.png'); -fx-border-width: 0;" +
+                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
         backToBox1.getStyleClass().add("rounded");
 
         Button btn = new Button("Register");
-        btn.getStyleClass().add("sk-btn");
-        btn.getStyleClass().add("sk-btn-toolbar");
+        btn.getStyleClass().add("success");
 
-
-        ImageView pi = new ImageView();
-
-        pi.setFitWidth(50);
-        pi.setFitHeight(50);
-        grid2.add(new Label("Set your image here :"), 0, 6);
-        grid2.add(pi, 1, 6);
-
-        pi.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                FileChooser fc = new FileChooser();
-
-                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-                fc.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-                File selectedFile = fc.showOpenDialog(null);
-                try {
-                    BufferedImage bufferedImage = ImageIO.read(selectedFile);
-                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-                    pi.setImage(image);
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
-        });
+        /* btn.getStyleClass().add("sk-btn");
+        btn.getStyleClass().add("sk-btn-toolbar"); */
 
 
         box2.setMinWidth(500);
@@ -202,31 +179,40 @@ public class RegisterPaperlessMember extends HBox {
             this.getChildren().remove(stack2);
             this.getChildren().add(stack1);
         });
-        backToBox1.getStyleClass().add("rounded");
 
         nextToBox2.setOnAction(event -> {
             if (RegisterValidation.checkUsername(login.getText(),logins) &&
                     RegisterValidation.validatePassword(password.getText()) &&
-                    RegisterValidation.identicPassword(password.getText(), passwordConfirmation.getText())
+                    RegisterValidation.identicPassword(password.getText(),passwordConfirmation.getText()) &&
+                    RegisterValidation.validateMail(email.getText())
             ) {
                 this.getChildren().remove(stack1);
                 this.getChildren().add(stack2);
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Invalidate fields");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid fields");
                 alert.setHeaderText(null);
-                alert.setContentText("You must validate all the fields");
+                alert.setContentText("All fields are required");
                 alert.showAndWait();
             }
         });
 
-        Label logErrorLab = new Label("Please enter a valid username ");
-        Label identicErrorLab = new Label("Your password fields must be identical ");
-        Label passwordErrorLab = new Label(" Your password length must be in (6-15) and must contain special charachters");
+        Label logErrorLab = new Label("• Please enter a valid username ");
+        Label identicErrorLab = new Label("• Your password fields must be identical ");
+        Label passwordErrorLab = new Label("• Your password length must be in (6-15) and must contain special charachters");
+        Label mailLab = new Label("• Please set your valid E-mail");
+
+        passwordErrorLab.setWrapText(true);
+
+        logErrorLab.setMaxWidth(480);
+        identicErrorLab.setMaxWidth(480);
+        passwordErrorLab.setMaxWidth(480);
+        mailLab.setMaxWidth(480);
 
         logErrorLab.getStyleClass().add("wronglabel");
         identicErrorLab.getStyleClass().add("wronglabel");
         passwordErrorLab.getStyleClass().add("wronglabel");
+        mailLab.getStyleClass().add("wronglabel");
 
         login.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -241,11 +227,11 @@ public class RegisterPaperlessMember extends HBox {
                     System.out.println("esm shih");
 
                 } else {
-                    if ((!RegisterValidation.checkUsername(login.getText(),logins))) {
+                    if ((!RegisterValidation.checkUsername(login.getText(),logins)) && (newPropertyValue!=true)) {
                         login.getStyleClass().add("error");
                         username.getStyleClass().add("wronglabel");
                         stack1.getChildren().add(logErrorLab);
-                        stack1.setMargin(logErrorLab, new Insets(220, 0, 0, 0));
+                        stack1.setMargin(logErrorLab, new Insets(170, 0, 0, 0));
                         System.out.println("new Property boucle 2 : " + newPropertyValue);
                         System.out.println("old Property boucle 2 : " + oldPropertyValue);
                         System.out.println("*****");
@@ -253,7 +239,6 @@ public class RegisterPaperlessMember extends HBox {
                 }
             }
         });
-
         passwordConfirmation.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
@@ -267,12 +252,12 @@ public class RegisterPaperlessMember extends HBox {
                     System.out.println("pass identiques");
 
                 } else {
-                    if ((!(RegisterValidation.identicPassword(password.getText(), passwordConfirmation.getText()))) && (newPropertyValue != true)) {
+                    if ((!(RegisterValidation.identicPassword(password.getText(), passwordConfirmation.getText()))) && (newPropertyValue!=true) ) {
 
                         passwordConfirmation.getStyleClass().add("error");
                         passwordConfirmationLabel.getStyleClass().add("wronglabel");
                         stack1.getChildren().add(identicErrorLab);
-                        stack1.setMargin(identicErrorLab, new Insets(320, 0, 0, 0));
+                        stack1.setMargin(identicErrorLab, new Insets(360, 0, 0, 0));
                         System.out.println("new Property boucle 2 : " + newPropertyValue);
                         System.out.println("old Property boucle 2 : " + oldPropertyValue);
                         System.out.println("*****");
@@ -280,7 +265,6 @@ public class RegisterPaperlessMember extends HBox {
                 }
             }
         });
-
         password.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
@@ -291,10 +275,8 @@ public class RegisterPaperlessMember extends HBox {
                     stack1.getChildren().remove(passwordErrorLab);
                     passwordLabel.getStyleClass().clear();
 
-                    System.out.println("pass shih");
-
                 } else {
-                    if ((!(RegisterValidation.validatePassword(password.getText()))) && (newPropertyValue != true)) {
+                    if ((!(RegisterValidation.validatePassword(password.getText()))) && (newPropertyValue!=true)) {
                         password.getStyleClass().add("error");
                         passwordLabel.getStyleClass().add("wronglabel");
                         stack1.getChildren().add(passwordErrorLab);
@@ -306,7 +288,33 @@ public class RegisterPaperlessMember extends HBox {
                 }
             }
         });
+        email.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+            {
+                if (RegisterValidation.validateMail(email.getText())) {
 
+                    email.getStyleClass().remove("error");
+
+                    stack1.getChildren().remove(mailLab);
+                    emailLabel.getStyleClass().clear();
+
+                    System.out.println("mail shih");
+
+                }
+
+                else if( !((RegisterValidation.validateMail(email.getText()))) && (newPropertyValue!=true) )
+                {
+                    email.getStyleClass().add("error");
+                    emailLabel.getStyleClass().add("wronglabel");
+                    stack1.getChildren().add(mailLab);
+                    stack1.setMargin(mailLab,new Insets(415,0,0,0));
+                    System.out.println("new Property boucle 2 : "+newPropertyValue);
+                    System.out.println("old Property boucle 2 : "+oldPropertyValue);
+                    System.out.println("*****");
+                }
+            }
+        });
 
         this.setStyle("-fx-padding: 200px 100px 100px 100px;");
 
@@ -329,33 +337,78 @@ public class RegisterPaperlessMember extends HBox {
                 m.setEnable(1);
                 m.setRole("Paperless");
 
-                // Setting photo
-                Image userPhoto = pi.getImage();
-                try {
-                    String userPhotoName = saveToFileImageNormal(userPhoto);
-                    m.setPhoto(userPhotoName);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
                 // Registering
                 MemberService ms = new MemberService();
                 ms.RegisterPaperlessMember(m);
             }
         });
-    }
 
-    public static String saveToFileImageNormal(Image image) throws SQLException {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
 
-        File dir = new File("C:/wamp64/www/charity/user/photos");
-        String name = String.format("%s.%s", RandomStringUtils.randomAlphanumeric(8), "jpg");
-        File outputFile = new File(dir, name);
-        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-        try {
-            ImageIO.write(bImage, "png", outputFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return name;
+                if ( !( first_name.getText().equals("") && last_name.getText().equals("") && country.equals("") && city.equals("") && address.equals("") )  )
+                {
+                    Member m = new Member(
+                            login.getText(), password.getText(), email.getText(),
+                            first_name.getText(), last_name.getText(), address.getText(), city.getText(), country.getText(),
+                            "head.png"
+                    );
+                    System.out.println("Paperless :"+ m.toString());
+                    m.setRole("Paperless");
+                    m.setEnable(1);
+
+                    SendMail sm = new SendMail();
+                    sm.SendEmail(email.getText(),login.getText());
+
+                    stack2.getChildren().clear();
+                    box2.getChildren().clear();
+                    Label lab = new Label("You’re almost there. Confirm your account by setting the code that you have received by mail here");
+
+                    lab.setMaxWidth(400);
+                    lab.setWrapText(true);
+                    TextField validation = new TextField();
+                    validation.setMaxWidth(200);
+                    Label wrongcode = new Label("Wrong code is entered, please try again !");
+                    wrongcode.getStyleClass().add("wrong");
+                    Button validateBtn = new Button("Validate");
+                    validateBtn.getStyleClass().add("success");
+                    validation.setPromptText("code (example : 58181)");
+
+                    VBox.setMargin(validation,new Insets(20,0,20,0));
+                    VBox.setMargin(validateBtn,new Insets(20,0,40,0));
+                    VBox.setMargin(step3,new Insets(0,380,0,0));
+
+                    box2.setAlignment(Pos.CENTER);
+
+                    box2.getChildren().addAll(step3,lab,validation,validateBtn);
+                    stack2.getChildren().add(box2);
+
+                    validateBtn.setOnAction(a->{
+                        if (validation.getText().equals(ms.getCode(m.getmail()))){
+                            box2.getChildren().remove(wrongcode);
+                            validation.getStyleClass().remove("error");
+                            ms.RegisterPaperlessMember(m);
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Success");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Registration has been successfully completed.");
+                            alert.showAndWait();
+                        } else if (!(validation.getText().equals(ms.getCode(m.getmail())))){
+                            box2.getChildren().add(wrongcode);
+                            validation.getStyleClass().add("error");
+                        }
+                    });
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid fields");
+                    alert.setHeaderText(null);
+                    alert.setContentText("All fields are required");
+                    alert.showAndWait();
+                }
+            }
+        });
+
     }
 }
