@@ -97,3 +97,55 @@ Label{
     -fx-border-radius: 30px;
 }
 
+.titleLabel{
+    -fx-text-fill: WHITE;
+    -fx-font-family: 'Perpetua Titling MT';
+    -fx-font-size: 24px;
+}
+
+.titleBox{
+    -fx-background-color: rgba(45,203,112,0.5);
+    -fx-border-color: rgba(45,203,112,0.8);
+}
+
+.blueTitleBox{
+    -fx-background-color: rgba(91, 192, 222, 0.5);
+    -fx-border-color: rgba(91, 192, 222, 0.8);
+}
+
+.orangeTitleBox{
+    -fx-background-color: rgba(255, 193, 7, 0.5);
+    -fx-border-color: rgba(255, 193, 7, 0.8);
+}
+
+.nextArrow{
+    -fx-background-image: url('/edu/fundup/ressources/images/arrow-flat.png');
+    -fx-background-color: none;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 40px;
+    -fx-background-position: center;
+    -fx-background-radius: 50px;
+
+    -fx-border-width: 0;
+
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+}
+
+.backArrow{
+    -fx-background-image: url('/edu/fundup/ressources/images/arrow-flat2.png');
+    -fx-background-color: none;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 40px;
+    -fx-background-position: center;
+    -fx-background-radius: 50px;
+
+    -fx-border-width: 0;
+
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+}

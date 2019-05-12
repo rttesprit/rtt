@@ -116,7 +116,29 @@ public class Member {
         this(login,name,password,mail,address,city,country,photo,payment_type,credit_card_number,cvv_num,president,foundation_date);
         this.id=id;
     }
-
+    // Consctructor whith all propreties
+    public Member(int id, String role, String login, String name, String mail, String password, String first_name, String last_name,
+                  String address, String city, String country, String payment_type, String credit_card_number, String cvv_num,
+                  String president, String foundation_date, int enable, String photo) {
+        this.id = id;
+        this.role = role;
+        this.login = login;
+        this.name = name;
+        this.mail = mail;
+        this.password = password;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.payment_type = payment_type;
+        this.credit_card_number = credit_card_number;
+        this.cvv_num = cvv_num;
+        this.president = president;
+        this.foundation_date = foundation_date;
+        this.enable = enable;
+        this.photo = photo;
+    }
 
     // for login
     public Member(String login,String password){

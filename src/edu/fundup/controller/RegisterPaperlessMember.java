@@ -52,45 +52,31 @@ public class RegisterPaperlessMember extends HBox {
         titleBox1.getChildren().add(accountData);
         titleBox1.setMinHeight(60);
         titleBox1.setMaxHeight(60);
-        accountData.setStyle(" -fx-text-fill: WHITE; -fx-font-family: 'Times New Roman'; -fx-font-size: 24px;");
-        titleBox1.setStyle("-fx-background-color: rgba(45,203,112,0.5);\n" +
-                "    -fx-border-color: rgba(45,203,112,0.8);\n");
+        accountData.getStyleClass().add("titleLabel");
+        titleBox1.getStyleClass().add("titleBox");
 
         StackPane titleBox2 = new StackPane();
         titleBox2.getChildren().add(profileData);
         titleBox2.setMinHeight(60);
         titleBox2.setMaxHeight(60);
-        profileData.setStyle(" -fx-text-fill: WHITE; -fx-font-family: 'Times New Roman'; -fx-font-size: 24px;");
-        titleBox2.setStyle("-fx-background-color: rgba(45,203,112,0.5);\n" +
-                "    -fx-border-color: rgba(45,203,112,0.8);\n");
+        profileData.getStyleClass().add("titleLabel");
+        titleBox2.getStyleClass().add("titleBox");
 
         StackPane titleBox3 = new StackPane();
         titleBox3.getChildren().add(finalStep);
         titleBox3.setMinHeight(60);
         titleBox3.setMaxHeight(60);
-        finalStep.setStyle(" -fx-text-fill: WHITE; -fx-font-family: 'Times New Roman'; -fx-font-size: 24px;");
-        titleBox3.setStyle("-fx-background-color: rgba(45,203,112,0.5);\n" +
-                "    -fx-border-color: rgba(45,203,112,0.8);\n");
+        finalStep.getStyleClass().add("titleLabel");
+        titleBox3.getStyleClass().add("titleBox");
 
-
-
-        /********/
 
         /******* VBox 1 **********/
         VBox box1 = new VBox();
 
-        Label username = new Label(" Username :");
+        Label username = new Label("Username :");
         Label passwordLabel = new Label("Password :");
         Label passwordConfirmationLabel = new Label("Re-enter pass :");
         Label emailLabel = new Label("E-Mail : ");
-
-
-
-        username.setStyle(" -fx-font-family: 'Lucida Sans Unicode'; ");
-        passwordConfirmationLabel.setStyle(" -fx-font-family: 'Lucida Sans Unicode'; ");
-        passwordLabel.setStyle(" -fx-font-family: 'Lucida Sans Unicode'; ");
-        emailLabel.setStyle(" -fx-font-family: 'Lucida Sans Unicode'; ");
-
 
         TextField login = new TextField();
         login.setPromptText("Username");
@@ -121,15 +107,13 @@ public class RegisterPaperlessMember extends HBox {
         grid1.add(email, 1, 4);
 
         Button nextToBox2 = new Button();
-        nextToBox2.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat.png'); -fx-border-width: 0;" +
-                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
-        nextToBox2.getStyleClass().add("rounded");
-
+        nextToBox2.getStyleClass().add("nextArrow");
 
         box1.setMinWidth(500);
         box1.setMinHeight(500);
 
         box1.getChildren().addAll(titleBox1, grid1);
+        VBox.setMargin(grid1,new Insets(35,0,0,0));
 
         StackPane stack1 = new StackPane();
         stack1.setStyle("-fx-background-color: rgb(0,0,0, 0.1)");
@@ -182,9 +166,7 @@ public class RegisterPaperlessMember extends HBox {
         grid2.add(address, 1, 5);
 
         Button backToBox1 = new Button();
-        backToBox1.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat2.png'); -fx-border-width: 0;" +
-                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
-        backToBox1.getStyleClass().add("rounded");
+        backToBox1.getStyleClass().add("backArrow");
 
         Button btn = new Button("Register");
         btn.getStyleClass().add("success");
@@ -230,6 +212,8 @@ public class RegisterPaperlessMember extends HBox {
         Label passwordErrorLab = new Label(" Your password length must be in (6-15) and   must contain special charachters");
         Label identicErrorLab = new Label(" Your password fields must be identical ");
         Label mailLab = new Label("Please set your valid E-mail");
+        Label fieldsRequiredError = new Label("All fields are required");
+        Label wrongcode = new Label("You have set a wrong code, please try again !");
 
         passwordErrorLab.setWrapText(true);
         logErrorLab.setWrapText(true);
@@ -238,11 +222,15 @@ public class RegisterPaperlessMember extends HBox {
         identicErrorLab.setMaxWidth(480);
         passwordErrorLab.setMaxWidth(480);
         mailLab.setMaxWidth(480);
+        fieldsRequiredError.setMaxWidth(280);
+        wrongcode.setMaxWidth(340);
 
         logErrorLab.getStyleClass().add("tag");
         passwordErrorLab.getStyleClass().add("tag");
         identicErrorLab.getStyleClass().add("tag");
         mailLab.getStyleClass().add("tag");
+        fieldsRequiredError.getStyleClass().add("tag");
+        wrongcode.getStyleClass().add("tag");
 
 
         login.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -266,8 +254,8 @@ public class RegisterPaperlessMember extends HBox {
                             stack1.getChildren().remove(identicErrorLab);
                         }
                         stack1.getChildren().add(logErrorLab);
+                        stack1.setMargin(logErrorLab, new Insets(190, 0, 0, 0));
 
-                        stack1.setMargin(logErrorLab, new Insets(180, 0, 0, 0));
                         System.out.println("new Property boucle 2 : " + newPropertyValue);
                         System.out.println("old Property boucle 2 : " + oldPropertyValue);
                         System.out.println("*****");
@@ -297,7 +285,7 @@ public class RegisterPaperlessMember extends HBox {
                             stack1.getChildren().remove(logErrorLab);
                         }
                         stack1.getChildren().add(identicErrorLab);
-                        stack1.setMargin(identicErrorLab, new Insets(180, 0, 0, 0));
+                        stack1.setMargin(identicErrorLab, new Insets(190, 0, 0, 0));
                         System.out.println("new Property boucle 2 : " + newPropertyValue);
                         System.out.println("old Property boucle 2 : " + oldPropertyValue);
                         System.out.println("*****");
@@ -323,7 +311,7 @@ public class RegisterPaperlessMember extends HBox {
                             stack1.getChildren().remove(mailLab);
                         }
                         stack1.getChildren().add(passwordErrorLab);
-                        stack1.setMargin(passwordErrorLab, new Insets(320, 0, 0, 0));
+                        stack1.setMargin(passwordErrorLab, new Insets(330, 0, 0, 0));
                         System.out.println("new Property boucle 2 : " + newPropertyValue);
                         System.out.println("old Property boucle 2 : " + oldPropertyValue);
                         System.out.println("*****");
@@ -354,7 +342,7 @@ public class RegisterPaperlessMember extends HBox {
                         stack1.getChildren().remove(passwordErrorLab);
                     }
                     stack1.getChildren().add(mailLab);
-                    stack1.setMargin(mailLab,new Insets(320,0,0,0));
+                    stack1.setMargin(mailLab,new Insets(330,0,0,0));
                     System.out.println("new Property boucle 2 : "+newPropertyValue);
                     System.out.println("old Property boucle 2 : "+oldPropertyValue);
                     System.out.println("*****");
@@ -369,25 +357,6 @@ public class RegisterPaperlessMember extends HBox {
         this.setAlignment(Pos.CENTER);
         this.getStylesheets().add("/edu/fundup/ressources/css/register.css");
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                Member m = new Member(
-                        login.getText(), password.getText(), email.getText(),
-                        first_name.getText(), last_name.getText(), address.getText(), city.getText(), country.getText(),
-                        ""
-                );
-
-                // Enabling user and setting his role
-                m.setEnable(1);
-                m.setRole("Paperless");
-
-                // Registering
-                MemberService ms = new MemberService();
-                ms.RegisterPaperlessMember(m);
-            }
-        });
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -415,8 +384,6 @@ public class RegisterPaperlessMember extends HBox {
                     lab.setWrapText(true);
                     TextField validation = new TextField();
                     validation.setMaxWidth(200);
-                    Label wrongcode = new Label("Wrong code is entered, please try again !");
-                    wrongcode.getStyleClass().add("wronglabel");
                     Button validateBtn = new Button("Validate");
                     validateBtn.setStyle("-fx-pref-height: 28px;\n" +
                             "    -fx-pref-width: 200px;");
@@ -448,14 +415,10 @@ public class RegisterPaperlessMember extends HBox {
                     });
                 }
                 else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Invalid fields");
-                    alert.setHeaderText(null);
-                    alert.setContentText("All fields are required");
-                    alert.showAndWait();
+                    stack2.getChildren().add(fieldsRequiredError);
+                    stack2.setMargin(fieldsRequiredError, new Insets(260, 0, 0, 0));
                 }
             }
         });
-
     }
 }

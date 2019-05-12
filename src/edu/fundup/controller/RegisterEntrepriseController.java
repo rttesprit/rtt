@@ -23,20 +23,51 @@ public class RegisterEntrepriseController  extends HBox {
     public RegisterEntrepriseController(){
 
         MemberService ms = new MemberService();
-        /*3 STEPS*/
-         Label step1 = new Label("Step  1/4");
-         Label step2 = new Label("Step  2/4");
-         Label step3 = new Label("Step  3/4");
-         Label step4 = new Label("Final step");
-        /********/
+        ArrayList<String> logins = ms.getAllLogin();
+
+        /*STEPS*/
+        Label accountData = new Label("Step 1/4      Account Data");
+        Label profileData = new Label("Step 2/4      Profile Data");
+        Label paymentData = new Label("Step 3/4      Payment Data");
+        Label finalStep = new Label("Final step      Confirmation");
+
+        StackPane titleBox1 = new StackPane();
+        titleBox1.getChildren().add(accountData);
+        titleBox1.setMinHeight(60);
+        titleBox1.setMaxHeight(60);
+        accountData.getStyleClass().add("titleLabel");
+        titleBox1.getStyleClass().add("titleBox");
+
+        StackPane titleBox2 = new StackPane();
+        titleBox2.getChildren().add(profileData);
+        titleBox2.setMinHeight(60);
+        titleBox2.setMaxHeight(60);
+        profileData.getStyleClass().add("titleLabel");
+        titleBox2.getStyleClass().add("titleBox");
+
+        StackPane titleBox3 = new StackPane();
+        titleBox3.getChildren().add(paymentData);
+        titleBox3.setMinHeight(60);
+        titleBox3.setMaxHeight(60);
+        paymentData.getStyleClass().add("titleLabel");
+        titleBox3.getStyleClass().add("titleBox");
+
+        StackPane titleBox4 = new StackPane();
+        titleBox4.getChildren().add(finalStep);
+        titleBox4.setMinHeight(60);
+        titleBox4.setMaxHeight(60);
+        finalStep.getStyleClass().add("titleLabel");
+        titleBox4.getStyleClass().add("titleBox");
+
 
         /******* VBox 1 **********/
         VBox box1 = new VBox();
 
-        Label username = new Label(" Login :");
+        Label username = new Label("Username :");
         Label passwordLabel = new Label("Password :");
         Label passwordConfirmationLabel = new Label("Re-enter pass :");
         Label emailLabel = new Label("E-Mail : ");
+
 
         TextField login = new TextField();
         login.setPromptText("Login");
@@ -53,8 +84,6 @@ public class RegisterEntrepriseController  extends HBox {
         grid1.setHgap(15);
         grid1.setAlignment(Pos.CENTER);
 
-        grid1.add(new Label("Account data"), 0, 0);
-
         grid1.add(username, 0, 1);
         grid1.add(login, 1, 1);
 
@@ -68,16 +97,13 @@ public class RegisterEntrepriseController  extends HBox {
         grid1.add(email, 1, 4);
 
         Button nextToBox2 = new Button();
-        nextToBox2.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat.png'); -fx-border-width: 0;" +
-                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
+        nextToBox2.getStyleClass().add("nextArrow");
 
-
-        nextToBox2.getStyleClass().add("rounded");
         box1.setMinWidth(500);
         box1.setMinHeight(500);
 
-        box1.getChildren().addAll(step1,grid1);
-        VBox.setMargin(step1,new Insets(10,0,30,0));
+        box1.getChildren().addAll(titleBox1,grid1);
+
         StackPane stack1 = new StackPane();
         stack1.setStyle("-fx-background-color: rgb(0,0,0, 0.1)");
 
@@ -116,8 +142,6 @@ public class RegisterEntrepriseController  extends HBox {
         grid2.setHgap(15);
         grid2.setAlignment(Pos.CENTER);
 
-        grid2.add(new Label("Profile data"),0,0);
-
         grid2.add(nameLabel,0,1);
         grid2.add(name,1,1);
 
@@ -142,14 +166,10 @@ public class RegisterEntrepriseController  extends HBox {
         stack2.setStyle("-fx-background-color: rgb(0,0,0, 0.1)");
 
         Button backToBox1 = new Button();
-        backToBox1.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat2.png'); -fx-border-width: 0;" +
-                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
+        backToBox1.getStyleClass().add("backArrow");
 
         Button nextToBox3 = new Button();
-        nextToBox3.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat.png'); -fx-border-width: 0;" +
-                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
-
-        nextToBox3.getStyleClass().add("rounded");
+        nextToBox3.getStyleClass().add("nextArrow");
 
         HBox buttonsBox = new HBox();
         buttonsBox.getChildren().addAll(backToBox1,nextToBox3);
@@ -157,15 +177,16 @@ public class RegisterEntrepriseController  extends HBox {
         buttonsBox.setMargin(nextToBox3,new Insets(0,25,25,185));
         buttonsBox.setMargin(backToBox1,new Insets(0,185,25,25));
 
-        box2.getChildren().addAll(step2,grid2);
-        VBox.setMargin(step2,new Insets(10,0,0,0));
+        box2.getChildren().addAll(titleBox2,grid2);
+        VBox.setMargin(grid2,new Insets(35,0,30,0));
+
         stack2.getChildren().addAll(box2,buttonsBox);
         stack2.setMargin(buttonsBox,new Insets(480,0,0,0));
 
 
-        //************************************
-
         /******* VBox 3 **********/
+        StackPane stack3 = new StackPane();
+
         VBox box3 = new VBox();
         GridPane grid3 = new GridPane();
         grid3.setVgap(15);
@@ -181,8 +202,6 @@ public class RegisterEntrepriseController  extends HBox {
         TextField cvv_num = new TextField();
         cvv_num.setPromptText("CVV number");
 
-        grid3.add(new Label("Payment details"),0,0);
-
         grid3.add(new Label("Payment type"),0,1);
         grid3.add(payment_type,1,1);
 
@@ -193,22 +212,20 @@ public class RegisterEntrepriseController  extends HBox {
         grid3.add(cvv_num,1,3);
 
         Button btn = new Button("Register");
-        btn.getStyleClass().add("sk-btn");
-        btn.getStyleClass().add("sk-btn-toolbar");
+        btn.getStyleClass().add("info");
 
 
         Button backToBox2 = new Button();
-        backToBox2.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/arrow-flat2.png'); -fx-border-width: 0;" +
-                " -fx-background-color: none; -fx-background-repeat: no-repeat; -fx-background-size: 40px; -fx-background-position: center; ");
+        backToBox2.getStyleClass().add("backArrow");
+        backToBox2.setOnAction(event -> {this.getChildren().remove(stack3); this.getChildren().add(stack2);});
 
-        backToBox2.getStyleClass().add("rounded");
+        box3.getChildren().addAll(titleBox3,grid3,btn);
 
-        box3.setMargin(btn,new Insets(50,180,10,180));
-        box3.getChildren().addAll(step3,grid3,btn);
-        VBox.setMargin(step3,new Insets(10,0,30,0));
+        VBox.setMargin(grid3,new Insets(35,0,30,0));
+        box3.setMargin(btn,new Insets(120,180,10,180));
+
         box3.setMinWidth(500);
         box3.setMinHeight(500);
-        StackPane stack3 = new StackPane();
         stack3.setStyle("-fx-background-color: rgb(0,0,0, 0.1)");
         stack3.getChildren().addAll(box3,backToBox2);
         stack3.setMargin(backToBox2,new Insets(480,425,25,15));
@@ -216,6 +233,163 @@ public class RegisterEntrepriseController  extends HBox {
 
         // ___________________NEXT & BACK CONDITIONS___________________
 
+        //************ BOX 1 VALIDATION
+
+        nextToBox2.setOnAction(event -> {
+            if (RegisterValidation.checkUsername(login.getText(),logins) &&
+                    RegisterValidation.validatePassword(password.getText()) &&
+                    RegisterValidation.identicPassword(password.getText(),passwordConfirmation.getText()) &&
+                    RegisterValidation.validateMail(email.getText())
+            ) {
+                this.getChildren().remove(stack1);
+                this.getChildren().add(stack2);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid fields");
+                alert.setHeaderText(null);
+                alert.setContentText("All fields are required");
+                alert.showAndWait();
+            }
+        });
+
+        Label logErrorLab = new Label("Username must be unique and contains only letters ");
+        Label passwordErrorLab = new Label(" Your password length must be in (6-15) and   must contain special charachters");
+        Label identicErrorLab = new Label(" Your password fields must be identical ");
+        Label mailLab = new Label("Please set your valid E-mail");
+        Label fieldsRequiredError = new Label("All fields are required");
+
+        passwordErrorLab.setWrapText(true);
+        logErrorLab.setWrapText(true);
+
+        logErrorLab.setMaxWidth(480);
+        identicErrorLab.setMaxWidth(480);
+        passwordErrorLab.setMaxWidth(480);
+        mailLab.setMaxWidth(480);
+        fieldsRequiredError.setMaxWidth(280);
+
+        logErrorLab.getStyleClass().add("tag");
+        passwordErrorLab.getStyleClass().add("tag");
+        identicErrorLab.getStyleClass().add("tag");
+        mailLab.getStyleClass().add("tag");
+        fieldsRequiredError.getStyleClass().add("tag");
+
+
+        login.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (RegisterValidation.checkUsername(login.getText(),logins)) {
+
+                    login.getStyleClass().remove("error");
+
+                    stack1.getChildren().remove(logErrorLab);
+                    username.getStyleClass().clear();
+
+                    System.out.println("esm shih");
+
+                } else {
+                    if ((!RegisterValidation.checkUsername(login.getText(),logins)) && (newPropertyValue!=true)) {
+                        login.getStyleClass().add("error");
+                        username.getStyleClass().add("wronglabel");
+
+                        if (stack1.getChildren().contains(identicErrorLab)) {
+                            stack1.getChildren().remove(identicErrorLab);
+                        }
+                        stack1.getChildren().add(logErrorLab);
+                        stack1.setMargin(logErrorLab, new Insets(190, 0, 0, 0));
+
+                        System.out.println("new Property boucle 2 : " + newPropertyValue);
+                        System.out.println("old Property boucle 2 : " + oldPropertyValue);
+                        System.out.println("*****");
+
+                    }
+                }
+            }
+        });
+        passwordConfirmation.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (RegisterValidation.identicPassword(password.getText(), passwordConfirmation.getText())) {
+
+                    passwordConfirmation.getStyleClass().remove("error");
+
+                    stack1.getChildren().remove(identicErrorLab);
+                    passwordConfirmationLabel.getStyleClass().clear();
+
+                    System.out.println("pass identiques");
+
+                } else {
+                    if ((!(RegisterValidation.identicPassword(password.getText(), passwordConfirmation.getText()))) && (newPropertyValue!=true) ) {
+
+                        passwordConfirmation.getStyleClass().add("error");
+                        passwordConfirmationLabel.getStyleClass().add("wronglabel");
+                        if (stack1.getChildren().contains(logErrorLab)){
+                            stack1.getChildren().remove(logErrorLab);
+                        }
+                        stack1.getChildren().add(identicErrorLab);
+                        stack1.setMargin(identicErrorLab, new Insets(190, 0, 0, 0));
+                        System.out.println("new Property boucle 2 : " + newPropertyValue);
+                        System.out.println("old Property boucle 2 : " + oldPropertyValue);
+                        System.out.println("*****");
+                    }
+                }
+            }
+        });
+        password.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (RegisterValidation.validatePassword(password.getText())) {
+
+                    password.getStyleClass().remove("error");
+
+                    stack1.getChildren().remove(passwordErrorLab);
+                    passwordLabel.getStyleClass().clear();
+
+                } else {
+                    if ((!(RegisterValidation.validatePassword(password.getText()))) && (newPropertyValue!=true)) {
+                        password.getStyleClass().add("error");
+                        passwordLabel.getStyleClass().add("wronglabel");
+                        if (stack1.getChildren().contains(mailLab)) {
+                            stack1.getChildren().remove(mailLab);
+                        }
+                        stack1.getChildren().add(passwordErrorLab);
+                        stack1.setMargin(passwordErrorLab, new Insets(330, 0, 0, 0));
+                        System.out.println("new Property boucle 2 : " + newPropertyValue);
+                        System.out.println("old Property boucle 2 : " + oldPropertyValue);
+                        System.out.println("*****");
+                    }
+                }
+            }
+        });
+        email.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+            {
+                if (RegisterValidation.validateMail(email.getText())) {
+
+                    email.getStyleClass().remove("error");
+
+                    stack1.getChildren().remove(mailLab);
+                    emailLabel.getStyleClass().clear();
+
+                    System.out.println("mail shih");
+
+                }
+
+                else if( !((RegisterValidation.validateMail(email.getText()))) && (newPropertyValue!=true) )
+                {
+                    email.getStyleClass().add("error");
+                    emailLabel.getStyleClass().add("wronglabel");
+                    if (stack1.getChildren().contains(passwordErrorLab)){
+                        stack1.getChildren().remove(passwordErrorLab);
+                    }
+                    stack1.getChildren().add(mailLab);
+                    stack1.setMargin(mailLab,new Insets(330,0,0,0));
+                    System.out.println("new Property boucle 2 : "+newPropertyValue);
+                    System.out.println("old Property boucle 2 : "+oldPropertyValue);
+                    System.out.println("*****");
+                }
+            }
+        });
 
         nextToBox3.setOnAction(event -> {
             try {
@@ -231,11 +405,8 @@ public class RegisterEntrepriseController  extends HBox {
                     this.getChildren().add(stack3);
                 }
                 else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Invalidate fields");
-                    alert.setHeaderText(null);
-                    alert.setContentText("All fields are required");
-                    alert.showAndWait();
+                    stack2.getChildren().add(fieldsRequiredError);
+                    stack2.setMargin(fieldsRequiredError, new Insets(420, 0, 0, 0));
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -243,49 +414,21 @@ public class RegisterEntrepriseController  extends HBox {
         });
         backToBox1.setOnAction(event -> {this.getChildren().remove(stack2); this.getChildren().add(stack1);} );
         backToBox2.setOnAction(event -> {this.getChildren().remove(stack3); this.getChildren().add(stack2);});
-        //************ BOX 1 VALIDATION
-        ArrayList<String> logins = ms.getAllLogin();
-
-        nextToBox2.setOnAction(event -> {
-
-            if (RegisterValidation.checkUsername(login.getText(),logins) &&
-                    RegisterValidation.validatePassword(password.getText()) &&
-                    RegisterValidation.identicPassword(password.getText(),passwordConfirmation.getText()) &&
-                    RegisterValidation.validateMail(email.getText())
-            )
-            {
-                this.getChildren().remove(stack1);
-                this.getChildren().add(stack2);
-            }
-            else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Invalidate fields");
-                alert.setHeaderText(null);
-                alert.setContentText("You must validate all the fields");
-                alert.showAndWait();
-            }
-        });
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("payment_type.getValue()==null"+ payment_type.getValue()==null);
-                System.out.println("cvv_num.getText().equals(\"\")"+ cvv_num.getText().equals(""));
-                System.out.println("(credit_card_num.equals(\"\")"+ credit_card_num.equals(""));
-                System.out.println("condition"+!( payment_type.getValue()==null || cvv_num.getText().equals("") || (credit_card_num.equals(""))));
 
-
-                if ( !( payment_type.getValue()==null || cvv_num.getText().equals("") || (credit_card_num.equals("")))  )
+                if ( !( payment_type.getValue()==null || cvv_num.getText().equals("") || (credit_card_num.getText().equals("")))  )
                 {
                     Member m = new Member(
                             login.getText(), name.getText(), password.getText(), email.getText(),
                             address.getText(), city.getText(), country.getText(),
                             "head.png", payment_type.getValue().toString(), credit_card_num.getText(), cvv_num.getText(), president.getText(), foundation_date.getValue().toString()
                     );
-                    System.out.println("Entreprise :"+ m.toString());
                     m.setRole("Entreprise");
                     m.setEnable(1);
-                    System.out.println(m.getPresident() + " " + m.getFoundation_date());
+                    System.out.println(m.toString());
                     SendMail sm = new SendMail();
                     sm.SendEmail(email.getText(),login.getText());
 
@@ -298,18 +441,17 @@ public class RegisterEntrepriseController  extends HBox {
                     TextField validation = new TextField();
                     validation.setMaxWidth(200);
                     Label wrongcode = new Label("Wrong code is entered, please try again !");
-                    wrongcode.getStyleClass().add("wrong");
+                    wrongcode.getStyleClass().add("tag");
                     Button validateBtn = new Button("Validate");
-                    validateBtn.getStyleClass().add("success");
-                    validation.setPromptText("code (example : 58181)");
+                    validateBtn.getStyleClass().add("warning");
+                    validation.setPromptText("code (example : 52889)");
 
                     VBox.setMargin(validation,new Insets(20,0,20,0));
                     VBox.setMargin(validateBtn,new Insets(20,0,40,0));
-                    VBox.setMargin(step4,new Insets(0,380,0,0));
 
                     box3.setAlignment(Pos.CENTER);
 
-                    box3.getChildren().addAll(step4,lab,validation,validateBtn);
+                    box3.getChildren().addAll(titleBox4,lab,validation,validateBtn);
                     stack3.getChildren().add(box3);
 
                     validateBtn.setOnAction(a->{
@@ -329,162 +471,16 @@ public class RegisterEntrepriseController  extends HBox {
                     });
                 }
                 else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Invalid fields");
-                    alert.setHeaderText(null);
-                    alert.setContentText("All fields are required");
-                    alert.showAndWait();
+                    stack3.getChildren().add(fieldsRequiredError);
+                    stack3.setMargin(fieldsRequiredError, new Insets(130, 0, 0, 0));
                 }
             }
         });
 
-        Label logErrorLab = new Label("Please enter a valid and unique login ");
-        Label identicErrorLab = new Label("Your password fields must be identical ");
-        Label mailLab = new Label("Please set your valid E-mail");
-
-        Label passwordErrorLab = new Label("Your password length must be in (6-15) and must contain special charachters");
-        passwordErrorLab.setWrapText(true);
-
-        logErrorLab.setMaxWidth(480);
-        identicErrorLab.setMaxWidth(480);
-        passwordErrorLab.setMaxWidth(480);
-        mailLab.setMaxWidth(480);
-
-        logErrorLab.getStyleClass().add("wronglabel");
-        identicErrorLab.getStyleClass().add("wronglabel");
-        passwordErrorLab.getStyleClass().add("wronglabel");
-        mailLab.getStyleClass().add("wronglabel");
-
-        login.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                if (RegisterValidation.checkUsername(login.getText(),logins)) {
-
-                    login.getStyleClass().remove("error");
-                    login.getStyleClass().add("va");
-
-                    stack1.getChildren().remove(logErrorLab);
-                    username.getStyleClass().remove("wronglabel");
-
-                    System.out.println("esm shih");
-
-                }
-
-                else if( !(RegisterValidation.checkUsername(login.getText(),logins)) && (newPropertyValue!=true) )
-                {
-                        login.getStyleClass().remove("va");
-                        login.getStyleClass().add("error");
-                        username.getStyleClass().add("wronglabel");
-                        stack1.getChildren().add(logErrorLab);
-                        stack1.setMargin(logErrorLab,new Insets(170,0,0,0));
-                        System.out.println("new Property boucle 2 : "+newPropertyValue);
-                        System.out.println("old Property boucle 2 : "+oldPropertyValue);
-                        System.out.println("*****");
-                }
-            }
-        });
-
-        passwordConfirmation.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                if (RegisterValidation.identicPassword(password.getText(),passwordConfirmation.getText())) {
-
-                    passwordConfirmation.getStyleClass().remove("error");
-
-                    passwordConfirmation.getStyleClass().add("va");
-
-                    stack1.getChildren().remove(identicErrorLab);
-                    passwordConfirmationLabel.getStyleClass().remove("wronglabel");
-
-                    System.out.println("pass identiques");
-
-                }
-                else
-                {
-                    if((!(RegisterValidation.identicPassword(password.getText(),passwordConfirmation.getText()))) && (newPropertyValue!=true) ){
-                        passwordConfirmation.getStyleClass().remove("va");
-                        passwordConfirmation.getStyleClass().add("error");
-                        passwordConfirmationLabel.getStyleClass().add("wronglabel");
-                        stack1.getChildren().add(identicErrorLab);
-                        stack1.setMargin(identicErrorLab,new Insets(350,0,0,0));
-                        System.out.println("new Property boucle 2 : "+newPropertyValue);
-                        System.out.println("old Property boucle 2 : "+oldPropertyValue);
-                        System.out.println("*****");
-                    }
-                }
-            }
-        });
-
-        email.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                if (RegisterValidation.validateMail(email.getText())) {
-
-                    email.getStyleClass().remove("error");
-                    email.getStyleClass().add("va");
-
-                    stack1.getChildren().remove(mailLab);
-                    emailLabel.getStyleClass().remove("wronglabel");
-
-                    System.out.println("mail shih");
-
-                }
-
-                else if( !((RegisterValidation.validateMail(email.getText()))) && (newPropertyValue!=true) )
-                {
-                    email.getStyleClass().remove("va");
-                    email.getStyleClass().add("error");
-                    emailLabel.getStyleClass().add("wronglabel");
-                    stack1.getChildren().add(mailLab);
-                    stack1.setMargin(mailLab,new Insets(400,0,0,0));
-                    System.out.println("new Property boucle 2 : "+newPropertyValue);
-                    System.out.println("old Property boucle 2 : "+oldPropertyValue);
-                    System.out.println("*****");
-                }
-            }
-        });
-
-        password.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                if (RegisterValidation.validatePassword(password.getText())) {
-
-                    password.getStyleClass().remove("error");
-                    password.getStyleClass().add("va");
-
-                    stack1.getChildren().remove(passwordErrorLab);
-                    passwordLabel.getStyleClass().remove("wronglabel");
-
-                    System.out.println("pass shih");
-
-                }
-                else
-                {
-                    if((!(RegisterValidation.validatePassword(password.getText()))) && (!newPropertyValue) ){
-                        password.getStyleClass().remove("va");
-                        password.getStyleClass().add("error");
-                        passwordLabel.getStyleClass().add("wronglabel");
-                        stack1.getChildren().add(passwordErrorLab);
-                        stack1.setMargin(passwordErrorLab,new Insets(260,0,0,0));
-                        System.out.println("new Property boucle 2 : "+newPropertyValue);
-                        System.out.println("old Property boucle 2 : "+oldPropertyValue);
-                        System.out.println("*****");
-                    }
-                }
-            }
-        });
 
         this.setStyle( "-fx-padding: 200px 100px 100px 100px;" );
 
-        this.getChildren().addAll(stack1);
+        this.getChildren().add(stack1);
 
         this.setAlignment(Pos.CENTER);
         this.getStylesheets().add("/edu/fundup/ressources/css/register.css");
