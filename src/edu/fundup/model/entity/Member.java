@@ -30,9 +30,40 @@ public class Member {
     private int enable;
     private String description;
     private String photo;
+
+    private String register_date;
     // REGISTER DATE IS ONLY ON BDD
 
+    // Constructor to test Observable
+    public Member(int id){
+        this.id=id;
+    }
 
+    // CONSTRUCTOR for SIGNED IN MEMBER
+    public Member(int id,String role,String login,String name,String mail,String password,
+                  String first_name,String last_name,String address,String city,String country,
+                  String payment_type,String credit_card_number,String cvv_num,
+                  String president,String foundation_date,int enable,String photo,String register_date){
+        this.id=id;
+        this.role=role;
+        this.login=login;
+        this.name=name;
+        this.mail=mail;
+        this.password=password;
+        this.first_name=first_name;
+        this.last_name=last_name;
+        this.address=address;
+        this.city=city;
+        this.country=country;
+        this.payment_type=payment_type;
+        this.credit_card_number=credit_card_number;
+        this.cvv_num=cvv_num;
+        this.president=president;
+        this.foundation_date=foundation_date;
+        this.enable=enable;
+        this.photo=photo;
+        this.register_date=register_date;
+    }
     // CONSTRUCTOR FOR PaperLess Member WITHOUT ID
     public Member(String login, String password, String mail, String first_name, String last_name, String address, String city, String country,String photo) {
         this.login = login;
@@ -68,7 +99,7 @@ public class Member {
     }
 
     // CONSTRUCTOR for ASSOCIATION and ENTREPRISE WITHOUT ID
-    public Member(String login, String name, String password, String mail, String address, String city, String country,int enable, String description, String photo, String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
+    public Member(String login, String name, String password, String mail, String address, String city, String country, String photo, String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
         this.login=login;
         this.name = name;
         this.password = password;
@@ -81,14 +112,35 @@ public class Member {
         this.cvv_num = cvv_num;
         this.president = president;
         this.foundation_date = foundation_date;
-        this.enable = enable;
-        this.description = description;
         this.photo = photo;
     }
     // CONSTRUCTOR for ASSOCIATION and ENTREPRISE
-    public Member(int id, String login, String name, String password, String mail, String address, String city, String country, int enable, String description, String photo,String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
-        this(login,name,password,mail,address,city,country,enable,description,photo,payment_type,credit_card_number,cvv_num,president,foundation_date);
+    public Member(int id, String login, String name, String password, String mail, String address, String city, String country, String photo,String payment_type, String credit_card_number, String cvv_num, String president, String foundation_date) {
+        this(login,name,password,mail,address,city,country,photo,payment_type,credit_card_number,cvv_num,president,foundation_date);
         this.id=id;
+    }
+    // Consctructor whith all propreties
+    public Member(int id, String role, String login, String name, String mail, String password, String first_name, String last_name,
+                  String address, String city, String country, String payment_type, String credit_card_number, String cvv_num,
+                  String president, String foundation_date, int enable, String photo) {
+        this.id = id;
+        this.role = role;
+        this.login = login;
+        this.name = name;
+        this.mail = mail;
+        this.password = password;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.payment_type = payment_type;
+        this.credit_card_number = credit_card_number;
+        this.cvv_num = cvv_num;
+        this.president = president;
+        this.foundation_date = foundation_date;
+        this.enable = enable;
+        this.photo = photo;
     }
 
     // for login
@@ -97,6 +149,14 @@ public class Member {
         this.password=password;
     }
 
+    public Member(String nom, String mail, String role, String last_name, String first_name, String photo_path) {
+        this.name = nom;
+        this.mail = mail;
+        this.role=role;
+        this.last_name= last_name;
+        this.first_name = first_name;
+        this.photo = photo_path;
+    }
 
 
     public int getId(){
@@ -210,11 +270,15 @@ public class Member {
     public void setEnable(int enable) {
         this.enable = enable;
     }
-
+    public String getRegister_date(){ return this.register_date; }
 
     @Override
     public String toString(){
-        return "["+this.getRole()+" : "+this.getlogin()+" @mail : "+this.mail+" - Description : "+this.getDescription()+"]";
+        return "[ id :"+this.getId()+" role : "+this.getRole()+" login : "+this.getlogin()+ " @mail : "+this.getmail()+"password : "+this.getPassword()+
+                " first_name : "+this.getfirst_name()+" last_name : "+this.getlast_name()+" address "+this.getAddress()+" city : "+this.getCity()+
+                " country : "+this.getCountry()+" payment_type : "+this.getPayment_type()+"credit_card_number"+this.getCredit_card_number()+
+                " cvv_num : "+this.getCvv_num()+" president : "+this.getPresident()+" foundation_date "+this.getFoundation_date()+
+                "enable : "+this.getEnable()+" photo_path"+"register_date"+this.getRegister_date()+ "]";
     }
 
 }
