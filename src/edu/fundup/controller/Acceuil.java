@@ -4,67 +4,25 @@
  * and open the template in the editor.
  */
 package edu.fundup.controller;
-
-import com.jfoenix.controls.JFXButton;
-import static edu.fundup.controller.FundUp.GLOBAL_PANE_BORDER;
-import static edu.fundup.controller.LoginGUI.TXT_USER;
-
 import com.jfoenix.controls.JFXButton;
 import edu.fundup.exception.DataBaseException;
-
 import edu.fundup.model.entity.Member;
-
 import edu.fundup.model.entity.Events;
-
-import edu.fundup.model.entity.Post;
 import edu.fundup.model.service.ServiceEvents;
-import edu.fundup.model.service.ServicePost;
 import edu.fundup.utils.AutoCompleteTextField;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-
 import javafx.scene.control.*;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Scale;
-
-import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
-
 /**
  *
  * @author hhamzaoui
@@ -74,7 +32,6 @@ public class Acceuil extends HBox {
     public static Button LAB_POST;
     public static Button LAB_EVENT;
     public static Button LAB_ADOPTION;
-    public static Button LAB_RECLAMATION;
     public static Button LAB_ABOUT;
     public static JFXButton LOGIN;
     public static JFXButton INSCRIPTION;
@@ -94,10 +51,9 @@ public class Acceuil extends HBox {
         LAB_POST = new Button("Posts");
         LAB_EVENT = new Button("Evennements");
         LAB_ADOPTION = new Button("Adpotions");
-        LAB_RECLAMATION = new Button("Reclamation");
         LAB_ABOUT = new Button("About us");
         TXT_SEARCH = new AutoCompleteTextField();
-        Title = new Label("Page Name...");
+        Title = new Label("Creer Une compte");
         LOGIN = new JFXButton();
         INSCRIPTION = new JFXButton();
         VBox rightPane = new VBox();
@@ -154,16 +110,7 @@ public class Acceuil extends HBox {
                 new Font(20));
         LAB_ADOPTION.setMinHeight(
                 100);
-
-        LAB_RECLAMATION.getStyleClass()
-                .add("info");
-        LAB_RECLAMATION.setPrefWidth(
-                290);
-        LAB_RECLAMATION.setFont(
-                new Font(20));
-        LAB_RECLAMATION.setMinHeight(
-                100);
-
+        
         LAB_ABOUT.getStyleClass()
                 .add("primary");
         LAB_ABOUT.setPrefWidth(
@@ -185,7 +132,19 @@ public class Acceuil extends HBox {
         INSCRIPTION.setFont(
                 new Font(20));
 
-
+        LOGIN.setOnAction(log-> {
+           LoginController lg = new LoginController();
+           rightPane.getChildren().clear();
+           rightPane.getChildren().add(lg);
+           rightPane.setAlignment(Pos.CENTER);
+        });
+        
+        INSCRIPTION.setOnAction(e -> {
+           InscriptionController inscri = new InscriptionController();
+           rightPane.getChildren().clear();
+           rightPane.getChildren().add(inscri);
+           rightPane.setAlignment(Pos.CENTER);
+        });
         Title.setStyle("-fx-font: normal bold 30 Langdon; -fx-base: #fff;  ");
         HBox right = new HBox();
 
@@ -419,7 +378,7 @@ public class Acceuil extends HBox {
         right.getChildren()
                 .addAll(leftPaneChild, rightPaneChild);
         leftPane.getChildren()
-                .addAll(TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
+                .addAll(TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_ABOUT);
 
         this.getChildren()
                 .addAll(leftPane, rightPane);

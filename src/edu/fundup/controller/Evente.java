@@ -306,8 +306,8 @@ public class Evente extends HBox {
 
         } else {
 
-            //vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER);
-            vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER, BTN_LIST_PARTICIPANT, BTN_MODIFIER, BTN_SUPPRIMER);
+            vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER);
+            //vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER, BTN_LIST_PARTICIPANT, BTN_MODIFIER, BTN_SUPPRIMER);
         }
               
         hb.getChildren().addAll(vgauche, vdroite);

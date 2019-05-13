@@ -1,36 +1,22 @@
 package edu.fundup.controller;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.MemberService;
 import edu.fundup.utils.RegisterValidation;
 import edu.fundup.utils.SendMail;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import java.sql.SQLException;
-import javafx.scene.image.Image;
-import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
-import org.apache.commons.lang3.RandomStringUtils;
-
-
-import java.io.File;
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 
