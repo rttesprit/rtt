@@ -126,14 +126,15 @@ public class RegisterContributorController extends VBox {
 
 
         TextField first_name = new TextField();
-        first_name.setPromptText("First name :");
         TextField last_name = new TextField();
-        last_name.setPromptText("Last name :");
         TextField address = new TextField();
-        address.setPromptText("Address :");
         TextField city = new TextField();
-        city.setPromptText("City :");
         TextField country = new TextField();
+
+        first_name.setPromptText("First name :");
+        last_name.setPromptText("Last name :");
+        address.setPromptText("Address :");
+        city.setPromptText("City :");
         country.setPromptText("Country :");
 
         GridPane grid2 = new GridPane();

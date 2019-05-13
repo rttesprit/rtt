@@ -369,7 +369,6 @@ public class RegisterPaperlessMember extends HBox {
                             first_name.getText(), last_name.getText(), address.getText(), city.getText(), country.getText(),
                             "head.png"
                     );
-                    System.out.println("Paperless :"+ m.toString());
                     m.setRole("Paperless");
                     m.setEnable(1);
 

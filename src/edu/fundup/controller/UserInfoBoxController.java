@@ -37,12 +37,14 @@ public class UserInfoBoxController extends HBox{
         if(connectedm != null) {
             System.out.println("From the set Box user is : " + connectedm.toString());
 
-            if (!((connectedm.getfirst_name().equals("")) && (connectedm.getlast_name().equals("")))) {
+            if ( !( ((connectedm.getfirst_name())==null) && (connectedm.getlast_name()==null) ) ) {
+                System.out.println("Condition !( ((connectedm.getfirst_name())==null) && (connectedm.getlast_name()==null) ) From userBoxInfo "+ !( ((connectedm.getfirst_name())==null) && (connectedm.getlast_name()==null) ));
                 Label fullname = new Label(connectedm.getfirst_name() + " " + connectedm.getlast_name());
                 this.getChildren().add(fullname);
                 HBox.setMargin(fullname, new Insets(10, 10, 10, 10));
             } else {
                 Label name = new Label(connectedm.getName());
+                System.out.println("name from userBox"+ name);
                 this.getChildren().add(name);
                 HBox.setMargin(name, new Insets(10, 10, 10, 10));
             }
@@ -65,6 +67,7 @@ public class UserInfoBoxController extends HBox{
             btn.setMaxWidth(30);
             btn.setMinWidth(30);
             HBox.setMargin(btn, new Insets(10, 10, 10, 10));
+
 
             btn.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 

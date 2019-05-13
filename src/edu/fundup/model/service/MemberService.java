@@ -91,7 +91,6 @@ public class MemberService implements IMemberService {
         return 0;
     }
 
-
     // not finished yet
 
     @Override
@@ -351,5 +350,32 @@ public class MemberService implements IMemberService {
         }
         System.out.println("m"+m.toString());
         return m;
+    }
+
+    public void updateUser(Member m){
+        String query = "UPDATE `member` SET `id`=?,`role`=?,`login`=?,`name`=?,`mail`=?,`password`=?,`first_name`=?,`last_name`=?,`Address`=?,`City`=?,`Country`=?," +
+                "`payment_type`=?,`credit_card_number`=?,`cvv_num`=?,`president`=?,`foundation_date`=?";
+        try{
+            pst = connection.prepareStatement(query);
+            pst.setInt(1,m.getId());
+            pst.setString(2,m.getRole());
+            pst.setString(3,m.getlogin());
+            pst.setString(4,m.getName());
+            pst.setString(5,m.getmail());
+            pst.setString(6,m.getPassword());
+            pst.setString(7,m.getfirst_name());
+            pst.setString(8,m.getlast_name());
+            pst.setString(9,m.getAddress());
+            pst.setString(10,m.getCity());
+            pst.setString(11,m.getCountry());
+            pst.setString(12,m.getPayment_type());
+            pst.setString(13,m.getCredit_card_number());
+            pst.setString(14,m.getCvv_num());
+            pst.setString(15,m.getPresident());
+            pst.setString(16,m.getFoundation_date());
+            pst.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

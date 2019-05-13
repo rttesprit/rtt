@@ -117,5 +117,8 @@ public class editProfileEntreprise extends VBox {
         this.getChildren().addAll(grid,buttonsP);
         this.setAlignment(Pos.CENTER);
         this.setPrefSize(6000,6000);
+
+        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/money-time.jpg')");
+
     }
 }

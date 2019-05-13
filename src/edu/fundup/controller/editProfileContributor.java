@@ -1,19 +1,19 @@
 package edu.fundup.controller;
 
 import edu.fundup.model.entity.Member;
+import edu.fundup.model.service.MemberService;
+import edu.fundup.utils.RegisterValidation;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class editProfileContributor extends VBox {
 
+    MemberService ms = new MemberService();
     TextField name = new TextField();
     TextField mail = new TextField();
     TextField password = new TextField();
@@ -51,15 +51,15 @@ public class editProfileContributor extends VBox {
 
     HBox buttonsP = new HBox();
 
-    public editProfileContributor(Member connectedm){
+    public editProfileContributor(Member connectedm) {
 
         saveP.getStyleClass().add("success");
         cancelP.getStyleClass().add("warning");
 
-        buttonsP.getChildren().addAll(cancelP,saveP);
+        buttonsP.getChildren().addAll(cancelP, saveP);
         buttonsP.setAlignment(Pos.CENTER);
-        HBox.setMargin(saveP,new Insets(0,0,0,60));
-        VBox.setMargin(buttonsP,new Insets(50,0,0,0));
+        HBox.setMargin(saveP, new Insets(0, 0, 0, 60));
+        VBox.setMargin(buttonsP, new Insets(50, 0, 0, 0));
 
         payment_type.setMaxWidth(200);
         payment_type.setMaxHeight(50);
@@ -105,9 +105,40 @@ public class editProfileContributor extends VBox {
         credit_card_number.setText(connectedm.getCredit_card_number());
         cvv_num.setText(connectedm.getCvv_num());
 
-        this.getChildren().addAll(grid,buttonsP);
+        this.getChildren().addAll(grid, buttonsP);
         this.setAlignment(Pos.CENTER);
-        this.setPrefSize(6000,6000);
-    }
+        this.setPrefSize(6000, 6000);
 
+        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/desktop.jpg')");
+
+        saveP.setOnAction(save -> {
+            if ( RegisterValidation.validateMail(mail.getText()) && (!first_name.getText().equals("")) && (!last_name.getText().equals("")) &&
+               (!country.getText().equals("")) && (!city.getText().equals("")) && (!address.getText().equals("")) &&
+               (!credit_card_number.getText().equals("")) && (!cvv_num.getText().equals("")) )
+            {
+                connectedm.setmail(mail.getText());
+                connectedm.setfirst_name(first_name.getText());
+                connectedm.setlast_name(last_name.getText());
+                connectedm.setCity(city.getText());
+                connectedm.setAddress(address.getText());
+                connectedm.setPayment_type(payment_type.getValue().toString());
+                connectedm.setCredit_card_number(credit_card_number.getText());
+                connectedm.setCvv_num(cvv_num.getText());
+                ms.updateUser(connectedm);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Your information has been updated");
+                alert.showAndWait();
+            }
+            else{
+                Label fieldsRequiredError = new Label("All fields are required");
+                fieldsRequiredError.setMaxWidth(280);
+                fieldsRequiredError.getStyleClass().add("tag");
+                this.getChildren().add(fieldsRequiredError);
+            }
+        });
+
+
+    }
 }

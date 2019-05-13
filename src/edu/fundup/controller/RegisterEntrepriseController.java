@@ -103,6 +103,7 @@ public class RegisterEntrepriseController  extends HBox {
         box1.setMinHeight(500);
 
         box1.getChildren().addAll(titleBox1,grid1);
+        VBox.setMargin(grid1,new Insets(35,0,30,0));
 
         StackPane stack1 = new StackPane();
         stack1.setStyle("-fx-background-color: rgb(0,0,0, 0.1)");
@@ -116,7 +117,7 @@ public class RegisterEntrepriseController  extends HBox {
         /******* VBox 2 **********/
         VBox box2 = new VBox();
 
-        Label nameLabel = new Label("Name : ");
+        Label nameLabel = new Label("Association name : ");
         Label presidentLabel = new Label("President : ");
         Label addressLabel = new Label("Address : ");
         Label countryLabel = new Label("Country : ");
@@ -124,7 +125,7 @@ public class RegisterEntrepriseController  extends HBox {
         Label foundation_dateLabel = new Label("Foundation : ");
 
         TextField name = new TextField();
-        name.setPromptText("Name");
+        name.setPromptText("Association name");
         TextField president = new TextField();
         president.setPromptText("President");
         TextField address = new TextField();
