@@ -1,12 +1,8 @@
 package edu.fundup.controller;
 
-import com.jfoenix.controls.JFXBadge;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
@@ -18,13 +14,15 @@ public class ReclamationTest  extends Application {
     }
 
 
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        ReclamationGUI reclamationGUI = new ReclamationGUI(primaryStage);
-        Button btn2 = new Button("bb");
-        JFXBadge jfxBadge = new JFXBadge();
-        jfxBadge.setText("5");
+
+        ReclamationGUI reclamationGUI = new ReclamationGUI(primaryStage,"post",1,70);
+        ReclamationGUI reclamationGUI2 = new ReclamationGUI(primaryStage,"post",2,71);
+        PopupDemo popupDemo = new PopupDemo(primaryStage);
 
 
         TilePane root = new TilePane();
@@ -32,9 +30,10 @@ public class ReclamationTest  extends Application {
         root.setHgap(20);
         root.setVgap(30);
         root.getChildren().add(reclamationGUI);
-        root.getChildren().add(jfxBadge);
+        root.getChildren().add(reclamationGUI2);
+        root.getChildren().add(popupDemo);
         Scene scene = new Scene(root);
-
+        LoadStyleSheets loadStyleSheets = new LoadStyleSheets(root);
         primaryStage.setTitle("JFX Popup Demo");
         primaryStage.setScene(scene);
 
@@ -43,4 +42,8 @@ public class ReclamationTest  extends Application {
 
 
     }
+
+
+
+
 }

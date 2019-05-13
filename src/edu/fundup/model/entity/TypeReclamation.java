@@ -1,9 +1,12 @@
 package edu.fundup.model.entity;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class TypeReclamation {
     private int id;
-    private String description;
-    private String objet;
+    private StringProperty description = new SimpleStringProperty("");
+    private StringProperty  objet  = new SimpleStringProperty("");
 
     public TypeReclamation() {
     }
@@ -17,18 +20,18 @@ public class TypeReclamation {
     }
 
     public String getDescription() {
-        return description;
+        return description.get();
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description.set(description);
     }
 
     public String getObjet() {
-        return objet;
+        return objet.get();
     }
 
     public void setObjet(String objet) {
-        this.objet = objet;
+        this.objet.set(objet);
     }
 }

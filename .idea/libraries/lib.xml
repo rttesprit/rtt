@@ -11,7 +11,6 @@
       <root url="jar://$PROJECT_DIR$/dist/lib/fontawesomefx-8.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/controlsfx-8.40.11.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/fontawesomefx-fontawesome-4.7.0-9.1.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/dist/lib/mysql-connector-java-8.0.15.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/hk2-locator-2.4.0-b12.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/jfoenix-8.0.8.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/hk2-utils-2.4.0-b12.jar!/" />
@@ -20,8 +19,11 @@
       <root url="jar://$PROJECT_DIR$/dist/lib/gson-2.2.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/itextpdf-5.4.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/dist/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$APPLICATION_CONFIG_DIR$/jdbc-drivers/MySQL Connector/J/5.1.47/mysql-connector-java-5.1.47.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/controlsfx-8.40.11-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

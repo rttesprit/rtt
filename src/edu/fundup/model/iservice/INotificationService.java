@@ -12,6 +12,6 @@ public interface INotificationService {
 
     ArrayList<Notification> findNotificationByIdUser(int idUser);
     ArrayList<Notification> findNotificationByTime(Date date);
-
+    ArrayList<Notification> getUnreadNotifications();
 
 }

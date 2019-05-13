@@ -12,5 +12,7 @@ public interface ITypeReclamation {
     void addType(TypeReclamation tr);
     void updateType(TypeReclamation tr);
     void deleteType(TypeReclamation tr);
+    ArrayList<TypeReclamation> getTypeReclamationListWithType(String type);
+
 
 }

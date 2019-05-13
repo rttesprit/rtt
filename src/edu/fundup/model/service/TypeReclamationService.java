@@ -34,7 +34,7 @@ public class TypeReclamationService implements ITypeReclamation {
                 TypeReclamation tr = new TypeReclamation();
                 tr.setId(rs.getInt(1));
                 tr.setDescription(rs.getString(2));
-
+                tr.setObjet(rs.getString(3).toUpperCase());
 
                 listTypeReclamations.add(tr);
 
@@ -52,6 +52,7 @@ public class TypeReclamationService implements ITypeReclamation {
 
     @Override
     public TypeReclamation getTypeReclmation(int id) {
+
         String query = "SELECT * FROM `typereclamation` WHERE `id`='"+id+"'";
 
         try {
@@ -109,5 +110,33 @@ public class TypeReclamationService implements ITypeReclamation {
     @Override
     public void deleteType(TypeReclamation tr) {
 
+    }
+
+    @Override
+    public ArrayList<TypeReclamation> getTypeReclamationListWithType(String type) {
+        ArrayList<TypeReclamation> listTypeReclamations = new ArrayList<>();
+
+        String query = "SELECT * FROM `typereclamation` WHERE `objet`='"+type+"'";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                TypeReclamation tr = new TypeReclamation();
+                tr.setId(rs.getInt(1));
+                tr.setDescription(rs.getString(2));
+                listTypeReclamations.add(tr);
+                System.out.println(tr);
+
+            }
+            return listTypeReclamations;
+
+        } catch (SQLException ex) {
+
+            System.out.println("erreur getTypeReclmation" + ex.getMessage());
+        }
+        return null;
     }
 }
