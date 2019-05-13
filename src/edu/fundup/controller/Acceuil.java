@@ -5,13 +5,19 @@
  */
 package edu.fundup.controller;
 
+import com.jfoenix.controls.JFXButton;
 import static edu.fundup.controller.FundUp.GLOBAL_PANE_BORDER;
 import static edu.fundup.controller.LoginGUI.TXT_USER;
 
 import com.jfoenix.controls.JFXButton;
 import edu.fundup.exception.DataBaseException;
+
 import edu.fundup.model.entity.Member;
+
+import edu.fundup.model.entity.Events;
+
 import edu.fundup.model.entity.Post;
+import edu.fundup.model.service.ServiceEvents;
 import edu.fundup.model.service.ServicePost;
 import edu.fundup.utils.AutoCompleteTextField;
 import java.awt.Dimension;
@@ -24,7 +30,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+
 import javafx.scene.control.*;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -72,6 +80,13 @@ public class Acceuil extends HBox {
     public static JFXButton INSCRIPTION;
     public static AutoCompleteTextField TXT_SEARCH;
     public static Label Title;
+
+    public static VBox rightPane;
+    public static VBox leftPane;
+    public static HBox right;
+    public static HBox contenu;
+    public static VBox rightPaneChild;
+    public static Member connectedMember;
 
     public Acceuil() {
 
@@ -252,6 +267,155 @@ public class Acceuil extends HBox {
             //rightPane.getChildren().addAll(right, bc, affiche);
         }
         );
+        
+        LAB_EVENT.setOnMouseClicked(e
+                -> {
+            rightPane.getChildren().clear();
+            rightPane.getChildren().remove(right);
+
+            try {
+                
+                Title.setText("Liste des evenements");
+                ScrollPane listEvents = new ListEvents();
+                contenu = new HBox();
+                listEvents.setMinWidth(600);
+                listEvents.setPadding(new Insets(4, 10, 10, 4));
+
+                HBox filter = new HBox();
+                ComboBox typeFilter = new ComboBox();
+                TextField text = new TextField();
+                JFXButton BTN_SEARCH = new JFXButton("Chercher");
+                JFXButton BTN_ADD = new JFXButton("Ajouter Evenements");
+                
+                filter.setAlignment(Pos.CENTER);
+                filter.setSpacing(20);
+
+                typeFilter.getItems().addAll("Titre", "Categorie", "Emplacement");
+                typeFilter.setPromptText("Filter");
+                typeFilter.setMinWidth(150);
+                typeFilter.setMinHeight(40);
+
+                text.setMinWidth(300);
+
+                BTN_SEARCH.getStyleClass().add("primary");
+                BTN_SEARCH.setPrefWidth(300);
+                BTN_SEARCH.setFont(new Font(20));
+
+                BTN_ADD.getStyleClass().add("primary");
+                BTN_ADD.setPrefWidth(300);
+                BTN_ADD.setFont(new Font(20));
+                
+                VBox v = new VBox();
+                v.setSpacing(18);
+
+                BTN_SEARCH.setOnMouseClicked((event) -> {
+                    
+                    ServiceEvents se = new ServiceEvents();
+                    
+                    if (typeFilter.getValue()==null)
+                   {
+                        alert.setContentText("");
+                        alert.setHeaderText("Chosisez un filter !!!");
+                        alert.showAndWait();
+                   }
+                   
+                    if (typeFilter.getValue().toString().equals("Titre"))
+                    {
+                       ArrayList<Events> list = se.findByTitre(text.getText());
+                    try {
+                        
+                        ScrollPane lis = new SearchEvent(list);
+
+                        contenu.setAlignment(Pos.CENTER);
+                        contenu.getChildren().clear();
+                        contenu.getChildren().addAll( lis);
+                        
+                        VBox V = new VBox();
+                        V.getChildren().addAll(filter, contenu);
+                        
+                        rightPane.getChildren().addAll(V);
+
+                    } catch (DataBaseException ex) {
+                    } 
+                    }
+                    else if (typeFilter.getValue().toString().equals("Categorie"))
+                    {
+                        
+                       ArrayList<Events> list = se.findByCategorie(text.getText());
+                       
+                    try {
+                        ScrollPane lis = new SearchEvent(list);
+
+                        contenu.setAlignment(Pos.CENTER);
+                        contenu.getChildren().clear();
+                        contenu.getChildren().addAll( lis);
+                        
+                        VBox V = new VBox();
+                        V.getChildren().addAll(filter, contenu);
+                        
+                        rightPane.getChildren().addAll(V);
+                        
+                    } catch (DataBaseException ex) {
+                    } 
+                    }
+                    else if (typeFilter.getValue().toString().equals("Emplacement"))
+                    {
+                        
+                       ArrayList<Events> list = se.findByLocation(text.getText());
+                       
+                    try {
+                        ScrollPane lis = new SearchEvent(list);
+
+                        contenu.setAlignment(Pos.CENTER);
+                        contenu.getChildren().clear();
+                        contenu.getChildren().addAll( lis);
+                        
+                        VBox V = new VBox();
+                        V.getChildren().addAll(filter, contenu);
+                        
+                        rightPane.getChildren().addAll(V);
+                        
+                    } catch (DataBaseException ex) {
+                    } 
+                    }
+                    });
+
+                BTN_ADD.setOnMouseClicked((event) -> {
+                    
+                    rightPane.getChildren().clear();
+
+                try {
+                    
+                    VBox add = new AddEvents();
+                    contenu = new HBox();
+                    
+                    add.setMinWidth(400);
+                    add.setSpacing(20);
+                    add.setPadding(new Insets(4, 10, 10, 4));
+
+                    contenu.setAlignment(Pos.CENTER);
+                    contenu.getChildren().addAll(add);
+
+                    rightPane.getChildren().addAll(right, contenu);
+
+                } catch (DataBaseException ex) {
+
+                }
+                    });
+                        
+                v.getChildren().addAll(filter, listEvents);
+                contenu.setAlignment(Pos.CENTER);
+                contenu.getChildren().addAll(v);
+                filter.getChildren().addAll(typeFilter, text, BTN_SEARCH, BTN_ADD);
+                rightPane.getChildren().addAll(right, contenu);
+
+            } catch (DataBaseException ex) {
+
+            }
+
+        }
+        );
+        
         right.getChildren()
                 .addAll(leftPaneChild, rightPaneChild);
         leftPane.getChildren()
