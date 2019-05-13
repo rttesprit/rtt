@@ -58,7 +58,11 @@ public class MemberService implements IMemberService {
         if (b == true && (rs.getInt("enable") == 1)) {
 
             System.out.println("userConnectedTreatement");
-            Member connectedMember = new Member(rs.getInt("id"), rs.getString("role"), rs.getString("login"), rs.getString("name"), rs.getString("mail"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("address"), rs.getString("city"), rs.getString("payment_type"), rs.getString("credit_card_number"), rs.getString("cvv_num"), rs.getString("president"), rs.getString("foundation_date"), rs.getInt("enable"), rs.getString("photo_path"), rs.getString("register_date"));
+            System.out.println(rs.getString("role"));
+            System.out.println(rs.getString("country"));
+            System.out.println(rs.getString("address"));
+            System.out.println(rs.getString("login"));
+            Member connectedMember = new Member(rs.getInt("id"), rs.getString("role"), rs.getString("login"), rs.getString("name"), rs.getString("mail"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("address"), rs.getString("city"),rs.getString("country"),rs.getString("payment_type"), rs.getString("credit_card_number"), rs.getString("cvv_num"), rs.getString("president"), rs.getString("foundation_date"), rs.getInt("enable"), rs.getString("photo_path"), rs.getString("register_date"));
             UserSession.getInstance().setMember(connectedMember);
 
             Acceuil.rightPaneChild.getChildren().clear();
