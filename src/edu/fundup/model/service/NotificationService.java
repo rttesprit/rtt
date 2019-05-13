@@ -183,4 +183,38 @@ public class NotificationService implements INotificationService {
         return null;
 
     }
+
+    @Override
+    public ArrayList<Notification> getUnreadNotifications() {
+
+        ArrayList<Notification> listNotifications = new ArrayList<>();
+
+        try {
+            String query = "select * from `notification` where is_read=0;";
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+                Notification notification  = new Notification();
+                notification.setId(rs.getInt(1));
+                notification.setId_user(rs.getInt(2));
+                notification.setCreation_date(rs.getDate(3));
+                notification.setObject(rs.getString(4));
+                notification.setIs_read(rs.getInt(5));
+
+
+                listNotifications.add(notification);
+
+            }
+            return listNotifications;
+        } catch (SQLException e) {
+            System.out.println("erreur liste " + e.getMessage());        }
+
+
+
+
+
+        return null;
+
+    }
 }

@@ -13,6 +13,8 @@ public interface IReclamationService {
     void deleteReclamation(Reclamation reclamation);
     ArrayList<Reclamation> getReclamations();
     Reclamation findReclamationById(int id);
-    Reclamation findReclamationByIdUser(int idUser);
+    ArrayList<Reclamation> findReclamationByIdUser(int idUser);
     Reclamation findReclamationByTypeObjet(String typeObjet);
+    Boolean reclamationExist(Reclamation reclamation);
+    int reclamationCount(Reclamation reclamation);
 }

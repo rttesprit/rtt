@@ -1,3 +1,4 @@
+
 .sk-btn-toolbar {
     -fx-background-color: linear-gradient(#98a8bd 0%, #8195af 25%, #6d86a4 100%);
 }
@@ -23,4 +24,5 @@
     -fx-background-color:
             #a6b5c9,
             linear-gradient(#768aa5 0%, #34495e 5%, #5877a2 100%);
+
 }
