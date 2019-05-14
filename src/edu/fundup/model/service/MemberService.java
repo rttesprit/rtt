@@ -332,7 +332,7 @@ public class MemberService implements IMemberService {
     }
 
     public Member getUserById(int id){
-        String query = "SELECT * FROM member where id="+id;
+        String query = "SELECT * FROM member where id= "+id;
         Member m = new Member(0);
         try {
             pst = connection.prepareStatement(query);

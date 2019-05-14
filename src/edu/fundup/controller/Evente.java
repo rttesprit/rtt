@@ -270,14 +270,14 @@ public class Evente extends HBox {
                 alert2.showAndWait();
                 
             });
-        
+        Member onlineMember = UserSession.getInstance().getMember();
         BTN_PARTICIPER.setOnMouseClicked((s) -> {
                 
                 
                 
                 Events e = new Events();
                 e= se.findById(id);
-                if (se.alreadyJoin(e.getId_event(), e.getId_user()))
+                if (se.alreadyJoin(e.getId_event(), onlineMember.getId()))
                 {
                     System.out.println("Deja Participer");
                     Alert a = new Alert(Alert.AlertType.ERROR);
@@ -288,9 +288,9 @@ public class Evente extends HBox {
                     
                 }
                 
-                if (!se.alreadyJoin(e.getId_event(), e.getId_user()))
+                if (!se.alreadyJoin(e.getId_event(), onlineMember.getId()))
                         {
-                            se.join(e.getId_event(), e.getId_user());
+                            se.join(e.getId_event(), onlineMember.getId());
                             
                     try {
                         participer(e);

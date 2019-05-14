@@ -336,7 +336,7 @@ public class ServiceEvents implements IServiceEvents {
 
     @Override
     public Double getRating(int idevent, int iduser) {
-        String req = "SELECT value FROM rating WHERE idevent="+idevent+" AND iduser= "+iduser;
+        String req = "SELECT value FROM rating WHERE idevent= "+idevent+" AND iduser= "+iduser;
         
         PreparedStatement preparedStatement;
         try {
@@ -353,12 +353,13 @@ public class ServiceEvents implements IServiceEvents {
 
     @Override
     public ArrayList<JoinEvents> getAllJoiners(int idevent) {
-        String reqSql = "SELECT * FROM participer WHERE idevent="+idevent;
+        String req = "SELECT * FROM participer WHERE idevent= "+idevent;
         JoinEvents je = new JoinEvents();
         ArrayList<JoinEvents> joinEvents = new ArrayList<>();
+        PreparedStatement preparedStatement;
         try {
-            ps = connection.prepareStatement(reqSql);
-            ResultSet rs = ps.executeQuery();
+             preparedStatement = connection.prepareStatement(req);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 je.setId_event(rs.getInt("idevent"));
                 je.setId_user(rs.getInt("iduser"));
