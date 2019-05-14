@@ -79,7 +79,7 @@ public class Evente extends HBox {
     public static JFXButton BTN_SUPPRIMER;
     public static JFXButton BTN_LIST_PARTICIPANT;
     
-    private static int nbMax;
+    private int nbMax;
     private Member connectedm;
     
     private ScrollPane sp;
@@ -90,6 +90,7 @@ public class Evente extends HBox {
         this.setSpacing(100);
         IServiceEvents se = new ServiceEvents();
         Events event = se.findById(id);
+        nbMax = se.compter(id);
         sp = new ScrollPane();
         sp.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         sp.setStyle("scroll-pane");
@@ -238,6 +239,7 @@ public class Evente extends HBox {
         BTN_MODIFIER.setOnMouseClicked((s) -> {
 
             try {
+                System.out.println(nbMax);
                 VBox update = new UpdateEvents(id);
                 contenu = new HBox();
                 update.setMinWidth(400);
@@ -295,7 +297,7 @@ public class Evente extends HBox {
                     try {
                         participer(e);
                         
-                        incrementer();
+                         
                     } catch (IOException ex) {
                         Logger.getLogger(Evente.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (PrinterException ex) {
@@ -426,10 +428,6 @@ public class Evente extends HBox {
             System.out.println(ex.getMessage());
 
         }
-        }
-        private int incrementer()
-        {
-            return nbMax++;
         }
     
 

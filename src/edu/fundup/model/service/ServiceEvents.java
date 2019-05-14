@@ -389,6 +389,23 @@ public class ServiceEvents implements IServiceEvents {
             ex.printStackTrace();           
         }    
     }
+
+    @Override
+    public int compter(int idevent) {
+        String req = "SELECT count(*) FROM participer WHERE idevent ="+idevent;
+        int somme =0;
+        PreparedStatement preparedStatement;
+        try {
+             preparedStatement = connection.prepareStatement(req);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                somme = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("erreur " + ex.getMessage());
+        }
+        return somme;
+    }
     
 
    

@@ -36,6 +36,6 @@ public interface IServiceEvents {
     
     public ArrayList<RatingEvents> getAllRating();
 
-    
+    public int compter(int idevent);
    
 }
