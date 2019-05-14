@@ -6,6 +6,7 @@
 package edu.fundup.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
 import static edu.fundup.controller.Acceuil.Title;
 import static edu.fundup.controller.Acceuil.contenu;
 import edu.fundup.exception.DataBaseException;
@@ -26,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -129,6 +131,7 @@ public class UpdateEvents extends VBox {
         BTN_UPLOAD.setPrefWidth(290);
         BTN_UPLOAD.setFont(new Font(20));
 
+        e.setFile_url(amodifier.getFile_url());
         
 
         BTN_ANNULER.setOnMouseClicked(ez
@@ -144,34 +147,32 @@ public class UpdateEvents extends VBox {
             this.getChildren().addAll(contenu);
                  
 
+            
         });
         
         BTN_UPLOAD.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 File selectedFile = filechooser.showOpenDialog(null);
-
                 
                 if (selectedFile != null) {
                     FileUploader fu = new FileUploader("localhost:8080/pidev");
 
                     //Upload
                     String fileNameInServer = null;
-                    try {
-                     fileNameInServer = fu.upload(selectedFile.getAbsolutePath());
+                    try { 
+                        
+                        fileNameInServer = fu.upload(selectedFile.getAbsolutePath());
                         e.setFile_url(fileNameInServer);
-                     if (fileNameInServer == null){
-                    e.setFile_url(amodifier.getFile_url());
-                }
+                     
                         
                     } catch (Exception ex) {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-
-                        alert.setContentText("Donner une image a votre post");
-                        alert.setHeaderText("Oooops!!!");
-                        alert.showAndWait();
+                        JFXDialog jfxDialog = new JFXDialog();
+                jfxDialog.setContent(Acceuil.createDialogContent("error", "Error"));
+                jfxDialog.show();
                     }
                 }
+                
                 
             }
         });
