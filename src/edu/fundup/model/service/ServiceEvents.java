@@ -5,11 +5,14 @@
  */
 package edu.fundup.model.service;
 
+import edu.fundup.controller.Acceuil;
 import edu.fundup.model.entity.Events;
 import edu.fundup.model.entity.JoinEvents;
+import edu.fundup.model.entity.Member;
 import edu.fundup.model.entity.RatingEvents;
 import edu.fundup.model.iservice.IServiceEvents;
 import edu.fundup.utils.DataSource;
+import edu.fundup.utils.UserSession;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -48,7 +51,7 @@ public class ServiceEvents implements IServiceEvents {
             preparedStatement.setString(8, e.getTitle());
             preparedStatement.setString(9, e.getCategorie());
             preparedStatement.setInt(10, e.getParticipant());
-            preparedStatement.setFloat(11, e.getParticipant());
+            preparedStatement.setFloat(11, e.getMontant());
 
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
@@ -236,22 +239,7 @@ public class ServiceEvents implements IServiceEvents {
         return evenements;
     }
 
-    @Override
-    public void rating(RatingEvents e) {
-    String req = "INSERT INTO rating (idevent,iduser,value) VALUES (?,?,?)";
-        PreparedStatement preparedStatement;
-        try {
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, e.getId_event());
-            preparedStatement.setInt(2, e.getId_user());
-            preparedStatement.setDouble(3, e.getValue());
-            
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();           
-        }     
-    }
+   
 
     @Override
     public ArrayList<RatingEvents> getAllRating() {
@@ -384,6 +372,24 @@ public class ServiceEvents implements IServiceEvents {
             System.out.println("erreur " + ex.getMessage());
         }
         return joinEvents;
+    }
+
+    @Override
+    public void rating(RatingEvents e) {
+        String req = "INSERT INTO rating (idevent,iduser,value) VALUES (?,?,?)";
+        PreparedStatement preparedStatement;
+        Member m = UserSession.getInstance().getMember();
+        try {
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, e.getId_event());
+            preparedStatement.setInt(2, m.getId());
+            preparedStatement.setDouble(3, e.getValue());
+            
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();           
+        }    
     }
     
 

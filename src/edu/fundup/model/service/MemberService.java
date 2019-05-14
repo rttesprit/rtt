@@ -353,8 +353,8 @@ public class MemberService implements IMemberService {
     }
 
     public void updateUser(Member m){
-        String query = "UPDATE `member` SET `id`=?,`role`=?,`login`=?,`name`=?,`mail`=?,`password`=?,`first_name`=?,`last_name`=?,`Address`=?,`City`=?,`Country`=?," +
-                "`payment_type`=?,`credit_card_number`=?,`cvv_num`=?,`president`=?,`foundation_date`=?";
+        String query = "UPDATE member SET id`=?,role`=?,`login`=?,`name`=?,`mail`=?,`password`=?,`first_name`=?,`last_name`=?,`Address`=?,`City`=?,`Country`=?," +
+                "payment_type`=?,credit_card_number`=?,`cvv_num`=?,`president`=?,`foundation_date`=?";
         try{
             pst = connection.prepareStatement(query);
             pst.setInt(1,m.getId());

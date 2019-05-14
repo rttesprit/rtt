@@ -4,60 +4,116 @@
  * and open the template in the editor.
  */
 package edu.fundup.controller;
+
 import com.jfoenix.controls.JFXButton;
 import edu.fundup.exception.DataBaseException;
-import edu.fundup.model.entity.Member;
 import edu.fundup.model.entity.Events;
+import edu.fundup.model.entity.Member;
+import edu.fundup.model.entity.Post;
+import edu.fundup.model.service.MemberService;
 import edu.fundup.model.service.ServiceEvents;
+import edu.fundup.model.service.ServicePost;
 import edu.fundup.utils.AutoCompleteTextField;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import edu.fundup.utils.ObservableUser;
+import edu.fundup.utils.UserSession;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.transform.Scale;
+
+import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+
 /**
  *
  * @author hhamzaoui
  */
-public class Acceuil extends HBox {
+public class Acceuil extends HBox implements Observer {
+
+    public static HBox contenu;
 
     public static Button LAB_POST;
     public static Button LAB_EVENT;
     public static Button LAB_ADOPTION;
+    public static Button LAB_RECLAMATION;
     public static Button LAB_ABOUT;
-    public static JFXButton LOGIN;
+    public static Button LOGIN;
     public static JFXButton INSCRIPTION;
     public static AutoCompleteTextField TXT_SEARCH;
     public static Label Title;
+    public static VBox rightPane = new VBox();
+    public static VBox leftPane = new VBox();
+    public static VBox rightPaneChild = new VBox();
+    public static VBox leftPaneChild = new VBox();
 
-    public static VBox rightPane;
-    public static VBox leftPane;
-    public static HBox right;
-    public static HBox contenu;
-    public static VBox rightPaneChild;
-    public static Member connectedMember;
+    public static Member onlineMember = UserSession.getInstance().getMember();
+
 
     public Acceuil() {
+
+        // Create the Subject and Observers.
+        ObservableUser observableUser = new ObservableUser(onlineMember);
+        // Add the Observer
+        observableUser.addObserver(this);
+
+        // Make changes to the Subject.
+        /*observableUser.setOnlineMember(new Member(150));
+        observableUser.setOnlineMember(new Member(151));*/
+
+
 
         // ------------initialisation------------
         LAB_POST = new Button("Posts");
         LAB_EVENT = new Button("Evennements");
         LAB_ADOPTION = new Button("Adpotions");
+        LAB_RECLAMATION = new Button("Reclamation");
         LAB_ABOUT = new Button("About us");
         TXT_SEARCH = new AutoCompleteTextField();
-        Title = new Label("Creer Une compte");
-        LOGIN = new JFXButton();
+        Title = new Label("Page Name...");
+        LOGIN = new Button();
         INSCRIPTION = new JFXButton();
-        VBox rightPane = new VBox();
-        VBox leftPane = new VBox();
+
 
         // ------------Styling------------
         leftPane.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
@@ -110,7 +166,16 @@ public class Acceuil extends HBox {
                 new Font(20));
         LAB_ADOPTION.setMinHeight(
                 100);
-        
+
+        LAB_RECLAMATION.getStyleClass()
+                .add("info");
+        LAB_RECLAMATION.setPrefWidth(
+                290);
+        LAB_RECLAMATION.setFont(
+                new Font(20));
+        LAB_RECLAMATION.setMinHeight(
+                100);
+
         LAB_ABOUT.getStyleClass()
                 .add("primary");
         LAB_ABOUT.setPrefWidth(
@@ -132,19 +197,7 @@ public class Acceuil extends HBox {
         INSCRIPTION.setFont(
                 new Font(20));
 
-        LOGIN.setOnAction(log-> {
-           LoginController lg = new LoginController();
-           rightPane.getChildren().clear();
-           rightPane.getChildren().add(lg);
-           rightPane.setAlignment(Pos.CENTER);
-        });
-        
-        INSCRIPTION.setOnAction(e -> {
-           InscriptionController inscri = new InscriptionController();
-           rightPane.getChildren().clear();
-           rightPane.getChildren().add(inscri);
-           rightPane.setAlignment(Pos.CENTER);
-        });
+
         Title.setStyle("-fx-font: normal bold 30 Langdon; -fx-base: #fff;  ");
         HBox right = new HBox();
 
@@ -152,8 +205,7 @@ public class Acceuil extends HBox {
 
         right.setMaxWidth(Double.MAX_VALUE);
 
-        VBox rightPaneChild = new VBox();
-        VBox leftPaneChild = new VBox();
+
 
         rightPaneChild.getStylesheets()
                 .add("/edu/fundup/ressources/css/theme.css");
@@ -172,62 +224,30 @@ public class Acceuil extends HBox {
 
         leftPaneChild.getChildren()
                 .addAll(Title);
-        if (FundUp.USER_ONLINE
-                == null) {
-            rightPaneChild.getChildren().addAll(LOGIN, INSCRIPTION);
 
-        } else {
-
-        }
 
         // ------------Logic------------
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
-        RegisterPaperlessMember logc = new RegisterPaperlessMember();
-        rightPane.getChildren()
-                .addAll(right,logc);
 
-        LAB_POST.setOnMouseClicked(e
-                -> {
+        rightPaneChild.getChildren().addAll(LOGIN, INSCRIPTION);
+        rightPane.getChildren().addAll(right);
+
+        LOGIN.setOnAction(e -> {
+            rightPane.getChildren().clear();
             rightPane.getChildren().remove(right);
+            LoginController lc = new LoginController();
+            rightPane.getChildren().add(lc);
+        });
+        INSCRIPTION.setOnAction(e -> {
+            InscriptionController inscri = new InscriptionController();
+            rightPane.getChildren().add(inscri);
+        });
 
-            ArrayList<Button> listButton = new ArrayList<>();
-            Button b1 = new Button("create");
-            Button b2 = new Button("liste");
-            Button b3 = new Button("liste");
-            Button b4 = new Button("liste");
-            Button b5 = new Button("liste");
+        contenu = new HBox();
+        contenu.setAlignment(Pos.CENTER);
 
-            listButton.add(b1);
-            listButton.add(b2);
-            listButton.add(b3);
-            listButton.add(b4);
-            listButton.add(b5);
-
-            try {
-                VBox affiche = new AddPost();
-                VBox cat = new AddCategory();
-                HBox contenu = new HBox();
-                affiche.setMinWidth(400);
-                affiche.setSpacing(5);
-                affiche.setPadding(new Insets(4, 10, 10, 4));
-                contenu.setAlignment(Pos.CENTER);
-                contenu.getChildren().addAll(affiche, cat);
-
-                rightPane.getChildren().addAll(right, contenu);
-
-            } catch (DataBaseException ex) {
-                alert.setContentText(ex.getMessage());
-                alert.setHeaderText("Oooops!!!");
-                alert.showAndWait();
-
-            }
-
-            //rightPane.getChildren().addAll(right, bc, affiche);
-        }
-        );
-        
-        LAB_EVENT.setOnMouseClicked(e
+       LAB_EVENT.setOnMouseClicked(e
                 -> {
             rightPane.getChildren().clear();
             rightPane.getChildren().remove(right);
@@ -378,7 +398,7 @@ public class Acceuil extends HBox {
         right.getChildren()
                 .addAll(leftPaneChild, rightPaneChild);
         leftPane.getChildren()
-                .addAll(TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_ABOUT);
+                .addAll(TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
 
         this.getChildren()
                 .addAll(leftPane, rightPane);
@@ -393,6 +413,20 @@ public class Acceuil extends HBox {
         Acceuil.LOGIN.setText("Login");
         Acceuil.INSCRIPTION.setText("Inscription");
 
+    }
+
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof Member) {
+            onlineMember = (Member) arg;
+            // refresh elements on User Change
+            rightPaneChild.getChildren().removeAll(LOGIN,INSCRIPTION);
+
+            System.out.println("FROM ACCEUIL Member changed to " + onlineMember.toString());
+        } else {
+            System.out.println("FROM ACCEUIL  Member: Some other change to subject!");
+        }
     }
 
 }
