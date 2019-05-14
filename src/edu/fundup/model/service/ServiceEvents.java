@@ -5,7 +5,6 @@
  */
 package edu.fundup.model.service;
 
-import edu.fundup.controller.Acceuil;
 import edu.fundup.model.entity.Events;
 import edu.fundup.model.entity.JoinEvents;
 import edu.fundup.model.entity.Member;
@@ -120,8 +119,6 @@ public class ServiceEvents implements IServiceEvents {
     public Events findById(int id_event) {
         String reqSql = "SELECT * FROM event WHERE idevent = ?";
         Events ev = new Events();
-        List<Events> evenements = new ArrayList<>();
-        PreparedStatement preparedStatement;
         try {
             ps = connection.prepareStatement(reqSql);
             ps.setInt(1, id_event);

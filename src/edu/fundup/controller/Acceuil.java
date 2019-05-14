@@ -9,62 +9,25 @@ import com.jfoenix.controls.JFXButton;
 import edu.fundup.exception.DataBaseException;
 import edu.fundup.model.entity.Events;
 import edu.fundup.model.entity.Member;
-import edu.fundup.model.entity.Post;
-import edu.fundup.model.service.MemberService;
 import edu.fundup.model.service.ServiceEvents;
-import edu.fundup.model.service.ServicePost;
 import edu.fundup.utils.AutoCompleteTextField;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import edu.fundup.utils.ObservableUser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import edu.fundup.utils.ObservableUser;
 import edu.fundup.utils.UserSession;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Scale;
-
-import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
-
 /**
  *
  * @author hhamzaoui
@@ -88,7 +51,6 @@ public class Acceuil extends HBox implements Observer {
     public static VBox leftPaneChild = new VBox();
 
     public static Member onlineMember = UserSession.getInstance().getMember();
-
 
     public Acceuil() {
 
@@ -249,6 +211,16 @@ public class Acceuil extends HBox implements Observer {
 
        LAB_EVENT.setOnMouseClicked(e
                 -> {
+                    System.out.println(UserSession.getInstance().getMember());
+
+           if (UserSession.getInstance().getMember() == null) {
+                   Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setTitle("Connexion requise !! ");
+                    a.setHeaderText(null);
+                    a.setContentText("Vous devez etre connectee ");
+                    a.showAndWait();    
+                       }
+           else{
             rightPane.getChildren().clear();
             rightPane.getChildren().remove(right);
 
@@ -393,7 +365,9 @@ public class Acceuil extends HBox implements Observer {
             }
 
         }
+           }
         );
+        
         
         right.getChildren()
                 .addAll(leftPaneChild, rightPaneChild);

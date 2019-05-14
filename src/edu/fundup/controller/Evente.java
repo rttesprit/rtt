@@ -158,12 +158,14 @@ public class Evente extends HBox {
                 if (!es.testRaitngs(id, connectedm.getId()))
                 {
                     es.rating(r);
+                    System.out.println("Done");
                 }
                 else
                 {
                     es.updateRating(r, id, connectedm.getId());
+                    System.out.println("Updating Rating Done");
                 }
-                System.out.println(newValue);
+                
                 
             }
                 
@@ -275,14 +277,24 @@ public class Evente extends HBox {
                 
                 Events e = new Events();
                 e= se.findById(id);
+                if (se.alreadyJoin(e.getId_event(), e.getId_user()))
+                {
+                    System.out.println("Deja Participer");
+                    Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setTitle("Deja participer !! ");
+                    a.setHeaderText(null);
+                    a.setContentText("Vous avez deja recu un mail de participation ");
+                    a.showAndWait();
+                    
+                }
                 
                 if (!se.alreadyJoin(e.getId_event(), e.getId_user()))
-                        {se.join(e.getId_event(), e.getId_user());
-                        
-                        
-                        
+                        {
+                            se.join(e.getId_event(), e.getId_user());
+                            
                     try {
                         participer(e);
+                        
                         incrementer();
                     } catch (IOException ex) {
                         Logger.getLogger(Evente.class.getName()).log(Level.SEVERE, null, ex);

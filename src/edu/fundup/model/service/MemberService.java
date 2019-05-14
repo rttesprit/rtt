@@ -10,7 +10,6 @@ import edu.fundup.controller.UserInfoBoxController;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.iservice.IMemberService;
 import edu.fundup.utils.DataSource;
-import edu.fundup.utils.ObservableUser;
 import edu.fundup.utils.UserSession;
 import javafx.scene.control.Alert;
 
