@@ -27,6 +27,8 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
+import static edu.fundup.controller.Acceuil.filter;
+import static edu.fundup.controller.Acceuil.listEvents;
 import edu.fundup.model.entity.Member;
 import edu.fundup.utils.UserSession;
 import java.awt.print.PrinterException;
@@ -270,6 +272,11 @@ public class Evente extends HBox {
                 alert2.setHeaderText(null);
                 alert2.setContentText("Votre évènement a étè annulé !");
                 alert2.showAndWait();
+                this.getChildren().clear();
+                    VBox v = new VBox();
+                    v.setSpacing(18);
+                    v.getChildren().addAll(filter, listEvents);
+                    this.getChildren().addAll(v);
                 
             });
         Member onlineMember = UserSession.getInstance().getMember();

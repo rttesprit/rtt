@@ -23,14 +23,17 @@ import java.io.File;
 import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.layout.VBox;
@@ -57,13 +60,19 @@ public class AddEvents extends VBox {
     private JFXButton BTN_CLEAR;
     private JFXButton BTN_UPLOAD;
     private Alert alert;
-   
+    private ScrollPane sp;
 
     public AddEvents() throws DataBaseException {
         Member connectedm =  (Member) UserSession.getInstance().getMember();
         this.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         this.setSpacing(100);
         e=new Events();
+        sp = new ScrollPane();
+        sp.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
+        sp.setStyle("scroll-pane");
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setPadding(new Insets(50, 50, 50, 50));
         alert = new Alert(Alert.AlertType.WARNING);
         titre = new TextField();
         description = new TextArea();
@@ -127,7 +136,7 @@ public class AddEvents extends VBox {
         BTN_UPLOAD.getStyleClass().add("info");
         BTN_UPLOAD.setPrefWidth(290);
         BTN_UPLOAD.setFont(new Font(20));
-        BTN_UPLOAD.setText("Ajouter Image/Video");
+        BTN_UPLOAD.setText("Upload");
         
         
 
@@ -267,7 +276,12 @@ public class AddEvents extends VBox {
         button.getChildren().addAll(BTN_CLEAR, BTN_ADD_EVENTS);
         
         Title.setText("Ajouter Evenement");
-        this.getChildren().addAll(ltitre, titre, h2, h1, ldescription, description, button);
+        VBox V = new VBox();
+        V.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
+        V.setSpacing(30);
+        V.getChildren().addAll(ltitre, titre, h2, h1, ldescription, description, button);
+        sp.setContent(V);
+        this.getChildren().addAll(sp);
     }
 
 }

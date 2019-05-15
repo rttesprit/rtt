@@ -24,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -54,6 +55,7 @@ public class UpdateEvents extends VBox {
     private JFXButton BTN_ANNULER;
     private JFXButton BTN_UPLOAD;
     private Member connectedm ;
+    private ScrollPane sp;
 
     
     public UpdateEvents(int id) throws DataBaseException {
@@ -63,6 +65,12 @@ public class UpdateEvents extends VBox {
         e=new Events();
         this.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         this.setSpacing(100);
+        sp = new ScrollPane();
+        sp.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
+        sp.setStyle("scroll-pane");
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setPadding(new Insets(50, 50, 50, 50));
         
         titre = new TextField();
         description = new TextArea();
@@ -266,7 +274,12 @@ public class UpdateEvents extends VBox {
         h2.getChildren().addAll(lcategory, category, llieu, lieu ,lparticipant ,participant);
         button.getChildren().addAll(BTN_UPDATE_EVENTS, BTN_ANNULER);
         
-        Title.setText("Modifier Evenement : "+amodifier.getTitle());           
-        this.getChildren().addAll(ltitre, titre, h2, h1, ldescription, description, button);
+        Title.setText("Modifier Evenement : "+amodifier.getTitle());   
+        VBox V = new VBox();
+        V.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
+        V.setSpacing(30);
+        V.getChildren().addAll(ltitre, titre, h2, h1, ldescription, description, button);
+        sp.setContent(V);        
+        this.getChildren().addAll(sp);
     }
 }
