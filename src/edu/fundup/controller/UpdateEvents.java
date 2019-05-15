@@ -59,15 +59,14 @@ public class UpdateEvents extends VBox {
     private JFXButton BTN_UPDATE_EVENTS;
     private JFXButton BTN_ANNULER;
     private JFXButton BTN_UPLOAD;
-    private Member connectedm ;
+    private Member connectedm;
     private ScrollPane sp;
 
-    
     public UpdateEvents(int id) throws DataBaseException {
         connectedm = (Member) UserSession.getInstance().getMember();
         IServiceEvents se = new ServiceEvents();
         Events amodifier = se.findById(id);
-        e=new Events();
+        e = new Events();
         this.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         this.setSpacing(100);
         sp = new ScrollPane();
@@ -76,7 +75,7 @@ public class UpdateEvents extends VBox {
         sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         sp.setPadding(new Insets(50, 50, 50, 50));
-        
+
         titre = new TextField();
         description = new TextArea();
         lieu = new TextField();
@@ -84,7 +83,7 @@ public class UpdateEvents extends VBox {
         participant = new TextField();
         montant = new TextField();
         category = new ComboBox();
-        filechooser =new FileChooser();
+        filechooser = new FileChooser();
         Label ltitre = new Label("Titre* :");
         Label ldescription = new Label("Description* :");
         Label llieu = new Label("Lieu* :");
@@ -96,7 +95,7 @@ public class UpdateEvents extends VBox {
         BTN_UPDATE_EVENTS = new JFXButton("Modifier");
         BTN_ANNULER = new JFXButton("Annuler");
         BTN_UPLOAD = new JFXButton("Upload");
-        
+
         titre.setFont(new Font(20));
         titre.getStyleClass().add("text-field");
         titre.setPrefWidth(100);
@@ -106,27 +105,27 @@ public class UpdateEvents extends VBox {
         lieu.getStyleClass().add("text-field");
         lieu.setPrefWidth(100);
         lieu.setText(amodifier.getLocation());
-        
+
         Date.getStyleClass().add("text-field");
         Date.setMaxWidth(213);
         Date.setMinHeight(40);
         LocalDate localDate = LocalDate.parse(amodifier.getEvent_date().toString());
         Date.setValue(localDate);
-        
+
         participant.setFont(new Font(20));
         participant.getStyleClass().add("text-field");
         participant.setPrefWidth(80);
-        participant.setText(amodifier.getParticipant()+"");
-        
+        participant.setText(amodifier.getParticipant() + "");
+
         montant.setFont(new Font(20));
         montant.getStyleClass().add("text-field");
         montant.setPrefWidth(80);
-        montant.setText(amodifier.getMontant()+"");
-        
+        montant.setText(amodifier.getMontant() + "");
+
         category.getStyleClass().add("combo-box");
         category.setMinWidth(100);
         category.setMinHeight(40);
-        category.getItems().addAll("Sportif","Concert","Spectacle","Medicale");
+        category.getItems().addAll("Sportif", "Concert", "Spectacle", "Medicale");
         category.setValue(amodifier.getCategorie());
 
         description.setFont(new Font(20));
@@ -147,7 +146,6 @@ public class UpdateEvents extends VBox {
         BTN_UPLOAD.setFont(new Font(20));
 
         e.setFile_url(amodifier.getFile_url());
-        
 
         BTN_ANNULER.setOnMouseClicked(ez
                 -> {
@@ -161,112 +159,110 @@ public class UpdateEvents extends VBox {
             contenu.getChildren().add(ev);
             this.getChildren().addAll(contenu);
         });
-        
+
         BTN_UPLOAD.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 File selectedFile = filechooser.showOpenDialog(null);
-                
+
                 if (selectedFile != null) {
                     FileUploader fu = new FileUploader("localhost:8080/pidev");
 
                     //Upload
                     String fileNameInServer = null;
-                    try { 
-                        
+                    try {
+
                         fileNameInServer = fu.upload(selectedFile.getAbsolutePath());
                         e.setFile_url(fileNameInServer);
-                     
-                        
+
                     } catch (Exception ex) {
                     }
                 }
-                
-                
+
             }
         });
         BTN_UPDATE_EVENTS.setOnMouseClicked((ee) -> {
-            
+
             if (titre.getText() == null || titre.getText().equals("")) {
-                        alert.setContentText("SVP Donner un titre");
-                        alert.setHeaderText("Oooops!!!");
-                        alert.showAndWait();
-                        titre.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+                alert.setContentText("SVP Donner un titre");
+                alert.setHeaderText("Oooops!!!");
+                alert.showAndWait();
+                titre.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
 
-                    } else {
-                        e.setTitle(titre.getText());
-                    }
+            } else {
+                e.setTitle(titre.getText());
+            }
 
-                    if (description.getText() == null || description.getText().equals("") || description.getText().length() < 20) {
-                        alert.setContentText("SVP Donner une description detaillé a votre poste");
-                        alert.setHeaderText("Oooops!!!");
-                        alert.showAndWait();
-                        description.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setDescription(description.getText());
-                    }
+            if (description.getText() == null || description.getText().equals("") || description.getText().length() < 20) {
+                alert.setContentText("SVP Donner une description detaillé a votre poste");
+                alert.setHeaderText("Oooops!!!");
+                alert.showAndWait();
+                description.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+            } else {
+                e.setDescription(description.getText());
+            }
 
-                    if (category.getValue() == null) {
-                        e.setCategorie(amodifier.getCategorie());
-                    } else {
-                        e.setCategorie(category.getValue().toString());
-                    }
+            if (category.getValue() == null) {
+                e.setCategorie(amodifier.getCategorie());
+            } else {
+                e.setCategorie(category.getValue().toString());
+            }
 
-                    if (lieu.getText()==null || lieu.getText().equals("") ) {
-                        alert.setContentText("Ajouter un emplacement");
-                        alert.setHeaderText("Oooops!!!");
-                        alert.showAndWait();
-                        lieu.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setLocation(lieu.getText());
-                    }
+            if (lieu.getText() == null || lieu.getText().equals("")) {
+                alert.setContentText("Ajouter un emplacement");
+                alert.setHeaderText("Oooops!!!");
+                alert.showAndWait();
+                lieu.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+            } else {
+                e.setLocation(lieu.getText());
+            }
 
-                    if (Date.getValue()==null) {
-                        e.setEvent_date(amodifier.getEvent_date());
-                    }else{
-                      java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(Date.getValue());
-                      e.setEvent_date(gettedDatePickerDate);
-                    }
-                                            
-                    if (montant.getText().equals("") || montant.getText() == null) {
-                        alert.setContentText("Donner le montant ");
-                        alert.setHeaderText("Oooops!!!");
-                        alert.showAndWait();
-                        montant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setMontant(Float.valueOf(montant.getText()));
-                    }
-                    if (participant.getText().equals("") || participant.getText() == null) {
-                        alert.setContentText("Donner le nombre de participant ");
-                        alert.setHeaderText("Oooops!!!");
-                        alert.showAndWait();
-                        participant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setParticipant(Integer.valueOf(participant.getText()));
-                    }
+            if (Date.getValue() == null) {
+                e.setEvent_date(amodifier.getEvent_date());
+            } else {
+                java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(Date.getValue());
+                e.setEvent_date(gettedDatePickerDate);
+            }
 
-                IServiceEvents newEvent = new ServiceEvents();
-                
-                e.setId_user(connectedm.getId());
-                e.setId_categorie(1);
+            if (montant.getText().equals("") || montant.getText() == null) {
+                alert.setContentText("Donner le montant ");
+                alert.setHeaderText("Oooops!!!");
+                alert.showAndWait();
+                montant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+            } else {
+                e.setMontant(Float.valueOf(montant.getText()));
+            }
+            if (participant.getText().equals("") || participant.getText() == null) {
+                alert.setContentText("Donner le nombre de participant ");
+                alert.setHeaderText("Oooops!!!");
+                alert.showAndWait();
+                participant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+            } else {
+                e.setParticipant(Integer.valueOf(participant.getText()));
+            }
 
-                se.update(e, amodifier.getId_event());
-                    alert.setContentText("Evenement modifiee avec suuces ! ");
-                    alert.setHeaderText("succes!!!");
-                    alert.showAndWait();
-                this.getChildren().clear();
+            IServiceEvents newEvent = new ServiceEvents();
 
-                Evente ev = new Evente(id);
-                contenu = new HBox();
-                ev.setMinWidth(600);
-                ev.setPadding(new Insets(4, 10, 10, 4));
-                contenu.setAlignment(Pos.CENTER);
-                contenu.getChildren().add(ev);
-                this.getChildren().addAll(contenu);
-            
+            e.setId_user(connectedm.getId());
+            e.setId_categorie(1);
+
+            se.update(e, amodifier.getId_event());
+            alert.setContentText("Evenement modifiee avec suuces ! ");
+            alert.setHeaderText("succes!!!");
+            alert.showAndWait();
+            this.getChildren().clear();
+
+            Evente ev = new Evente(id);
+            contenu = new HBox();
+            ev.setMinWidth(600);
+            ev.setPadding(new Insets(4, 10, 10, 4));
+            contenu.setAlignment(Pos.CENTER);
+            contenu.getChildren().add(ev);
+            this.getChildren().addAll(contenu);
+
         }
-         );     
-        
+        );
+
         HBox h1 = new HBox();
         HBox h2 = new HBox();
         HBox button = new HBox();
@@ -276,21 +272,21 @@ public class UpdateEvents extends VBox {
         button.setSpacing(10);
         h1.setAlignment(Pos.CENTER);
         h1.setSpacing(40);
-        
+
         h2.setAlignment(Pos.CENTER);
         h2.setSpacing(40);
-        
-        h1.getChildren().addAll(lDate, Date, lmontant, montant, BTN_UPLOAD );
-        h2.getChildren().addAll(lcategory, category, llieu, lieu ,lparticipant ,participant);
+
+        h1.getChildren().addAll(lDate, Date, lmontant, montant, BTN_UPLOAD);
+        h2.getChildren().addAll(lcategory, category, llieu, lieu, lparticipant, participant);
         button.getChildren().addAll(BTN_UPDATE_EVENTS, BTN_ANNULER);
-        
-        Title.setText("Modifier Evenement : "+amodifier.getTitle());   
+
+        Title.setText("Modifier Evenement : " + amodifier.getTitle());
         VBox V = new VBox();
         V.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         V.setSpacing(30);
         V.getChildren().addAll(ltitre, titre, h2, h1, ldescription, description, button);
-        sp.setContent(V);        
+        sp.setContent(V);
         this.getChildren().addAll(sp);
     }
-    
+
 }
