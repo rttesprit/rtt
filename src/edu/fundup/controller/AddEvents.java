@@ -239,9 +239,9 @@ public class AddEvents extends VBox {
                     e.setId_categorie(1);
                     newEvent.add(e);
                     alert.setContentText("Evenement ajoutee avec suuces ! ");
-                    alert.setHeaderText("suuces!!!");
+                    alert.setHeaderText("succes!!!");
                     alert.showAndWait();
-                    participant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+                    
                     this.getChildren().clear();
                     VBox v = new VBox();
                     v.setSpacing(18);
