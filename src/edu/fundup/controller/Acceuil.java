@@ -49,11 +49,15 @@ public class Acceuil extends HBox implements Observer {
     public static VBox leftPane = new VBox();
     public static VBox rightPaneChild = new VBox();
     public static VBox leftPaneChild = new VBox();
+    public static HBox right = new HBox();
+    public static HBox filter = new HBox();
+    public static ScrollPane listEvents ;
+
 
     public static Member onlineMember = UserSession.getInstance().getMember();
 
     public Acceuil() {
-
+        
         // Create the Subject and Observers.
         ObservableUser observableUser = new ObservableUser(onlineMember);
         // Add the Observer
@@ -161,7 +165,7 @@ public class Acceuil extends HBox implements Observer {
 
 
         Title.setStyle("-fx-font: normal bold 30 Langdon; -fx-base: #fff;  ");
-        HBox right = new HBox();
+        right = new HBox();
 
         right.setAlignment(Pos.BASELINE_RIGHT);
 
@@ -210,8 +214,7 @@ public class Acceuil extends HBox implements Observer {
         contenu.setAlignment(Pos.CENTER);
 
        LAB_EVENT.setOnMouseClicked(e
-                -> {
-                    System.out.println(UserSession.getInstance().getMember());
+                -> { 
 
            if (UserSession.getInstance().getMember() == null) {
                    Alert a = new Alert(Alert.AlertType.ERROR);
@@ -227,12 +230,12 @@ public class Acceuil extends HBox implements Observer {
             try {
                 
                 Title.setText("Liste des evenements");
-                ScrollPane listEvents = new ListEvents();
+                listEvents = new ListEvents();
                 contenu = new HBox();
                 listEvents.setMinWidth(600);
                 listEvents.setPadding(new Insets(4, 10, 10, 4));
 
-                HBox filter = new HBox();
+                filter = new HBox();
                 ComboBox typeFilter = new ComboBox();
                 TextField text = new TextField();
                 JFXButton BTN_SEARCH = new JFXButton("Chercher");
@@ -353,7 +356,9 @@ public class Acceuil extends HBox implements Observer {
 
                 }
                     });
-                        
+                 listEvents = new ListEvents();   
+                 listEvents.setMinWidth(600);
+                listEvents.setPadding(new Insets(4, 10, 10, 4));
                 v.getChildren().addAll(filter, listEvents);
                 contenu.setAlignment(Pos.CENTER);
                 contenu.getChildren().addAll(v);

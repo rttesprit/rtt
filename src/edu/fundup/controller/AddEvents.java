@@ -8,6 +8,11 @@ package edu.fundup.controller;
 
 import com.jfoenix.controls.JFXButton;
 import static edu.fundup.controller.Acceuil.Title;
+import static edu.fundup.controller.Acceuil.contenu;
+import static edu.fundup.controller.Acceuil.filter;
+import static edu.fundup.controller.Acceuil.listEvents;
+import static edu.fundup.controller.Acceuil.right;
+import static edu.fundup.controller.Acceuil.rightPane;
 import edu.fundup.exception.DataBaseException;
 import edu.fundup.model.entity.Events;
 import edu.fundup.model.entity.Member;
@@ -230,6 +235,16 @@ public class AddEvents extends VBox {
                     e.setId_user(connectedm.getId());
                     e.setId_categorie(1);
                     newEvent.add(e); 
+                    alert.setContentText("Evenement ajoutee avec suuces ! ");
+                        alert.setHeaderText("suuces!!!");
+                        alert.showAndWait();
+                        participant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+                    this.getChildren().clear();
+                    VBox v = new VBox();
+                    v.setSpacing(18);
+                    v.getChildren().addAll(filter, listEvents);
+                    this.getChildren().addAll(v);
+                    
         } );
         
         

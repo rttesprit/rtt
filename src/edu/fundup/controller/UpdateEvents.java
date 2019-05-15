@@ -145,9 +145,6 @@ public class UpdateEvents extends VBox {
             contenu.setAlignment(Pos.CENTER);
             contenu.getChildren().add(ev);
             this.getChildren().addAll(contenu);
-                 
-
-            
         });
         
         BTN_UPLOAD.setOnAction(new EventHandler<ActionEvent>() {
@@ -167,9 +164,6 @@ public class UpdateEvents extends VBox {
                      
                         
                     } catch (Exception ex) {
-                        JFXDialog jfxDialog = new JFXDialog();
-                jfxDialog.setContent(Acceuil.createDialogContent("error", "Error"));
-                jfxDialog.show();
                     }
                 }
                 
