@@ -313,6 +313,7 @@ public class Evente extends HBox {
                 
             });
         
+        
         //--------User controle --------
         if ((connectedm != null) &&connectedm.getId() == event.getId_user()) {
 
