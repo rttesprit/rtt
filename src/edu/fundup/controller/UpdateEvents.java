@@ -16,6 +16,11 @@ import edu.fundup.utils.UserSession;
 import edu.fundup.model.iservice.IServiceEvents;
 import edu.fundup.model.service.ServiceEvents;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -105,6 +110,8 @@ public class UpdateEvents extends VBox {
         Date.getStyleClass().add("text-field");
         Date.setMaxWidth(213);
         Date.setMinHeight(40);
+        LocalDate localDate = LocalDate.parse(amodifier.getEvent_date().toString());
+        Date.setValue(localDate);
         
         participant.setFont(new Font(20));
         participant.getStyleClass().add("text-field");
@@ -178,9 +185,7 @@ public class UpdateEvents extends VBox {
                 
             }
         });
-        
         BTN_UPDATE_EVENTS.setOnMouseClicked((ee) -> {
-            
             
             if (titre.getText() == null || titre.getText().equals("")) {
                         alert.setContentText("SVP Donner un titre");
@@ -188,59 +193,60 @@ public class UpdateEvents extends VBox {
                         alert.showAndWait();
                         titre.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
 
-                    } else {
-                        e.setTitle(titre.getText());
-                    }
-
-                    if (description.getText() == null || description.getText().equals("") || description.getText().length() < 20) {
-                        alert.setContentText("SVP Donner une description detaillé a votre poste");
+                    } else 
+                    if (category.getValue() == null) {
+                        alert.setContentText("Selectionner une categorie");
                         alert.setHeaderText("Oooops!!!");
                         alert.showAndWait();
-                        description.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setDescription(description.getText());
-                    }
-
-                    if (category.getValue() == null) {
-                        e.setCategorie(amodifier.getCategorie());
-                    } else {
-                        e.setCategorie(category.getValue().toString());
-                    }
-
-                    if (lieu.getText()==null || lieu.getText().equals("") ) {
+                        category.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+                    }else
+                    if (lieu.getText() == null || lieu.getText().equals("")) {
                         alert.setContentText("Ajouter un emplacement");
                         alert.setHeaderText("Oooops!!!");
                         alert.showAndWait();
                         lieu.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setLocation(lieu.getText());
-                    }
-
-                    if (Date.getValue()==null) {
-                        e.setEvent_date(amodifier.getEvent_date());
-                    }else{
-                      java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(Date.getValue());
-                      e.setEvent_date(gettedDatePickerDate);
-                    }
-                                            
-                    if (montant.getText().equals("") || montant.getText() == null) {
-                        alert.setContentText("Donner le montant ");
-                        alert.setHeaderText("Oooops!!!");
-                        alert.showAndWait();
-                        montant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setMontant(Float.valueOf(montant.getText()));
-                    }
+                    }else
                     if (participant.getText().equals("") || participant.getText() == null) {
                         alert.setContentText("Donner le nombre de participant ");
                         alert.setHeaderText("Oooops!!!");
                         alert.showAndWait();
                         participant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
-                    } else {
-                        e.setParticipant(Integer.valueOf(participant.getText()));
-                    }
+                    }else
+                    if (Date.getValue() == null) {
+                        alert.setContentText("Donner un nombre de jour valide");
+                        alert.setHeaderText("Oooops!!!");
+                        alert.showAndWait();
+
+                    }else
+                    if (montant.getText().equals("") || montant.getText() == null) {
+                        alert.setContentText("Donner le montant ");
+                        alert.setHeaderText("Oooops!!!");
+                        alert.showAndWait();
+                        montant.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+                    }else
+                    if (e.getFile_url()==null || e.getFile_url().equals("")) {
+                        alert.setContentText("Vous devez choisir une image ou un video  ");
+                        alert.setHeaderText("Oooops!!!");
+                        alert.showAndWait();
+                    }else
+                    if (description.getText() == null || description.getText().equals("") || description.getText().length() < 20) {
+                        alert.setContentText("SVP Donner une description detaillé a votre poste");
+                        alert.setHeaderText("Oooops!!!");
+                        alert.showAndWait();
+                        description.setStyle("-fx-border-color: red ; -fx-border-width: 1px ;");
+                    } else 
+
+                    {
                     
-                    
+                    IServiceEvents newEvent = new ServiceEvents();
+                    e.setTitle(titre.getText());
+                    e.setDescription(description.getText());
+                    e.setCategorie(category.getValue().toString());
+                    e.setLocation(lieu.getText());
+                    java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(Date.getValue());
+                        e.setEvent_date(gettedDatePickerDate);
+                    e.setMontant(Float.valueOf(montant.getText())); 
+                    e.setParticipant(Integer.valueOf(participant.getText()));
                     e.setId_user(connectedm.getId());
                     e.setId_categorie(1);
             
@@ -255,7 +261,9 @@ public class UpdateEvents extends VBox {
             contenu.setAlignment(Pos.CENTER);
             contenu.getChildren().add(ev);
             this.getChildren().addAll(contenu);
-        } );     
+            }
+                }
+         );     
         
         HBox h1 = new HBox();
         HBox h2 = new HBox();
@@ -282,4 +290,5 @@ public class UpdateEvents extends VBox {
         sp.setContent(V);        
         this.getChildren().addAll(sp);
     }
+    
 }
