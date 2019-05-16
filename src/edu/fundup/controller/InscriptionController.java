@@ -14,9 +14,21 @@ public class InscriptionController extends VBox {
 
     public InscriptionController() {
 
-        StackPane background = new StackPane();
-        background.setStyle("-fx-border-color: rgba(45,203,112,0.8); ");
+        VBox container = new VBox();
 
+        StackPane background = new StackPane();
+        background.setMinHeight(500);
+        background.setMinWidth(500);
+        background.setMaxHeight(500);
+        background.setMaxWidth(500);
+        background.setAlignment(Pos.CENTER);
+
+        VBox root = new VBox();
+        root.setMinHeight(500);
+        root.setMinWidth(500);
+        root.setMaxHeight(500);
+        root.setMaxWidth(500);
+        root.setAlignment(Pos.CENTER);
 
         Tools tool = new Tools();
         Tooltip tp1 = tool.createToolTip("Register as a Paperless Member");
@@ -58,46 +70,41 @@ public class InscriptionController extends VBox {
         registerEntreprise.setMaxWidth(300);
         registerEntreprise.setTooltip(tp3);
 
-        Button cancel = new Button("cancel");
 
         registerPaperless.setOnAction(rgpaction -> {
             RegisterPaperlessMember rgp = new RegisterPaperlessMember();
-            this.getChildren().clear();
-            this.getChildren().addAll(rgp, cancel);
+            container.getChildren().clear();
+            container.getChildren().addAll(rgp);
             this.getChildren().remove(background);
         });
         registerContributor.setOnAction(rgcaction -> {
             RegisterContributorController rgc = new RegisterContributorController();
-            this.getChildren().clear();
-            this.getChildren().addAll(rgc, cancel);
+            container.getChildren().clear();
+            container.getChildren().add(rgc);
             this.getChildren().remove(background);
         });
         registerEntreprise.setOnAction(rgeaction -> {
             RegisterEntrepriseController rge = new RegisterEntrepriseController();
-            this.getChildren().clear();
-            this.getChildren().addAll(rge, cancel);
+            container.getChildren().clear();
+            container.getChildren().add(rge);
             this.getChildren().remove(background);
         });
 
         VBox.setMargin(registerPaperless, new Insets(0, 0, 30, 0));
         VBox.setMargin(registerEntreprise, new Insets(30, 0, 0, 0));
 
-        VBox root = new VBox();
-
-        root.setMinHeight(500);
-        root.setMinWidth(500);
-        root.setMaxHeight(500);
-        root.setMaxWidth(500);
-        root.setAlignment(Pos.CENTER);
-
-        this.setMinHeight(500);
-        this.setMinWidth(500);
-        this.setMaxHeight(500);
-        this.setMaxWidth(500);
+        this.setPrefSize(1000,1000);
         this.setAlignment(Pos.CENTER);
 
         root.getChildren().addAll(registerPaperless, registerContributor, registerEntreprise);
         background.getChildren().add(root);
-        this.getChildren().add(background);
+
+        background.setStyle("-fx-background-radius: 30px; -fx-background-color: rgba(0,0,0, 0.4);");
+        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/contributor.jpg'); -fx-background-size: cover;");
+
+        container.setMaxWidth(600);
+        container.setMaxHeight(600);
+
+        this.getChildren().addAll(background,container);
     }
 }

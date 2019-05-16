@@ -65,13 +65,15 @@ public class FundUp extends Application {
         GLOBAL_STAGE = new Stage();
 
         Acc_GUI = new Acceuil();
-       
+
         GLOBAL_PANE_BORDER = new BorderPane();
         GLOBAL_SCENE = new Scene(GLOBAL_PANE_BORDER);
 
         //-----------styling----------------
         GLOBAL_STAGE.setTitle("Tunisia Charity");
-        GLOBAL_STAGE.getIcons().add(new Image("/edu/fundup/ressources/images/logo.jpg"));
+
+        // GLOBAL_STAGE.getIcons().add(new Image("/edu/fundup/ressources/images/logo.png"));
+
         GLOBAL_PANE_BORDER.setStyle("-fx-background-color: #c0cfd1;");
         GLOBAL_PANE_BORDER.setCenter(Acc_GUI);
 //        GLOBAL_PANE_BORDER.setPrefWidth(Acc_GUI.getPrefWidth());
