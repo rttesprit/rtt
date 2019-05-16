@@ -10,7 +10,6 @@ package edu.fundup.utils;
 import edu.fundup.model.entity.Member;
 
 
-public final class UserSession {
 
 /**
  *

@@ -1,0 +1,81 @@
+.background{
+}
+.left{
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+.innerImg {
+    -fx-border-color: #e7e7e7;
+}
+.edit{
+
+}
+.label-name{
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+.navbar{
+    -fx-border-color: #e7e7e7;
+    -fx-border-width: 0 0 2 0;
+}
+.button-navbar{
+    -fx-background-color: none;
+    -fx-text-decoration: none;
+
+    -fx-text-fill: black;
+    -fx-opacity: 1;
+    -fx-padding: 15px 32px;
+    -fx-text-align: center;
+    -fx-display: inline-block;
+    -fx-font-size: 16px;
+}
+.button-navbar:hover{
+    -fx-text-fill: black;
+    -fx-text-decoration: none;
+    -fx-display: inline-block;
+    -fx-background-color: none;
+
+    -fx-border-color: #e7e7e7;
+    -fx-border-width: 0 0 4 0;
+}
+.button-navbar:focused{
+    -fx-border-color: #34495e;
+    -fx-border-width: 0 0 2 0;
+    -fx-effect: none;
+    -fx-font-style: none;
+    -fx-font-weight: bold;
+}
+
+/*danger*/
+
+.button.danger,.split-menu-button.danger,.toggle-button.danger,.menu-button.danger,
+.split-menu-button.danger > .label, .split-menu-button.danger > .arrow-button {
+    -fx-background-color: #d9534f;
+}
+
+.button.danger,.menu-button.danger,.toggle-button.danger,
+.split-menu-button.danger > .label,.split-menu-button.danger > .arrow-button {
+    -fx-border-color: #d43f3a;
+    -fx-text-fill: white;
+}
+/*hover state*/
+.button.danger:hover,.menu-button.danger:hover,.toggle-button.danger:hover,
+.split-menu-button.danger > .label:hover, .split-menu-button.danger > .arrow-button:hover {
+    -fx-border-color: #ac2925;
+    -fx-background-color: #c9302c;
+}
+/*pressed selected*/
+.button.danger:pressed, .button.danger:selected,
+.menu-button.danger:pressed,.menu-button.danger:selected
+,.toggle-button.danger:pressed,.toggle-button.danger:selected,
+.split-menu-button.danger:pressed > .label, .split-menu-button.danger > .arrow-button:pressed {
+    -fx-border-color: #ac2925;
+    -fx-background-color: #c9302c;
+    -fx-effect: innershadow(gaussian, #ac2925, 10, 0, 0, 3);
+}
+
+.changeimage:hover{
+    -fx-opacity: 0.5;
+}

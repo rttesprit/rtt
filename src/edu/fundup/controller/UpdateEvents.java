@@ -63,7 +63,7 @@ public class UpdateEvents extends VBox {
     private ScrollPane sp;
 
     public UpdateEvents(int id) throws DataBaseException {
-        connectedm = (Member) UserSession.getInstance().getMember();
+        connectedm = UserSession.getInstance().getMember();
         IServiceEvents se = new ServiceEvents();
         Events amodifier = se.findById(id);
         e = new Events();

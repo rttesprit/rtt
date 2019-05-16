@@ -11,10 +11,10 @@ import java.sql.SQLException;
 public class DataSource {
     String myDriver = "com.mysql.jdbc.Driver";
 
-    String url = "jdbc:mysql://localhost:3306/charity?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
+    String url = "jdbc:mysql://localhost:3307/charity?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 
     String login = "root";
-    String password = "";
+    String password = ""; 
     private Connection connection;
     private static DataSource instance;
 
