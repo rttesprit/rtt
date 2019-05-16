@@ -50,13 +50,13 @@ public class UserInfoBoxController extends HBox{
             }
 
             ImageView iv = new ImageView();
-            iv.setFitHeight(80);
-            iv.setFitWidth(80);
+            iv.setFitHeight(200);
+            iv.setFitWidth(200);
             File file = new File("C:/wamp64/www/charity/user/photos/" + connectedm.getPhoto());
             BufferedImage bufferedImage = ImageIO.read(file);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
             iv.setImage(image);
-            Circle circle = new Circle(20);
+            Circle circle = new Circle(25);
             ImagePattern pattern = new ImagePattern(image);
             circle.setFill(pattern);
             this.getChildren().add(circle);
@@ -84,14 +84,24 @@ public class UserInfoBoxController extends HBox{
                     UserProfile profile = new UserProfile();
                     Acceuil.rightPane.getChildren().clear();
                     Acceuil.rightPane.getChildren().add(profile);
+                }  else if (btn.valueProperty().get().equals("Log out")){
+
+                    UserSession.getInstance().cleanUserSession();
+                    Acceuil.userbox.getChildren().clear();
+
+                    LoginController lc = new LoginController();
+                    Acceuil.rightPane.getChildren().clear();
+                    Acceuil.rightPane.getChildren().addAll(lc);
+                    // TO DO REDIRECT TO HOME
+                    // TO DO remove UserInfoBox
                 }
             });
             this.getChildren().add(btn);
         }
-        this.setMinHeight(50);
+        this.setMinHeight(100);
         this.setMinWidth(300);
 
-        this.setMaxHeight(50);
+        this.setMaxHeight(80);
         this.setMaxWidth(400);
         this.setAlignment(Pos.CENTER);
 

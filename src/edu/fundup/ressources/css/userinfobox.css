@@ -1,8 +1,7 @@
-.UserInfoBox{
-    -fx-border-color: black;
+.UserInfoBox:hover{
 }
 Label{
-    -fx-font: normal bold 18 Langdon; -fx-base: #fff;
+    -fx-font: normal bold 18 Langdon; -fx-text-fill: #fdf1b8;
 }
 ChoiceBox{
     -fx-background-color: none;

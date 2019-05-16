@@ -8,6 +8,7 @@ public class  Reclamation {
     private int iduser;
     private int idobjet;
     private int idtr;
+    private String etat;
     private Date date;
 
     public Reclamation() {
@@ -53,14 +54,15 @@ public class  Reclamation {
         this.date = date;
     }
 
+    public void setEtat(){
+        this.etat = etat;
+    }
+
+    public String getEtat(){
+        return etat;
+    }
     @Override
     public String toString() {
-        return "Reclamation{" +
-                "id=" + id +
-                ", iduser=" + iduser +
-                ", idobjet=" + idobjet +
-                ", idtr=" + idtr +
-                ", date=" + date +
-                '}';
+        return "TO DOOOO";
     }
 }

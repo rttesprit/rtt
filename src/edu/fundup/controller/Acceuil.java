@@ -7,19 +7,48 @@ package edu.fundup.controller;
 
 import com.jfoenix.controls.JFXButton;
 import edu.fundup.exception.DataBaseException;
+
+import edu.fundup.model.entity.Member;
+import edu.fundup.model.entity.Post;
+import edu.fundup.model.service.MemberService;
+import edu.fundup.model.service.ServicePost;
+import edu.fundup.utils.AutoCompleteTextField;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import edu.fundup.model.entity.Events;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.ServiceEvents;
 import edu.fundup.utils.AutoCompleteTextField;
 import edu.fundup.utils.ObservableUser;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import edu.fundup.utils.ObservableUser;
+import edu.fundup.utils.UserSession;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+
 import edu.fundup.utils.UserSession;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -41,23 +70,36 @@ public class Acceuil extends HBox implements Observer {
     public static Button LAB_ADOPTION;
     public static Button LAB_RECLAMATION;
     public static Button LAB_ABOUT;
-    public static Button LOGIN;
-    public static JFXButton INSCRIPTION;
+
+    public static Button LOGIN = new Button("Login");
+
     public static AutoCompleteTextField TXT_SEARCH;
     public static Label Title;
     public static VBox rightPane = new VBox();
     public static VBox leftPane = new VBox();
     public static VBox rightPaneChild = new VBox();
     public static VBox leftPaneChild = new VBox();
+
+
+    public static Button INSCRIPTION = new Button("Inscription");
+    public static VBox navButtons = new VBox();
+    public static HBox navBar = new HBox();
+    public static BorderPane bpNavBar = new BorderPane();
     public static HBox right = new HBox();
     public static HBox filter = new HBox();
     public static ScrollPane listEvents ;
+    public static HBox userbox = new HBox();
 
-
-    public static Member onlineMember = UserSession.getInstance().getMember();
+    Member onlineMember = UserSession.getInstance().getMember();
 
     public Acceuil() {
-        
+        userbox.setMinHeight(100);
+        userbox.setMaxHeight(100);
+        userbox.setMinWidth(300);
+
+        rightPaneChild.setAlignment(Pos.CENTER);
+
+
         // Create the Subject and Observers.
         ObservableUser observableUser = new ObservableUser(onlineMember);
         // Add the Observer
@@ -95,7 +137,6 @@ public class Acceuil extends HBox implements Observer {
 
         rightPane.setMinWidth(leftPane.getMinWidth() * 3);
 
-        rightPane.setSpacing(50);
         rightPane.setPadding(new Insets(0, 0, 0, 0));
 
         TXT_SEARCH.setFont(new Font(20));
@@ -188,16 +229,66 @@ public class Acceuil extends HBox implements Observer {
 
         loadLoginGuiLang();
 
-        leftPaneChild.getChildren()
-                .addAll(Title);
-
 
         // ------------Logic------------
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
 
+
+
+        LOGIN.setOnAction(e -> {
+            LoginController lc = new LoginController();
+            rightPane.getChildren().clear();
+            rightPane.getChildren().addAll(lc);
+        });
+        INSCRIPTION.setOnAction(e -> {
+            InscriptionController inscri = new InscriptionController();
+            rightPane.getChildren().clear();
+            rightPane.getChildren().addAll(inscri);
+        });
+
+        contenu = new HBox();
+        contenu.setAlignment(Pos.CENTER);
+
+
         rightPaneChild.getChildren().addAll(LOGIN, INSCRIPTION);
         rightPane.getChildren().addAll(right);
+
+
+            listButton.add(b1);
+            listButton.add(b2);
+            listButton.add(b3);
+            listButton.add(b4);
+            listButton.add(b5);
+
+            try {
+                VBox affiche = new AddPost();
+                VBox cat = new AddCategory();
+                HBox contenu = new HBox();
+                affiche.setMinWidth(400);
+                affiche.setSpacing(5);
+                affiche.setPadding(new Insets(4, 10, 10, 4));
+                contenu.setAlignment(Pos.CENTER);
+                contenu.getChildren().addAll(affiche, cat);
+
+                rightPane.getChildren().addAll(right, contenu);
+
+            } catch (DataBaseException ex) {
+                alert.setContentText(ex.getMessage());
+                alert.setHeaderText("Oooops!!!");
+                alert.showAndWait();
+
+            }
+
+            //rightPane.getChildren().addAll(right, bc, affiche);
+        }
+        );
+        // ********************* MAIN FOR INTEGRATION ***********************
+        navButtons.setMaxHeight(100);
+        navButtons.setMaxWidth(300);
+
+        LOGIN.setMinHeight(50);
+        INSCRIPTION.setMinHeight(50);
 
         LOGIN.setOnAction(e -> {
             rightPane.getChildren().clear();
@@ -365,23 +456,20 @@ public class Acceuil extends HBox implements Observer {
                 filter.getChildren().addAll(typeFilter, text, BTN_SEARCH, BTN_ADD);
                 rightPane.getChildren().addAll(right, contenu);
 
-            } catch (DataBaseException ex) {
 
-            }
 
-        }
-           }
-        );
-        
-        
-        right.getChildren()
-                .addAll(leftPaneChild, rightPaneChild);
-        leftPane.getChildren()
-                .addAll(TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
+        // FIRST PAGE LOGIN ***********************************************
+        LoginController lc = new LoginController();
 
-        this.getChildren()
-                .addAll(leftPane, rightPane);
 
+        rightPane.getChildren().add(lc);
+
+        leftPane.getChildren().addAll(userbox,TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
+
+
+        this.getChildren().addAll(leftPane, rightPane);
+
+        // ********************* MAIN FOR INTEGRATION ***********************
     }
 
     /**
@@ -409,3 +497,4 @@ public class Acceuil extends HBox implements Observer {
     }
 
 }
+

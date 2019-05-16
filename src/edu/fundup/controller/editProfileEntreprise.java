@@ -1,17 +1,20 @@
 package edu.fundup.controller;
 
 import edu.fundup.model.entity.Member;
+import edu.fundup.model.service.MemberService;
+import edu.fundup.utils.RegisterValidation;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 
 import java.time.LocalDate;
 
 public class editProfileEntreprise extends VBox {
+
+    MemberService ms = new MemberService();
 
     TextField name = new TextField();
     TextField mail = new TextField();
@@ -30,6 +33,7 @@ public class editProfileEntreprise extends VBox {
     TextField president = new TextField();
     DatePicker foundation_date = new DatePicker();
 
+
     Label foundation_dateLabel = new Label("Foundation date : ");
     Label nameLabel = new Label("Association name :");
     Label mailLabel = new Label("E-Mail :");
@@ -45,6 +49,9 @@ public class editProfileEntreprise extends VBox {
     Label cvv_numLabel = new Label("Cvv number :");
     Label presidentLabel = new Label("President : ");
 
+    Label fieldsRequiredError = new Label("All fields are required");
+
+
     Button saveP = new Button("Save");
     Button cancelP = new Button("Cancel");
 
@@ -53,6 +60,16 @@ public class editProfileEntreprise extends VBox {
     HBox buttonsP = new HBox();
 
     public editProfileEntreprise(Member connectedm){
+
+        saveP.setPrefWidth(200);
+        saveP.setFont(new Font(40));
+        cancelP.setPrefWidth(200);
+        cancelP.setFont(new Font(40));
+        saveP.setStyle("-fx-pref-height: 40; -fx-font-size: 14;");
+        cancelP.setStyle("-fx-pref-height: 40;");
+
+        fieldsRequiredError.setMaxWidth(280);
+        fieldsRequiredError.getStyleClass().add("tag");
 
         saveP.getStyleClass().add("success");
         cancelP.getStyleClass().add("warning");
@@ -99,7 +116,7 @@ public class editProfileEntreprise extends VBox {
         grid.add(cvv_numLabel, 0, 9);
         grid.add(cvv_num, 1, 9);
 
-        mail.setText(connectedm.getmail());
+        mail.setText(connectedm.getMail());
         name.setText(connectedm.getName());
         president.setText(connectedm.getPresident());
         city.setText(connectedm.getCity());
@@ -114,11 +131,65 @@ public class editProfileEntreprise extends VBox {
         credit_card_number.setText(connectedm.getCredit_card_number());
         cvv_num.setText(connectedm.getCvv_num());
 
-        this.getChildren().addAll(grid,buttonsP);
+        VBox container = new VBox();
+
+        container.setMinHeight(800);
+        container.setMaxHeight(800);
+        container.setMinWidth(600);
+        container.setMaxWidth(600);
+
+        container.getChildren().addAll(grid,buttonsP);
+        container.setAlignment(Pos.CENTER);
+
+        StackPane stack = new StackPane();
+        stack.getChildren().add(container);
+        stack.setStyle("-fx-background-radius: 30px; -fx-background-color: rgb(0,0,0, 0.25)");
+
+
+        stack.setMinHeight(800);
+        stack.setMaxHeight(800);
+        stack.setMinWidth(600);
+        stack.setMaxWidth(600);
+
+        this.getChildren().add(stack);
         this.setAlignment(Pos.CENTER);
         this.setPrefSize(6000,6000);
+        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/desktop.jpg'); -fx-background-size: cover;");
 
-        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/money-time.jpg')");
+        this.getStylesheets().add("/edu/fundup/ressources/css/register.css");
+
+        saveP.setOnAction(save -> {
+            if ( RegisterValidation.validateMail(mail.getText()) && (!name.getText().equals("")) && (!president.getText().equals("")) &&
+                    (!country.getText().equals("")) && (!city.getText().equals("")) && (!address.getText().equals("")) &&
+                    (!payment_type.getValue().toString().equals("")) &&
+                    (!credit_card_number.getText().equals("")) && (!cvv_num.getText().equals("")) )
+            {
+                connectedm.setmail(mail.getText());
+                connectedm.setName(name.getText());
+                connectedm.setPresident(president.getText());
+                connectedm.setCity(city.getText());
+                connectedm.setAddress(address.getText());
+                connectedm.setCountry(country.getText());
+                connectedm.setPayment_type(payment_type.getValue().toString());
+                connectedm.setCredit_card_number(credit_card_number.getText());
+                connectedm.setCvv_num(cvv_num.getText());
+                connectedm.setFoundation_date(foundation_date.getValue().toString());
+
+                ms.updateUser(connectedm);
+
+                if (this.getChildren().contains(fieldsRequiredError)){
+                    this.getChildren().remove(fieldsRequiredError);
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Your information has been updated");
+                alert.showAndWait();
+            }
+            else{
+                this.getChildren().add(fieldsRequiredError);
+            }
+        });
 
     }
 }

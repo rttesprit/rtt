@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -67,7 +68,7 @@ public class UserProfile extends HBox {
         ImagePattern pattern = new ImagePattern(image);
         circle.setFill(pattern);
         VBox.setMargin(circle, new Insets(20,20,0,20));
-
+        circle.getStyleClass().add("changeimage");
         circle.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -109,8 +110,13 @@ public class UserProfile extends HBox {
         }
 
         Button editBtn = new Button("Edit");
-        left.getChildren().addAll(circle,label,editBtn);
         editBtn.getStyleClass().add("edit");
+
+        if(connectedm.getRole().equals("Admin")){
+            left.getChildren().addAll(circle,label);
+        }else {
+            left.getChildren().addAll(circle, label, editBtn);
+        }
         // ---------------------------------
 
         VBox right = new VBox();
@@ -119,26 +125,37 @@ public class UserProfile extends HBox {
         right.getChildren().addAll(navbar,content);
 
         //******************************
-
-        Button overview = new Button("Overview");
-        Button postsBtn = new Button("Posts");
-        Button eventsBtn = new Button("Events");
+        Button UsersBtn = new Button("Utilisateurs");
+        Button postsBtn = new Button("Postes");
+        Button eventsBtn = new Button("Evennements");
         Button adoptionsBtn = new Button("Adoptions");
         Button contributions = new Button("Contributions");
-        Button favourite = new Button("Favourite");
         Button reclamationsBtn = new Button("Reclamations");
 
-        overview.getStyleClass().add("button-navbar");
+        Button MypostsBtn = new Button("Mes postes");
+        Button MyeventsBtn = new Button("Mes évennements");
+        Button MyadoptionsBtn = new Button("Mes adoptions");
+        Button Mycontributions = new Button("Mes contributions");
+        Button MyreclamationsBtn = new Button("Mes reclamations");
+
+        UsersBtn.getStyleClass().add("button-navbar");
         postsBtn.getStyleClass().add("button-navbar");
         eventsBtn.getStyleClass().add("button-navbar");
         adoptionsBtn.getStyleClass().add("button-navbar");
         contributions.getStyleClass().add("button-navbar");
-        favourite.getStyleClass().add("button-navbar");
         reclamationsBtn.getStyleClass().add("button-navbar");
 
+        MypostsBtn.getStyleClass().add("button-navbar");
+        MyeventsBtn.getStyleClass().add("button-navbar");
+        MyadoptionsBtn.getStyleClass().add("button-navbar");
+        Mycontributions.getStyleClass().add("button-navbar");
+        MyreclamationsBtn.getStyleClass().add("button-navbar");
 
-        navbar.getChildren().addAll(overview,favourite,postsBtn,eventsBtn,adoptionsBtn,reclamationsBtn);
-
+        if (connectedm.getRole().equals("Admin")){
+            navbar.getChildren().addAll(UsersBtn,postsBtn,eventsBtn,adoptionsBtn,reclamationsBtn);
+        } else {
+            navbar.getChildren().addAll(MypostsBtn, MyeventsBtn, MyadoptionsBtn, MyreclamationsBtn);
+        }
 
 
         // //////////////// Edit PROFILE /////////////////////
@@ -239,8 +256,10 @@ public class UserProfile extends HBox {
         editBtn.setOnAction(e-> {
 
             editBtn.setVisible(false);
+            content.getChildren().clear();
 
             Button saveP = new Button("Save");
+
             saveP.getStyleClass().add("success");
 
             Button cancelP = new Button("Cancel");
@@ -253,7 +272,8 @@ public class UserProfile extends HBox {
             VBox.setMargin(buttonsP,new Insets(50,0,0,0));
 
 
-            if (connectedm.getRole().equals("Paperless")){
+
+             if (connectedm.getRole().equals("Paperless")){
             content.getChildren().clear();
             editBox.getChildren().addAll(becomeContributor,changePwd,disableAccount,annulerEditBtn);
             left.getChildren().add(editBox);
@@ -322,6 +342,7 @@ public class UserProfile extends HBox {
                 content.getChildren().add(ep);
             }
             else if (connectedm.getRole().equals("Contributor")) {
+                content.getChildren().clear();
                 editBox.getChildren().addAll(changePwd, disableAccount, annulerEditBtn);
                 left.getChildren().add(editBox);
                 VBox.setMargin(changePwd, new Insets(20, 0, 20, 0));
@@ -429,22 +450,147 @@ public class UserProfile extends HBox {
         VBox.setMargin(searchReclamations,new Insets(30,0,30,0));
         searchReclamations.setPromptText("Search by title");
 
+        TextField searchUsers = new TextField();
+        searchUsers.setMaxWidth(250);
+        VBox.setMargin(searchUsers,new Insets(30,0,30,0));
+        searchUsers.setPromptText("Search by username");
 
         ListView<Reclamation> reclamations = new ListView<>();
-        reclamations.setStyle("-fx-background-color: pink;");
         reclamations.setMinHeight(700);
         reclamations.setMinWidth(800);
         reclamations.setMaxHeight(800);
         reclamations.setMaxWidth(800);
 
         ListView<Post> posts = new ListView<>();
-        posts.setStyle("-fx-background-color: pink;");
         posts.setMinHeight(700);
         posts.setMinWidth(800);
         posts.setMaxHeight(800);
         posts.setMaxWidth(800);
 
-        postsBtn.setOnAction(e -> {
+        ListView<Member> users = new ListView<>();
+        users.setMinHeight(700);
+        users.setMinWidth(800);
+        users.setMaxHeight(800);
+        users.setMaxWidth(800);
+
+        /* UsersBtn.setOnAction(e-> {
+            content.getChildren().clear();
+            content.getChildren().add(searchUsers);
+
+            ObservableList<Member> ObsMembers = FXCollections.observableArrayList();
+            ms.getAllMembers().forEach(m -> ObsMembers.add(m));
+
+            System.out.println("ObsMembers size "+ ObsMembers.size());
+
+            FilteredList<Member> filteredData = new FilteredList<>(ObsMembers, p -> true);
+            searchUsers.setOnKeyReleased(p -> {
+                searchUsers.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                    System.out.println(newValue);
+                    if (!newValue.isEmpty()) {
+                        List<Member> members = ObsMembers.stream().filter(o -> (o.getlogin().toLowerCase().contains(newValue.toLowerCase()))).collect((Collectors.toList()));
+                        members.forEach(o -> {
+                            System.out.println("processed list, only even numbers: " + o);
+                        });
+                        ObservableList<Member> sortedList = FXCollections.observableArrayList(members);
+                        users.setItems(sortedList);
+                    }
+                    else {
+                        users.setItems(ObsMembers);
+                    }
+                });
+
+            });
+            users.setItems(ObsMembers);
+            content.getChildren().add(users);
+        });*/
+
+        UsersBtn.setOnAction(e-> {
+            TableView table = new TableView();
+
+            table.setEditable(false);
+            table.setPrefSize(500, 800);
+
+            TableColumn t0 = new TableColumn("role ");
+            TableColumn t1 = new TableColumn("Login ");
+            TableColumn t2 = new TableColumn("Mail ");
+            TableColumn t3 = new TableColumn("Register date ");
+
+
+            t0.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("role")
+            );
+            t1.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("login")
+            );
+            t2.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("mail")
+            );
+            t3.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("register_date")
+            );
+
+            final ObservableList<Member> members = FXCollections.observableArrayList(ms.getAllMembers());
+
+            FilteredList<Member> filteredData = new FilteredList<>(members, p -> true);
+            searchUsers.setOnKeyReleased(p -> {
+                searchUsers.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                    System.out.println(newValue);
+                    if (!newValue.isEmpty()) {
+                        List<Member> obsRr = members.stream().filter(o -> (o.getLogin().toLowerCase().contains(newValue.toLowerCase()))).collect((Collectors.toList()));
+                        obsRr.forEach(o -> {
+                            System.out.println("processed list, only even numbers: " + o);
+                        });
+                        ObservableList<Member> sortedList = FXCollections.observableArrayList(obsRr);
+                        table.setItems(sortedList);
+                    }
+                    else {
+                        table.setItems(members);
+                    }
+                });
+
+            });
+
+            table.setItems(members);
+            table.getColumns().addAll(t0, t1, t2, t3);
+
+            table.setRowFactory( tv -> {
+                TableRow<Member> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+
+                    if (event.getClickCount() == 2 && (! row.isEmpty()) )
+                    {
+                        Member item = row.getItem();
+                        System.out.println("Member item = row.getItem()"+ item.toString());
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Disable User");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Are you sure you would like to disable User ?");
+                        alert.showAndWait();
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.OK){
+
+                            ms.disableUser(item);
+
+                            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                            alert2.setTitle("User has been disabled");
+                            alert2.setHeaderText(null);
+                            alert2.setContentText("User has been disabled");
+                            alert2.showAndWait();
+
+                        } else {
+                            // ... user chose CANCEL or closed the dialog
+                        }
+                    }
+                });
+                return row ;
+            });
+            content.getChildren().clear();
+            content.getChildren().addAll(searchUsers,table);
+        });
+
+        MypostsBtn.setOnAction(e -> {
             left.getChildren().removeAll(becomeContributor,changePwd,disableAccount);
             content.getChildren().clear();
             content.getChildren().add(searchPosts);
@@ -482,7 +628,7 @@ public class UserProfile extends HBox {
             content.getChildren().add(posts);
         });
 
-        reclamationsBtn.setOnAction(e -> {
+        MyreclamationsBtn.setOnAction(e -> {
             left.getChildren().removeAll(becomeContributor,disableAccount,changePwd);
             content.getChildren().clear();
             content.getChildren().add(searchReclamations);
@@ -491,7 +637,7 @@ public class UserProfile extends HBox {
         });
 
         UserEventsList us = new UserEventsList();
-        eventsBtn.setOnAction(e -> {
+        MyeventsBtn.setOnAction(e -> {
             content.getChildren().clear(); content.getChildren().add(us);
         });
         //-------- this root & background -----------
@@ -523,6 +669,7 @@ public class UserProfile extends HBox {
         this.setStyle( "-fx-padding: 20px 20px 20px 20px;" );
     }
 
+    // API APACHE COMMONG LANG3. STRING UTILS
     public static String saveToFileImageNormal(Image image) throws SQLException {
 
         File dir = new File("C:/wamp64/www/charity/user/photos");

@@ -1,19 +1,19 @@
 package edu.fundup.controller;
 
 import edu.fundup.model.entity.Member;
+import edu.fundup.model.service.MemberService;
+import edu.fundup.utils.RegisterValidation;
 import edu.fundup.utils.UserSession;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 
 public class editProfilePaperless extends VBox {
+
+    MemberService ms = new MemberService();
 
     TextField name = new TextField();
     TextField mail = new TextField();
@@ -45,6 +45,9 @@ public class editProfilePaperless extends VBox {
     Label cvv_numLabel = new Label("Cvv number :");
     Label presidentLabel = new Label();
 
+    Label fieldsRequiredError = new Label("All fields are required");
+
+
     Button saveP = new Button("Save");
     Button cancelP = new Button("Cancel");
 
@@ -53,6 +56,16 @@ public class editProfilePaperless extends VBox {
     HBox buttonsP = new HBox();
 
     public editProfilePaperless(Member connectedm) {
+
+        saveP.setPrefWidth(200);
+        saveP.setFont(new Font(40));
+        cancelP.setPrefWidth(200);
+        cancelP.setFont(new Font(40));
+        saveP.setStyle("-fx-pref-height: 40; -fx-font-size: 14;");
+        cancelP.setStyle("-fx-pref-height: 40;");
+
+        fieldsRequiredError.setMaxWidth(280);
+        fieldsRequiredError.getStyleClass().add("tag");
 
         saveP.getStyleClass().add("success");
         cancelP.getStyleClass().add("warning");
@@ -87,18 +100,66 @@ public class editProfilePaperless extends VBox {
         grid.add(countryLabel, 0, 5);
         grid.add(country, 1, 5);
 
-        mail.setText(connectedm.getmail());
+        mail.setText(connectedm.getMail());
         first_name.setText(connectedm.getfirst_name());
         last_name.setText(connectedm.getlast_name());
         city.setText(connectedm.getCity());
         address.setText(connectedm.getAddress());
         country.setText(connectedm.getCountry());
 
-        this.getChildren().addAll(grid,buttonsP);
+        VBox container = new VBox();
+
+        container.setMinHeight(600);
+        container.setMaxHeight(600);
+        container.setMinWidth(500);
+        container.setMaxWidth(500);
+
+        container.getChildren().addAll(grid,buttonsP);
+        container.setAlignment(Pos.CENTER);
+
+        StackPane stack = new StackPane();
+        stack.getChildren().add(container);
+        stack.setStyle("-fx-background-radius: 30px; -fx-background-color: rgb(0,0,0, 0.25)");
+
+
+        stack.setMinHeight(600);
+        stack.setMaxHeight(600);
+        stack.setMinWidth(500);
+        stack.setMaxWidth(500);
+
+        this.getChildren().add(stack);
         this.setAlignment(Pos.CENTER);
         this.setPrefSize(6000,6000);
 
-        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/bluebg.jpg')");
+        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/desktop.jpg'); -fx-background-size: cover;");
+        this.getStylesheets().add("/edu/fundup/ressources/css/register.css");
+
+        saveP.setOnAction(save -> {
+            if ( RegisterValidation.validateMail(mail.getText()) && (!first_name.getText().equals("")) && (!last_name.getText().equals("")) &&
+                    (!country.getText().equals("")) && (!city.getText().equals("")) && (!address.getText().equals("")) &&
+                    (!credit_card_number.getText().equals("")) && (!cvv_num.getText().equals("")) )
+            {
+                connectedm.setmail(mail.getText());
+                connectedm.setfirst_name(first_name.getText());
+                connectedm.setlast_name(last_name.getText());
+                connectedm.setCity(city.getText());
+                connectedm.setAddress(address.getText());
+                connectedm.setCountry(country.getText());
+
+                ms.updateUser(connectedm);
+
+                if (this.getChildren().contains(fieldsRequiredError)){
+                    this.getChildren().remove(fieldsRequiredError);
+                }
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Your information has been updated");
+                alert.showAndWait();
+            }
+            else{
+                this.getChildren().add(fieldsRequiredError);
+            }
+        });
 
     }
 }
