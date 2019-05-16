@@ -13,7 +13,6 @@ import edu.fundup.model.entity.Member;
 import edu.fundup.model.entity.Reclamation;
 import edu.fundup.model.iservice.IMemberService;
 import edu.fundup.utils.DataSource;
-import edu.fundup.utils.ObservableUser;
 import edu.fundup.utils.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -342,7 +341,7 @@ public class MemberService implements IMemberService {
     }
 
     public Member getUserById(int id){
-        String query = "SELECT * FROM member where id="+id;
+        String query = "SELECT * FROM member where id= "+id;
         Member m = new Member(0);
         try {
             pst = connection.prepareStatement(query);
@@ -362,8 +361,10 @@ public class MemberService implements IMemberService {
     }
 
     public void updateUser(Member m){
+
         String query = "UPDATE `member` SET `role`=?,`login`=?,`name`=?,`mail`=?,`password`=?,`first_name`=?,`last_name`=?,`Address`=?,`City`=?,`Country`=?," +
                 "`payment_type`=?,`credit_card_number`=?,`cvv_num`=?,`president`=?,`foundation_date`=? WHERE id="+m.getId();
+
         try{
             pst = connection.prepareStatement(query);
             pst.setString(1,m.getRole());

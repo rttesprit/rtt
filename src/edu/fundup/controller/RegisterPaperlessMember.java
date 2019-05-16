@@ -1,6 +1,5 @@
 package edu.fundup.controller;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.MemberService;
 import edu.fundup.utils.DataSource;
@@ -8,7 +7,6 @@ import edu.fundup.utils.RegisterValidation;
 import edu.fundup.utils.SendMail;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,11 +16,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -43,6 +41,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
+
 import java.util.ArrayList;
 import java.util.Random;
 

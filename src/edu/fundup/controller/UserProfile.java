@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.List;
 
@@ -634,7 +633,6 @@ public class UserProfile extends HBox {
             content.getChildren().clear();
             content.getChildren().add(searchReclamations);
             ReclamationService reclamationservice = new ReclamationService();
-            reclamations.setItems(reclamationservice.getReclamationsByUser(connectedm));
             content.getChildren().add(reclamations);
         });
 
