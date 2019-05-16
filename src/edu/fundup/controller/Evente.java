@@ -373,7 +373,7 @@ public class Evente extends HBox {
             d.close();
 
             //String to = AuthentificationController.getInstance().getUser().getEmail();
-            String to = connectedm.getmail();
+            String to = connectedm.getMail();
 
             // Sender's email ID needs to be mentioned
             final String username = "tun.charity@gmail.com";

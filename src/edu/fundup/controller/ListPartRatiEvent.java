@@ -73,7 +73,7 @@ public class ListPartRatiEvent extends HBox{
             Member M = m.getUserById(j.getId_user());
             a.setNom(M.getfirst_name());
             a.setPrénom(M.getlast_name());
-            a.setEmail(M.getmail());
+            a.setEmail(M.getMail());
             a.setRating(rating);
             data.add(a);
         }

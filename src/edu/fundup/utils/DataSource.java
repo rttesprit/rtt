@@ -14,7 +14,7 @@ public class DataSource {
     String url = "jdbc:mysql://localhost:3306/charity?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 
     String login = "root";
-    String password = "";
+    String password = ""; 
     private Connection connection;
     private static DataSource instance;
 

@@ -5,7 +5,6 @@ TextField{
     -fx-min-width: 40!important;
     -fx-min-height: 40!important;
 
-    /*-fx-background-image:url('');*/
     -fx-background-repeat: no-repeat;
     -fx-background-position: right center;
     -fx-font-size: 15;
@@ -46,7 +45,7 @@ PasswordField{
 }
 Label{
     -fx-font-size: 20px;
-    -fx-text-fill: #34495e;
+    -fx-text-fill: #fdf1b8;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
 
     -fx-padding: 7 10 7 50px;
@@ -56,11 +55,6 @@ Label{
 .wronglabel{
     -fx-font-size: 20px !important;
     -fx-text-fill: #FF0000!important;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 ) !important;
-
-    -fx-padding: 7 10 7 50px!important;
-    -fx-border-insets: 15px!important;
-    -fx-background-insets: 15px!important;
 }
 
 .rounded{
@@ -90,15 +84,15 @@ Label{
 .tag{
     -fx-font-size: 20px;
     -fx-font-family: Perpetua;
-    -fx-text-fill: #e80000;
+    -fx-text-fill: #ff585d;
     -fx-background-color: rgba(255, 0, 0, 0.15);
-    -fx-border-color: rgba(255, 0, 0, 0.7);
+    -fx-border-color: rgba(255, 0, 0, 0.5);
     -fx-background-radius: 30px;
     -fx-border-radius: 30px;
 }
 
 .titleLabel{
-    -fx-text-fill: WHITE;
+    -fx-text-fill: #fdf1b8;
     -fx-font-family: 'Perpetua Titling MT';
     -fx-font-size: 24px;
 }
