@@ -7,9 +7,11 @@ package edu.fundup.model.service;
 
 import edu.fundup.model.entity.Events;
 import edu.fundup.model.entity.JoinEvents;
+import edu.fundup.model.entity.Member;
 import edu.fundup.model.entity.RatingEvents;
 import edu.fundup.model.iservice.IServiceEvents;
 import edu.fundup.utils.DataSource;
+import edu.fundup.utils.UserSession;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -48,7 +50,7 @@ public class ServiceEvents implements IServiceEvents {
             preparedStatement.setString(8, e.getTitle());
             preparedStatement.setString(9, e.getCategorie());
             preparedStatement.setInt(10, e.getParticipant());
-            preparedStatement.setFloat(11, e.getParticipant());
+            preparedStatement.setFloat(11, e.getMontant());
 
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
@@ -117,8 +119,6 @@ public class ServiceEvents implements IServiceEvents {
     public Events findById(int id_event) {
         String reqSql = "SELECT * FROM event WHERE idevent = ?";
         Events ev = new Events();
-        List<Events> evenements = new ArrayList<>();
-        PreparedStatement preparedStatement;
         try {
             ps = connection.prepareStatement(reqSql);
             ps.setInt(1, id_event);
@@ -236,22 +236,7 @@ public class ServiceEvents implements IServiceEvents {
         return evenements;
     }
 
-    @Override
-    public void rating(RatingEvents e) {
-    String req = "INSERT INTO rating (idevent,iduser,value) VALUES (?,?,?)";
-        PreparedStatement preparedStatement;
-        try {
-            preparedStatement = connection.prepareStatement(req);
-            preparedStatement.setInt(1, e.getId_event());
-            preparedStatement.setInt(2, e.getId_user());
-            preparedStatement.setDouble(3, e.getValue());
-            
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();           
-        }     
-    }
+   
 
     @Override
     public ArrayList<RatingEvents> getAllRating() {
@@ -351,7 +336,7 @@ public class ServiceEvents implements IServiceEvents {
 
     @Override
     public Double getRating(int idevent, int iduser) {
-        String req = "SELECT value FROM rating WHERE idevent="+idevent+" AND iduser= "+iduser;
+        String req = "SELECT value FROM rating WHERE idevent= "+idevent+" AND iduser= "+iduser;
         
         PreparedStatement preparedStatement;
         try {
@@ -368,12 +353,13 @@ public class ServiceEvents implements IServiceEvents {
 
     @Override
     public ArrayList<JoinEvents> getAllJoiners(int idevent) {
-        String reqSql = "SELECT * FROM participer WHERE idevent="+idevent;
+        String req = "SELECT * FROM participer WHERE idevent= "+idevent;
         JoinEvents je = new JoinEvents();
         ArrayList<JoinEvents> joinEvents = new ArrayList<>();
+        PreparedStatement preparedStatement;
         try {
-            ps = connection.prepareStatement(reqSql);
-            ResultSet rs = ps.executeQuery();
+             preparedStatement = connection.prepareStatement(req);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 je.setId_event(rs.getInt("idevent"));
                 je.setId_user(rs.getInt("iduser"));
@@ -384,6 +370,41 @@ public class ServiceEvents implements IServiceEvents {
             System.out.println("erreur " + ex.getMessage());
         }
         return joinEvents;
+    }
+
+    @Override
+    public void rating(RatingEvents e) {
+        String req = "INSERT INTO rating (idevent,iduser,value) VALUES (?,?,?)";
+        PreparedStatement preparedStatement;
+        Member m = UserSession.getInstance().getMember();
+        try {
+            preparedStatement = connection.prepareStatement(req);
+            preparedStatement.setInt(1, e.getId_event());
+            preparedStatement.setInt(2, m.getId());
+            preparedStatement.setDouble(3, e.getValue());
+            
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();           
+        }    
+    }
+
+    @Override
+    public int compter(int idevent) {
+        String req = "SELECT count(*) FROM participer WHERE idevent ="+idevent;
+        int somme =0;
+        PreparedStatement preparedStatement;
+        try {
+             preparedStatement = connection.prepareStatement(req);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                somme = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("erreur " + ex.getMessage());
+        }
+        return somme;
     }
     
 

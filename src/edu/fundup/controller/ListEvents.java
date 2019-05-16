@@ -31,9 +31,6 @@ import javafx.scene.input.MouseEvent;
 public class ListEvents extends ScrollPane {
     public int idEvent;
     public static GridPane gp ;
-    private Rotate rotateFront;
-    private Rotate rotateBack;
-    private Timeline timeline;
     ArrayList<Integer> ids = new ArrayList<>();
 
     public ListEvents() throws DataBaseException {
@@ -44,7 +41,7 @@ public class ListEvents extends ScrollPane {
         gp.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         gp.setStyle("-fx-padding: 10;"
                 + "-fx-border-style: solid inside;"
-                + "-fx-border-width: 2;"
+                + "-fx-border-width: 5;"
                 + "-fx-border-insets: 5;"
                 + "-fx-border-radius: 5;"
                 + "-fx-border-color: black;");
@@ -102,7 +99,7 @@ public class ListEvents extends ScrollPane {
         hb2.setAlignment(Pos.BASELINE_LEFT);
         hb1.setMinWidth(30);
         hb2.setMinWidth(30);
-        hb1.setSpacing(150);
+        hb1.setSpacing(100);
         hb2.setSpacing(100);
         Label titre = new Label("Ttitle: "+ev.getTitle());
         Label participant = new Label("Participants: "+ev.getParticipant());

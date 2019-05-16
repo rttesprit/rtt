@@ -8,6 +8,7 @@ package edu.fundup.controller;
 import com.jfoenix.controls.JFXButton;
 import static edu.fundup.controller.Acceuil.contenu;
 import edu.fundup.model.entity.JoinEvents;
+import edu.fundup.model.entity.Member;
 import edu.fundup.model.entity.PartRatiEvent;
 import edu.fundup.model.iservice.IServiceEvents;
 import edu.fundup.model.service.MemberService;
@@ -40,7 +41,6 @@ public class ListPartRatiEvent extends HBox{
         
         IServiceEvents se = new ServiceEvents();
         ArrayList<JoinEvents> joinEvents = se.getAllJoiners(id);
-        
          PartRatiEvent a = new PartRatiEvent();
          MemberService m = new MemberService();      
         
@@ -66,12 +66,14 @@ public class ListPartRatiEvent extends HBox{
                             new PropertyValueFactory<PartRatiEvent,Double>("rating")
         );
         final ObservableList<PartRatiEvent> data = FXCollections.observableArrayList();
+        double rating ;
+        
         for (JoinEvents j : joinEvents){
-            
-            double rating =se.getRating(id, j.getId_user());
-            a.setNom(m.getUserById(j.getId_user()).getfirst_name());
-            a.setPrénom(m.getUserById(j.getId_user()).getlast_name());
-            a.setEmail(m.getUserById(j.getId_user()).getlast_name());
+            rating =se.getRating(id, j.getId_user());
+            Member M = m.getUserById(j.getId_user());
+            a.setNom(M.getfirst_name());
+            a.setPrénom(M.getlast_name());
+            a.setEmail(M.getmail());
             a.setRating(rating);
             data.add(a);
         }

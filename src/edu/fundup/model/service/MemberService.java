@@ -10,7 +10,6 @@ import edu.fundup.controller.UserInfoBoxController;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.iservice.IMemberService;
 import edu.fundup.utils.DataSource;
-import edu.fundup.utils.ObservableUser;
 import edu.fundup.utils.UserSession;
 import javafx.scene.control.Alert;
 
@@ -333,7 +332,7 @@ public class MemberService implements IMemberService {
     }
 
     public Member getUserById(int id){
-        String query = "SELECT * FROM member where id="+id;
+        String query = "SELECT * FROM member where id= "+id;
         Member m = new Member(0);
         try {
             pst = connection.prepareStatement(query);
@@ -353,8 +352,8 @@ public class MemberService implements IMemberService {
     }
 
     public void updateUser(Member m){
-        String query = "UPDATE `member` SET `id`=?,`role`=?,`login`=?,`name`=?,`mail`=?,`password`=?,`first_name`=?,`last_name`=?,`Address`=?,`City`=?,`Country`=?," +
-                "`payment_type`=?,`credit_card_number`=?,`cvv_num`=?,`president`=?,`foundation_date`=?";
+        String query = "UPDATE member SET id`=?,role`=?,`login`=?,`name`=?,`mail`=?,`password`=?,`first_name`=?,`last_name`=?,`Address`=?,`City`=?,`Country`=?," +
+                "payment_type`=?,credit_card_number`=?,`cvv_num`=?,`president`=?,`foundation_date`=?";
         try{
             pst = connection.prepareStatement(query);
             pst.setInt(1,m.getId());

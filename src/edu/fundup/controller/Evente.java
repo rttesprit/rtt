@@ -27,6 +27,8 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
+import static edu.fundup.controller.Acceuil.filter;
+import static edu.fundup.controller.Acceuil.listEvents;
 import edu.fundup.model.entity.Member;
 import edu.fundup.utils.UserSession;
 import java.awt.print.PrinterException;
@@ -79,7 +81,7 @@ public class Evente extends HBox {
     public static JFXButton BTN_SUPPRIMER;
     public static JFXButton BTN_LIST_PARTICIPANT;
     
-    private static int nbMax;
+    private int nbMax;
     private Member connectedm;
     
     private ScrollPane sp;
@@ -90,6 +92,7 @@ public class Evente extends HBox {
         this.setSpacing(100);
         IServiceEvents se = new ServiceEvents();
         Events event = se.findById(id);
+        nbMax = se.compter(id);
         sp = new ScrollPane();
         sp.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         sp.setStyle("scroll-pane");
@@ -158,12 +161,14 @@ public class Evente extends HBox {
                 if (!es.testRaitngs(id, connectedm.getId()))
                 {
                     es.rating(r);
+                    System.out.println("Done");
                 }
                 else
                 {
                     es.updateRating(r, id, connectedm.getId());
+                    System.out.println("Updating Rating Done");
                 }
-                System.out.println(newValue);
+                
                 
             }
                 
@@ -236,6 +241,7 @@ public class Evente extends HBox {
         BTN_MODIFIER.setOnMouseClicked((s) -> {
 
             try {
+                System.out.println(nbMax);
                 VBox update = new UpdateEvents(id);
                 contenu = new HBox();
                 update.setMinWidth(400);
@@ -266,24 +272,39 @@ public class Evente extends HBox {
                 alert2.setHeaderText(null);
                 alert2.setContentText("Votre évènement a étè annulé !");
                 alert2.showAndWait();
+                this.getChildren().clear();
+                    VBox v = new VBox();
+                    v.setSpacing(18);
+                    v.getChildren().addAll(filter, listEvents);
+                    this.getChildren().addAll(v);
                 
             });
-        
+        Member onlineMember = UserSession.getInstance().getMember();
         BTN_PARTICIPER.setOnMouseClicked((s) -> {
                 
                 
                 
                 Events e = new Events();
                 e= se.findById(id);
+                if (se.alreadyJoin(e.getId_event(), onlineMember.getId()))
+                {
+                    System.out.println("Deja Participer");
+                    Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setTitle("Deja participer !! ");
+                    a.setHeaderText(null);
+                    a.setContentText("Vous avez deja recu un mail de participation ");
+                    a.showAndWait();
+                    
+                }
                 
-                if (!se.alreadyJoin(e.getId_event(), e.getId_user()))
-                        {se.join(e.getId_event(), e.getId_user());
-                        
-                        
-                        
+                if (!se.alreadyJoin(e.getId_event(), onlineMember.getId()))
+                        {
+                            se.join(e.getId_event(), onlineMember.getId());
+                            
                     try {
                         participer(e);
-                        incrementer();
+                        
+                         
                     } catch (IOException ex) {
                         Logger.getLogger(Evente.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (PrinterException ex) {
@@ -299,6 +320,7 @@ public class Evente extends HBox {
                 
             });
         
+        
         //--------User controle --------
         if ((connectedm != null) &&connectedm.getId() == event.getId_user()) {
 
@@ -306,8 +328,8 @@ public class Evente extends HBox {
 
         } else {
 
-            //vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER);
-            vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER, BTN_LIST_PARTICIPANT, BTN_MODIFIER, BTN_SUPPRIMER);
+            vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER);
+            //vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER, BTN_LIST_PARTICIPANT, BTN_MODIFIER, BTN_SUPPRIMER);
         }
               
         hb.getChildren().addAll(vgauche, vdroite);
@@ -414,10 +436,6 @@ public class Evente extends HBox {
             System.out.println(ex.getMessage());
 
         }
-        }
-        private int incrementer()
-        {
-            return nbMax++;
         }
     
 
