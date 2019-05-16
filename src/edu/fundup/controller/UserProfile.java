@@ -636,9 +636,9 @@ public class UserProfile extends HBox {
             content.getChildren().add(reclamations);
         });
 
-        UserEventsList us = new UserEventsList();
+        //UserEventsList us = new UserEventsList();
         MyeventsBtn.setOnAction(e -> {
-            content.getChildren().clear(); content.getChildren().add(us);
+           // content.getChildren().clear(); content.getChildren().add(us);
         });
         //-------- this root & background -----------
 

@@ -1,0 +1,176 @@
+.root{
+    -fx-background-color: #FFFFFF;
+}
+
+
+#right-side{
+    -fx-min-width: 850px;
+        -fx-background-color: #FFFF;
+
+}
+
+#left-side {
+    -fx-min-width: 250px;
+    -fx-min-height: 800px;
+    -fx-background-color: linear-gradient(to right top, #536dfe, #505dd0, #494ea3, #404079, #343251, #322f4c, #302b48, #2e2843, #3b2b5d, #4c2c76, #61298d, #7b1fa2);    -fx-pref-width: 200px;
+}
+
+#btns {
+    -fx-hgap: 50px;
+    -fx-vgap: 50px;
+    -fx-min-width: 350px;
+    -fx-min-height: 90px;
+    -fx-border-width: 1;
+    -fx-border-color: transparent #fff transparent transparent;
+    -fx-background-color: rgba(5, 25, 55, 0.5);
+    -fx-effect: dropshadow(gaussian, #051937, 50, 0, 0, 0);
+    -fx-background-radius: 30 0 0 30;
+    -fx-text-fill: white;
+    -fx-fit-to-width: 39px;
+    -fx-fit-to-height: 40px;
+}
+
+#card1:pressed{
+    -fx-min-width: 168px;
+    -fx-min-height: 158px;
+    -fx-background-color: #2F2B43;
+    -fx-border-radius: 20;
+}
+#card1{
+    -fx-min-width: 168px;
+    -fx-min-height: 158px;
+    -fx-background-image: url('../../../icon.ico');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-color: #393351;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+}
+
+#card1:hover{
+    -fx-min-width: 168px;
+    -fx-min-height: 158px;
+    -fx-background-color: #524A7B;
+    -fx-border-radius: 20;
+
+}
+
+#PHONE-FIELD{
+    -fx-min-width: 450px;
+    -fx-max-width: 450px;
+}
+#TEX-VERIFY{
+    -fx-min-width: 50px;
+    -fx-font-size: 16;
+    -fx-text-alignment: center;
+    -fx-text-fill: #757575;
+    -fx-font-family: "Leelawadee UI";
+}
+#BUTTON-VERIF{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 190px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('../../../../images/phone.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+
+}
+
+#BUTTON-RESET{
+    -fx-background-color: #800026;
+    -fx-text-fill: white;
+    -fx-pref-width: 190px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('../../../../images/reset.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+#BUTTON-VERIF-CAMPAIGN{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('../../../../images/phone.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+
+#HEADER{
+    -fx-min-width: 50px;
+    -fx-font-weight: BOLD;
+    -fx-text-alignment: LEFT;
+    -fx-font-size: 25;
+    -fx-text-fill: #7B1FA2;
+}
+#HBOX-HEADER{
+    -fx-min-width: 850px;
+    -fx-border-color: #C2185B;
+    -fx-border-width: 0 0 1 0;
+   -fx-border-image-insets: 20;
+}
+
+#LBL-HEADER{
+    -fx-min-width: 50px;
+    -fx-font-weight: BOLD;
+    -fx-text-alignment: LEFT;
+    -fx-font-size: 25;
+    -fx-text-fill: #7B1FA2;
+}
+.TITLE-LABELS{
+    -fx-font-weight: BOLD;
+    -fx-text-fill: #212121;
+
+}
+.ALLGRID-FIELD{
+
+}
+.TWO-ROW-FIELD{
+    -fx-min-width: 350px;
+    -fx-max-width: 200px;
+
+}
+
+#LBL_SUB_HEADER{
+    -fx-text-alignment: CENTER;
+    -fx-font-size: 26;
+    -fx-text-fill: #757575;
+    -fx-font-family: "Tw Cen MT Condensed";
+}
+
+#BUTTON-NEXT{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 50px;
+    -fx-background-image: url('../../../../images/next.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+.POSTS{
+	-fx-pref-width: 5000px;
+    -fx-min-width: 500px;
+    -fx-pref-height: 150px;
+}
+
+.SUBGRID_GENERAL{
+		    -fx-start-margin:150px;	 
+	        -fx-padding: 10 10 10 10;
+	       
+	        
+	
+}
+.SUB_GRIDGENERAL_RIGHTSIDE{
+	    -fx-start-margin:100px;	 
+	    -fx-background-color: #fff;
+        -fx-padding: 10 10 10 10;
+
+}
+
