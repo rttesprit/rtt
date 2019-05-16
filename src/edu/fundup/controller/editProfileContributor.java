@@ -9,11 +9,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 public class editProfileContributor extends VBox {
 
     MemberService ms = new MemberService();
+
     TextField name = new TextField();
     TextField mail = new TextField();
     TextField password = new TextField();
@@ -44,7 +47,11 @@ public class editProfileContributor extends VBox {
     Label cvv_numLabel = new Label("Cvv number :");
     Label presidentLabel = new Label();
 
+    Label fieldsRequiredError = new Label("All fields are required");
+
+
     Button saveP = new Button("Save");
+
     Button cancelP = new Button("Cancel");
 
     GridPane grid = new GridPane();
@@ -52,6 +59,16 @@ public class editProfileContributor extends VBox {
     HBox buttonsP = new HBox();
 
     public editProfileContributor(Member connectedm) {
+
+        saveP.setPrefWidth(200);
+        saveP.setFont(new Font(40));
+        cancelP.setPrefWidth(200);
+        cancelP.setFont(new Font(40));
+        saveP.setStyle("-fx-pref-height: 40; -fx-font-size: 14;");
+        cancelP.setStyle("-fx-pref-height: 40;");
+
+        fieldsRequiredError.setMaxWidth(280);
+        fieldsRequiredError.getStyleClass().add("tag");
 
         saveP.getStyleClass().add("success");
         cancelP.getStyleClass().add("warning");
@@ -95,7 +112,7 @@ public class editProfileContributor extends VBox {
         grid.add(cvv_numLabel, 0, 8);
         grid.add(cvv_num, 1, 8);
 
-        mail.setText(connectedm.getmail());
+        mail.setText(connectedm.getMail());
         first_name.setText(connectedm.getfirst_name());
         last_name.setText(connectedm.getlast_name());
         city.setText(connectedm.getCity());
@@ -105,11 +122,33 @@ public class editProfileContributor extends VBox {
         credit_card_number.setText(connectedm.getCredit_card_number());
         cvv_num.setText(connectedm.getCvv_num());
 
-        this.getChildren().addAll(grid, buttonsP);
-        this.setAlignment(Pos.CENTER);
-        this.setPrefSize(6000, 6000);
+        VBox container = new VBox();
 
-        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/desktop.jpg')");
+        container.setMinHeight(800);
+        container.setMaxHeight(800);
+        container.setMinWidth(600);
+        container.setMaxWidth(600);
+
+        container.getChildren().addAll(grid,buttonsP);
+        container.setAlignment(Pos.CENTER);
+
+        StackPane stack = new StackPane();
+        stack.getChildren().add(container);
+        stack.setStyle("-fx-background-radius: 30px; -fx-background-color: rgb(0,0,0, 0.25)");
+
+
+        stack.setMinHeight(800);
+        stack.setMaxHeight(800);
+        stack.setMinWidth(600);
+        stack.setMaxWidth(600);
+
+        this.getChildren().add(stack);
+        this.setAlignment(Pos.CENTER);
+        this.setPrefSize(6000,6000);
+
+        this.setStyle("-fx-background-image: url('/edu/fundup/ressources/images/desktop.jpg'); -fx-background-size: cover;");
+
+        this.getStylesheets().add("/edu/fundup/ressources/css/register.css");
 
         saveP.setOnAction(save -> {
             if ( RegisterValidation.validateMail(mail.getText()) && (!first_name.getText().equals("")) && (!last_name.getText().equals("")) &&
@@ -121,24 +160,24 @@ public class editProfileContributor extends VBox {
                 connectedm.setlast_name(last_name.getText());
                 connectedm.setCity(city.getText());
                 connectedm.setAddress(address.getText());
+                connectedm.setCountry(country.getText());
                 connectedm.setPayment_type(payment_type.getValue().toString());
                 connectedm.setCredit_card_number(credit_card_number.getText());
                 connectedm.setCvv_num(cvv_num.getText());
+
                 ms.updateUser(connectedm);
 
+                if (this.getChildren().contains(fieldsRequiredError)){
+                    this.getChildren().remove(fieldsRequiredError);
+                }
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setContentText("Your information has been updated");
                 alert.showAndWait();
             }
             else{
-                Label fieldsRequiredError = new Label("All fields are required");
-                fieldsRequiredError.setMaxWidth(280);
-                fieldsRequiredError.getStyleClass().add("tag");
                 this.getChildren().add(fieldsRequiredError);
             }
         });
-
-
     }
 }

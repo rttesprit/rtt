@@ -2,9 +2,12 @@ package edu.fundup.model.service;
 
 
 
+import edu.fundup.model.entity.Member;
 import edu.fundup.model.entity.Reclamation;
 import edu.fundup.model.iservice.IReclamationService;
 import edu.fundup.utils.DataSource;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ public class ReclamationService implements IReclamationService {
 
     public ReclamationService() {
         connection = dataSource.getInstance().getConnection();
+
+
     }
 
     @Override
@@ -28,10 +33,10 @@ public class ReclamationService implements IReclamationService {
 
             PreparedStatement ps = connection.prepareStatement(query);
 
-
-            ps.setInt(1,reclamation.getIduser());
-            ps.setInt(2,reclamation.getIdobjet());
-            ps.setInt(3,reclamation.getIdtr());
+            //ps.setInt(1,reclamation.getId());
+            ps.setInt(1, reclamation.getIduser());
+            ps.setInt(2, reclamation.getIdobjet());
+            ps.setInt(3, reclamation.getIdtr());
             ps.setTimestamp(4, new Timestamp(reclamation.getDate().getTime()));
 
             System.out.println(ps);
@@ -46,24 +51,24 @@ public class ReclamationService implements IReclamationService {
     }
 
     @Override
-    public void updateReclamation( Reclamation reclamation) {
+    public void updateReclamation(Reclamation reclamation) {
         try {
-      String query= "UPDATE `reclamation` SET" +
-              "`iduser` = ?, "+
-              "`idobjet` = ?, " +
-              "`idtr` = ?, " +
-              "`date` = ? " +
+            String query = "UPDATE `reclamation` SET" +
+                    "`iduser` = ?, " +
+                    "`idobjet` = ?, " +
+                    "`idtr` = ?, " +
+                    "`date` = ? " +
 
-              "WHERE `reclamation`.`idrec` = ?;";
+                    "WHERE `reclamation`.`idrec` = ?;";
 
 
-            PreparedStatement   ps = connection.prepareStatement(query);
-            ps.setInt(1,reclamation.getIduser());
-            ps.setInt(2,reclamation.getIdobjet());
-            ps.setInt(3,reclamation.getIdtr());
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, reclamation.getIduser());
+            ps.setInt(2, reclamation.getIdobjet());
+            ps.setInt(3, reclamation.getIdtr());
             ps.setTimestamp(4, new Timestamp(reclamation.getDate().getTime()));
 
-            ps.setInt(5,reclamation.getId());
+            ps.setInt(5, reclamation.getId());
 
 
             ps.executeUpdate();
@@ -74,10 +79,7 @@ public class ReclamationService implements IReclamationService {
         }
 
 
-
-
     }
-
 
 
     @Override
@@ -98,7 +100,7 @@ public class ReclamationService implements IReclamationService {
     public ArrayList<Reclamation> getReclamations() {
         ArrayList<Reclamation> listReclamations = new ArrayList<>();
         try {
-        String query = "select * from `reclamation`;";
+            String query = "select * from `reclamation`;";
 
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
@@ -112,10 +114,8 @@ public class ReclamationService implements IReclamationService {
             }
             return listReclamations;
         } catch (SQLException e) {
-            System.out.println("erreur liste " + e.getMessage());        }
-
-
-
+            System.out.println("erreur liste " + e.getMessage());
+        }
 
 
         return null;
@@ -132,7 +132,7 @@ public class ReclamationService implements IReclamationService {
     @Override
     public Reclamation findReclamationById(int id) {
 
-        String query = "SELECT * FROM `reclamation` WHERE `id`='"+id+"'";
+        String query = "SELECT * FROM `reclamation` WHERE `id`='" + id + "'";
 
         try {
             return getReclamation(query);
@@ -144,39 +144,21 @@ public class ReclamationService implements IReclamationService {
     }
 
     @Override
-    public ArrayList<Reclamation> findReclamationByIdUser(int idUser) {
+    public Reclamation findReclamationByIdUser(int idUser) {
+        String query = "SELECT * FROM `reclamation` WHERE `iduser`='" + idUser + "'";
 
-
-        ArrayList<Reclamation> listReclamations = new ArrayList<>();
         try {
-            String query = "select * from `reclamation` where `iduser`="+idUser;
+            return getReclamation(query);
+        } catch (SQLException ex) {
 
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query);
-            while (rs.next()) {
-                Reclamation reclamation = new Reclamation();
-                setReclamation(rs, reclamation);
-
-
-                listReclamations.add(reclamation);
-
-            }
-            return listReclamations;
-        } catch (SQLException e) {
-            System.out.println("erreur liste " + e.getMessage());        }
-
-
-
-
-
+            System.out.println("erreur findReclamationByIdUser" + ex.getMessage());
+        }
         return null;
-
     }
-
 
     @Override
     public Reclamation findReclamationByTypeObjet(String typeObjet) {
-        String query = "SELECT * FROM `reclamation` WHERE `typeobjet`='"+typeObjet+"'";
+        String query = "SELECT * FROM `reclamation` WHERE `typeobjet`='" + typeObjet + "'";
 
         try {
             return getReclamation(query);
@@ -190,65 +172,40 @@ public class ReclamationService implements IReclamationService {
     private Reclamation getReclamation(String query) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
-        System.out.println(query);
+
 
         Reclamation reclamation = new Reclamation();
         while (rs.next()) {
 
             setReclamation(rs, reclamation);
-            return reclamation;
+
 
         }
 
 
-        return null;
+        return reclamation;
     }
 
-    @Override
-    public Boolean reclamationExist(Reclamation reclamation){
-        String query = "SELECT * FROM `reclamation`  where " +
-                "`idobjet`="+reclamation.getIdobjet()+" AND `iduser`="+ reclamation.getIduser() +" AND `idtr`=" + reclamation.getIdtr();
 
+    public ObservableList<Reclamation> getReclamationsByUser(Member m) {
+
+        ObservableList<Reclamation> listReclamations = FXCollections.observableArrayList();
         try {
+            String query = "select * from `reclamation` where iduser=" + m.getId();
 
-            if (getReclamation(query) != null)
-                return true;
-            else
-                return false;
-
-        } catch (SQLException ex) {
-
-            System.out.println("erreur reclamationExist" + ex.getMessage());
-        }
-        return null;
-
-
-    }
-
-    @Override
-    public int reclamationCount(Reclamation reclamation) {
-        try {
-
-
-            String query = "SELECT count(*)  as total FROM `reclamation`  where " +
-                    "`idobjet`=" + reclamation.getIdobjet() + " AND `idtr`=" + reclamation.getIdtr();
-            System.out.println(query);
-            Statement stmt = connection.createStatement();
-            ResultSet rs=stmt.executeQuery(query);
-            int a=0;
-            while(rs.next()){
-                a = rs.getInt("total");
-                System.out.println("COUNT(*)="+a);
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+                Reclamation reclamation = new Reclamation();
+                setReclamation(rs, reclamation);
+                listReclamations.add(reclamation);
             }
-            return a;
-
-
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("erreur liste " + e.getMessage());
         }
-
-
-        return 0;
+        return listReclamations;
     }
+
+
+
 }

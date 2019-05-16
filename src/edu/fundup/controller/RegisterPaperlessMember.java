@@ -3,6 +3,7 @@ package edu.fundup.controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.service.MemberService;
+import edu.fundup.utils.DataSource;
 import edu.fundup.utils.RegisterValidation;
 import edu.fundup.utils.SendMail;
 import javafx.beans.value.ChangeListener;
@@ -13,6 +14,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -20,6 +24,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
@@ -29,9 +40,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class RegisterPaperlessMember extends HBox {
@@ -39,7 +52,6 @@ public class RegisterPaperlessMember extends HBox {
     ImageView pic;
 
     public RegisterPaperlessMember() {
-
         MemberService ms = new MemberService();
         ArrayList<String> logins = ms.getAllLogin();
 
@@ -116,7 +128,7 @@ public class RegisterPaperlessMember extends HBox {
         VBox.setMargin(grid1,new Insets(35,0,0,0));
 
         StackPane stack1 = new StackPane();
-        stack1.setStyle("-fx-background-color: rgb(0,0,0, 0.1)");
+        stack1.setStyle("-fx-background-color: rgb(0,0,0, 0.5)");
 
         stack1.getChildren().addAll(box1, nextToBox2);
         stack1.setMargin(nextToBox2, new Insets(480, 15, 25, 425));
@@ -127,11 +139,11 @@ public class RegisterPaperlessMember extends HBox {
         /******* VBox 2 **********/
         VBox box2 = new VBox();
 
-        Label first_nameLabel = new Label("First name : ");
-        Label last_nameLabel = new Label("Last name : ");
-        Label addressLabel = new Label("Address : ");
-        Label countryLabel = new Label("Country : ");
-        Label cityLabel = new Label("City : ");
+        Label first_nameLabel = new Label("First name *: ");
+        Label last_nameLabel = new Label("Last name *: ");
+        Label addressLabel = new Label("Address *: ");
+        Label countryLabel = new Label("Country *: ");
+        Label cityLabel = new Label("City *: ");
 
         TextField last_name = new TextField();
         last_name.setPromptText("Last name");
@@ -170,19 +182,23 @@ public class RegisterPaperlessMember extends HBox {
 
         Button btn = new Button("Register");
         btn.getStyleClass().add("success");
+        btn.setMinHeight(50);
+        btn.setMaxHeight(50);
+        btn.setMinWidth(200);
+        btn.setMaxWidth(200);
 
         box2.setMinWidth(500);
         box2.setMinHeight(500);
 
         StackPane stack2 = new StackPane();
-        stack2.setStyle("-fx-background-color: rgb(0,0,0, 0.1)");
+        stack2.setStyle("-fx-background-color: rgb(0,0,0, 0.5)");
 
 
         box2.getChildren().addAll(titleBox2, grid2);
         stack2.getChildren().addAll(box2, backToBox1, btn);
 
         stack2.setMargin(backToBox1, new Insets(480, 425, 25, 15));
-        stack2.setMargin(btn, new Insets(425, 0, 0, 0));
+        stack2.setMargin(btn, new Insets(410, 0, 0, 0));
 
         //************************************
 
@@ -223,7 +239,7 @@ public class RegisterPaperlessMember extends HBox {
         passwordErrorLab.setMaxWidth(480);
         mailLab.setMaxWidth(480);
         fieldsRequiredError.setMaxWidth(280);
-        wrongcode.setMaxWidth(340);
+        wrongcode.setMaxWidth(480);
 
         logErrorLab.getStyleClass().add("tag");
         passwordErrorLab.getStyleClass().add("tag");
@@ -231,7 +247,6 @@ public class RegisterPaperlessMember extends HBox {
         mailLab.getStyleClass().add("tag");
         fieldsRequiredError.getStyleClass().add("tag");
         wrongcode.getStyleClass().add("tag");
-
 
         login.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -350,17 +365,9 @@ public class RegisterPaperlessMember extends HBox {
             }
         });
 
-        this.setStyle("-fx-padding: 200px 100px 100px 100px;");
-
-        this.getChildren().addAll(stack1);
-
-        this.setAlignment(Pos.CENTER);
-        this.getStylesheets().add("/edu/fundup/ressources/css/register.css");
-
-
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event){
 
                 if ( (!first_name.getText().equals("")) && (!last_name.getText().equals("")) && (!country.getText().equals("")) && (!city.getText().equals("")) && (!address.getText().equals("")) )
                 {
@@ -372,46 +379,226 @@ public class RegisterPaperlessMember extends HBox {
                     m.setRole("Paperless");
                     m.setEnable(1);
 
-                    SendMail sm = new SendMail();
-                    sm.SendEmail(email.getText(),login.getText());
-
                     stack2.getChildren().clear();
                     box2.getChildren().clear();
-                    Label lab = new Label("You’re almost there. Confirm your account by setting the code that you have received by mail here");
 
-                    lab.setMaxWidth(400);
-                    lab.setWrapText(true);
-                    TextField validation = new TextField();
-                    validation.setMaxWidth(200);
-                    Button validateBtn = new Button("Validate");
-                    validateBtn.setStyle("-fx-pref-height: 28px;\n" +
-                            "    -fx-pref-width: 200px;");
-                    validateBtn.getStyleClass().add("success");
-                    validation.setPromptText("code (example : 58181)");
+                    VBox choiceBox = new VBox();
+                    choiceBox.setMinWidth(500);
+                    choiceBox.setMinHeight(500);
 
-                    VBox.setMargin(validation,new Insets(20,0,20,0));
-                    VBox.setMargin(validateBtn,new Insets(20,0,40,0));
+                    Button smsChoice = new Button("Confirm Account by SMS");
+                    smsChoice.getStyleClass().add("success");
+                    Button mailChoice = new Button("Confirm Account by Mail");
+                    mailChoice.getStyleClass().add("success");
 
-                    box2.setAlignment(Pos.CENTER);
+                    mailChoice.setMinHeight(80);
+                    mailChoice.setMaxHeight(80);
+                    mailChoice.setMinWidth(300);
+                    mailChoice.setMaxWidth(300);
+                    smsChoice.setMinHeight(80);
+                    smsChoice.setMaxHeight(80);
+                    smsChoice.setMinWidth(300);
+                    smsChoice.setMaxWidth(300);
 
-                    box2.getChildren().addAll(titleBox3,lab,validation,validateBtn);
-                    stack2.getChildren().add(box2);
+                    mailChoice.setOnAction(e-> {
+                        SendMail sm = new SendMail();
+                        sm.SendEmail(email.getText(),login.getText());
 
-                    validateBtn.setOnAction(a->{
-                        if (validation.getText().equals(ms.getCode(m.getmail()))){
-                            box2.getChildren().remove(wrongcode);
-                            validation.getStyleClass().remove("error");
-                            ms.RegisterPaperlessMember(m);
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Success");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Registration has been successfully completed.");
-                            alert.showAndWait();
-                        } else if (!(validation.getText().equals(ms.getCode(m.getmail())))){
-                            box2.getChildren().add(wrongcode);
-                            validation.getStyleClass().add("error");
-                        }
+                        stack2.getChildren().clear();
+                        box2.getChildren().clear();
+                        Label lab = new Label("You’re almost there. Confirm your account by setting the code that you have received by mail here");
+
+                        lab.setMaxWidth(400);
+                        lab.setWrapText(true);
+                        TextField validation = new TextField();
+                        validation.setMaxWidth(200);
+                        Button validateBtn = new Button("Validate");
+                        validateBtn.setStyle("-fx-pref-height: 28px;\n" +
+                                "    -fx-pref-width: 200px;");
+                        validateBtn.getStyleClass().add("success");
+                        validation.setPromptText("code (example : 58181)");
+
+                        VBox.setMargin(validation,new Insets(20,0,20,0));
+                        VBox.setMargin(validateBtn,new Insets(20,0,40,0));
+
+                        box2.setAlignment(Pos.CENTER);
+
+                        box2.getChildren().addAll(titleBox3,lab,validation,validateBtn);
+                        stack2.getChildren().add(box2);
+
+                        validateBtn.setOnAction(a->{
+                            if (validation.getText().equals(ms.getCode(m.getMail()))){
+                                box2.getChildren().remove(wrongcode);
+                                validation.getStyleClass().remove("error");
+                                ms.RegisterPaperlessMember(m);
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Success");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Registration has been successfully completed.");
+                                alert.showAndWait();
+                            } else if (!(validation.getText().equals(ms.getCode(m.getMail())))){
+                                Random randomGenerator = new Random();
+                                Random r = new Random();
+                                Color randomColor = new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+                                String hex = Integer.toHexString(randomColor.getRGB() & 0xffffff);
+                                if (hex.length() < 6) {
+                                    hex = "0" + hex;
+                                }
+                                hex = "#" + hex;
+                                if(box2.getChildren().contains(wrongcode)){
+                                    box2.getChildren().remove(wrongcode);
+                                    wrongcode.setStyle("-fx-background-color:"+hex+"!important;");
+                                    box2.getChildren().add(wrongcode);
+                                }else {
+                                    box2.getChildren().add(wrongcode);
+                                    validation.getStyleClass().add("error");
+                                }
+                            }
+                        });
                     });
+                    smsChoice.setOnAction(s -> {
+
+                        stack2.getChildren().clear();
+                        box2.getChildren().clear();
+
+                        Label lab = new Label("You’re almost there. Please enter your phone number to send you a confirmation code");
+                        lab.setMaxWidth(400);
+                        lab.setWrapText(true);
+
+                        TextField num = new TextField();
+                        num.setMaxWidth(200);
+                        num.setPromptText("(example: 29576707)");
+
+                        TextField validation = new TextField();
+                        validation.setMaxWidth(200);
+                        Button validateBtn = new Button("Validate");
+                        validateBtn.setStyle("-fx-pref-height: 28px;\n" +
+                                "    -fx-pref-width: 200px;");
+                        validateBtn.getStyleClass().add("success");
+                        validation.setPromptText("code (example : 58181)");
+                        VBox.setMargin(validation,new Insets(20,0,20,0));
+                        VBox.setMargin(validateBtn,new Insets(20,0,40,0));
+
+                        Button send = new Button("Send SMS");
+                        send.getStyleClass().add("success");
+                        send.setMinHeight(50);
+                        send.setMaxHeight(50);
+                        send.setMinWidth(200);
+                        send.setMaxWidth(200);
+
+                        Label numError = new Label("Please enter a valid Phone number");
+                        numError.getStyleClass().add("tag");
+
+                        send.setOnAction(action -> {
+                            if (!num.getText().equals("") && num.getText().length()==8 ) {
+                                if (box2.getChildren().contains(numError)){
+                                    box2.getChildren().remove(numError);
+                                }
+                                // GENERATING CODE & INSERT INTO DB
+                                Random rand = new Random(System.currentTimeMillis());
+                                int code = rand.nextInt(99999);
+                                String strCode = code+"";
+                                System.out.println("code " + code + " ");
+                                    //*****************************************
+
+                                    // API to Send SMS
+                                String apiKey = "apikey=wUT757O+wtE-YKr4aSx9q7xzBVodX96c4JmXVuJq7Y";
+                                String message = "&message=This is an SMS Confirmation for your Register at Tunisia Charity, here is your code"+ code;
+                                String sender = "&sender=TUN Charity";
+                                String numbers = "&numbers=+216" + num.getText();
+
+                                // Send data
+                                HttpURLConnection conn = null;
+                                try {
+                                    conn = (HttpURLConnection) new URL("https://api.txtlocal.com/send/?").openConnection();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                String data = apiKey + numbers + message + sender;
+                                conn.setDoOutput(true);
+                                try {
+                                    conn.setRequestMethod("POST");
+                                } catch (ProtocolException e) {
+                                    e.printStackTrace();
+                                }
+                                conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
+                                try {
+                                    conn.getOutputStream().write(data.getBytes("UTF-8"));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                 BufferedReader rd = null;
+                                try {
+                                    rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                final StringBuffer stringBuffer = new StringBuffer();
+                                String line = null;
+                                while (true) {
+                                    try {
+                                        if (!((line = rd.readLine()) != null)) break;
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    //stringBuffer.append(line);
+                                    // JOptionPane.showMessageDialog(null, "message" + line);
+                                }
+                                box2.getChildren().removeAll(num,send);
+                                box2.getChildren().addAll(validation,validateBtn);
+                                lab.setText("An SMS has been sent to you, please confirm your account by setting the code that you have received !");
+                                validateBtn.setOnAction(e-> {
+                                    if (validation.getText().equals(strCode)){
+
+                                        box2.getChildren().remove(wrongcode);
+                                        validation.getStyleClass().remove("error");
+                                        ms.RegisterPaperlessMember(m);
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Success");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Registration has been successfully completed.");
+                                        alert.showAndWait();
+                                    } else if (!validation.getText().equals(strCode)){
+
+                                        box2.getChildren().add(wrongcode);
+                                        validation.getStyleClass().add("error");
+                                    }
+                                });
+                            } else {
+                                Random randomGenerator = new Random();
+                                Random r = new Random();
+                                Color randomColor = new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+                                String hex = Integer.toHexString(randomColor.getRGB() & 0xffffff);
+                                if (hex.length() < 6) {
+                                    hex = "0" + hex;
+                                }
+                                hex = "#" + hex;
+
+                                    if (box2.getChildren().contains(numError)) {
+                                        box2.getChildren().remove(numError);
+                                        numError.setStyle("-fx-background-color:"+hex+"!important;");
+                                    box2.getChildren().add(numError);
+                                } else {
+                                    box2.getChildren().add(numError);
+                                }
+                            }
+                        });
+
+                        box2.setAlignment(Pos.CENTER);
+                        box2.getChildren().addAll(titleBox3,lab,num,send);
+
+                        VBox.setMargin(titleBox3, new Insets(0,0,20,0));
+                        VBox.setMargin(lab, new Insets(0,0,20,0));
+                        VBox.setMargin(num, new Insets(0,0,20,0));
+
+                        stack2.getChildren().add(box2);
+                    });
+
+                    box2.getChildren().addAll(titleBox3,smsChoice,mailChoice);
+                    box2.setAlignment(Pos.CENTER);
+                    VBox.setMargin(titleBox3, new Insets(0,0,20,0));
+                    VBox.setMargin(smsChoice, new Insets(0,0,80,0));
+                    stack2.getChildren().add(box2);
                 }
                 else {
                     stack2.getChildren().add(fieldsRequiredError);
@@ -419,5 +606,12 @@ public class RegisterPaperlessMember extends HBox {
                 }
             }
         });
+
+        this.setStyle("-fx-padding: 200px 100px 100px 100px;");
+
+        this.getChildren().addAll(stack1);
+
+        this.setAlignment(Pos.CENTER);
+        this.getStylesheets().add("/edu/fundup/ressources/css/register.css");
     }
 }

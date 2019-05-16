@@ -6,7 +6,6 @@
 package edu.fundup.model.service;
 
 import edu.fundup.exception.DataBaseException;
-
 import edu.fundup.model.entity.Post;
 import edu.fundup.model.iservice.IServicePost;
 import edu.fundup.utils.DataSource;
