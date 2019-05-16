@@ -247,9 +247,6 @@ public class UpdateEvents extends VBox {
             e.setId_categorie(1);
 
             se.update(e, amodifier.getId_event());
-            alert.setContentText("Evenement modifiee avec suuces ! ");
-            alert.setHeaderText("succes!!!");
-            alert.showAndWait();
             this.getChildren().clear();
 
             Evente ev = new Evente(id);
