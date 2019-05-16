@@ -63,6 +63,10 @@ public class MyAnimalsPosts extends GridPane implements Alerts {
 	int j = 1;
 	int v = 0;
 	int z = 1;
+        
+        
+        
+        
 
 	public MyAnimalsPosts(/* String title,String desc,String date */) {
 		JFXNodesList buttonsNode = new JFXNodesList();
