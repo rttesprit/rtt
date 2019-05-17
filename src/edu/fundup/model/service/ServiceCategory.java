@@ -6,7 +6,6 @@
 package edu.fundup.model.service;
 
 import edu.fundup.exception.DataBaseException;
-
 import edu.fundup.model.entity.Categorie;
 import edu.fundup.model.entity.Post;
 import edu.fundup.model.iservice.IServiceCategorie;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 /**
  *
  * @author hhamzaoui
+ * @param <Categorie>
  */
 public class ServiceCategory implements IServiceCategorie {
     Connection conn = DataSource.getInstance().getConnection();

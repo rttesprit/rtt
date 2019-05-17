@@ -5,21 +5,24 @@
  */
 package edu.fundup.controller;
 
+import animatefx.animation.SlideInRight;
 import com.jfoenix.controls.JFXButton;
-import edu.fundup.exception.DataBaseException;
-import edu.fundup.model.entity.Events;
+import static edu.fundup.controller.Acceuil.LAB_EVENT;
 import edu.fundup.model.entity.Member;
-import edu.fundup.model.service.ServiceEvents;
 import edu.fundup.utils.AutoCompleteTextField;
-import edu.fundup.utils.ObservableUser;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
+
+
+import edu.fundup.utils.ObservableUser;
+import javafx.scene.control.*;
+
 import edu.fundup.utils.UserSession;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.*;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -27,7 +30,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 /**
  *
  * @author hhamzaoui
@@ -41,23 +45,37 @@ public class Acceuil extends HBox implements Observer {
     public static Button LAB_ADOPTION;
     public static Button LAB_RECLAMATION;
     public static Button LAB_ABOUT;
-    public static Button LOGIN;
-    public static JFXButton INSCRIPTION;
+
+    public static Button LOGIN = new Button("Login");
+
     public static AutoCompleteTextField TXT_SEARCH;
     public static Label Title;
     public static VBox rightPane = new VBox();
     public static VBox leftPane = new VBox();
     public static VBox rightPaneChild = new VBox();
     public static VBox leftPaneChild = new VBox();
+
+
+    public static Button INSCRIPTION = new Button("Inscription");
+    public static VBox navButtons = new VBox();
+    public static HBox navBar = new HBox();
+    public static BorderPane bpNavBar = new BorderPane();
     public static HBox right = new HBox();
     public static HBox filter = new HBox();
     public static ScrollPane listEvents ;
+    public static HBox userbox = new HBox();
+    public static GridPane catt = new MyAnimalsPosts();
 
-
-    public static Member onlineMember = UserSession.getInstance().getMember();
+    Member onlineMember = UserSession.getInstance().getMember();
 
     public Acceuil() {
-        
+        userbox.setMinHeight(100);
+        userbox.setMaxHeight(100);
+        userbox.setMinWidth(300);
+
+        rightPaneChild.setAlignment(Pos.CENTER);
+
+
         // Create the Subject and Observers.
         ObservableUser observableUser = new ObservableUser(onlineMember);
         // Add the Observer
@@ -95,7 +113,6 @@ public class Acceuil extends HBox implements Observer {
 
         rightPane.setMinWidth(leftPane.getMinWidth() * 3);
 
-        rightPane.setSpacing(50);
         rightPane.setPadding(new Insets(0, 0, 0, 0));
 
         TXT_SEARCH.setFont(new Font(20));
@@ -188,213 +205,60 @@ public class Acceuil extends HBox implements Observer {
 
         loadLoginGuiLang();
 
-        leftPaneChild.getChildren()
-                .addAll(Title);
-
 
         // ------------Logic------------
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
 
+
+
+        
+
+
         rightPaneChild.getChildren().addAll(LOGIN, INSCRIPTION);
         rightPane.getChildren().addAll(right);
 
-        LOGIN.setOnAction(e -> {
-            rightPane.getChildren().clear();
-            rightPane.getChildren().remove(right);
-            LoginController lc = new LoginController();
-            rightPane.getChildren().add(lc);
-        });
-        INSCRIPTION.setOnAction(e -> {
-            InscriptionController inscri = new InscriptionController();
-            rightPane.getChildren().add(inscri);
-        });
+
+         
+
+            //rightPane.getChildren().addAll(right, bc, affiche);
+        
+        // ********************* MAIN FOR INTEGRATION ***********************
+        
 
         contenu = new HBox();
         contenu.setAlignment(Pos.CENTER);
-
-       LAB_EVENT.setOnMouseClicked(e
-                -> { 
-
-           if (UserSession.getInstance().getMember() == null) {
-                   Alert a = new Alert(Alert.AlertType.ERROR);
-                    a.setTitle("Connexion requise !! ");
-                    a.setHeaderText(null);
-                    a.setContentText("Vous devez etre connectee ");
-                    a.showAndWait();    
-                       }
-           else{
-            rightPane.getChildren().clear();
-            rightPane.getChildren().remove(right);
-
-            try {
-                
-                Title.setText("Liste des evenements");
-                listEvents = new ListEvents();
-                contenu = new HBox();
-                listEvents.setMinWidth(600);
-                listEvents.setPadding(new Insets(4, 10, 10, 4));
-
-                filter = new HBox();
-                ComboBox typeFilter = new ComboBox();
-                TextField text = new TextField();
-                JFXButton BTN_SEARCH = new JFXButton("Chercher");
-                JFXButton BTN_ADD = new JFXButton("Ajouter Evenements");
-                
-                filter.setAlignment(Pos.CENTER);
-                filter.setSpacing(20);
-
-                typeFilter.getItems().addAll("Titre", "Categorie", "Emplacement");
-                typeFilter.setPromptText("Filter");
-                typeFilter.setMinWidth(150);
-                typeFilter.setMinHeight(40);
-
-                text.setMinWidth(300);
-
-                BTN_SEARCH.getStyleClass().add("primary");
-                BTN_SEARCH.setPrefWidth(300);
-                BTN_SEARCH.setFont(new Font(20));
-
-                BTN_ADD.getStyleClass().add("primary");
-                BTN_ADD.setPrefWidth(300);
-                BTN_ADD.setFont(new Font(20));
-                
-                VBox v = new VBox();
-                v.setSpacing(18);
-
-                BTN_SEARCH.setOnMouseClicked((event) -> {
-                    
-                    ServiceEvents se = new ServiceEvents();
-                    
-                    if (typeFilter.getValue()==null)
-                   {
-                        alert.setContentText("");
-                        alert.setHeaderText("Chosisez un filter !!!");
-                        alert.showAndWait();
-                   }
-                   
-                    if (typeFilter.getValue().toString().equals("Titre"))
-                    {
-                       ArrayList<Events> list = se.findByTitre(text.getText());
-                    try {
-                        
-                        ScrollPane lis = new SearchEvent(list);
-
-                        contenu.setAlignment(Pos.CENTER);
-                        contenu.getChildren().clear();
-                        contenu.getChildren().addAll( lis);
-                        
-                        VBox V = new VBox();
-                        V.getChildren().addAll(filter, contenu);
-                        
-                        rightPane.getChildren().addAll(V);
-
-                    } catch (DataBaseException ex) {
-                    } 
-                    }
-                    else if (typeFilter.getValue().toString().equals("Categorie"))
-                    {
-                        
-                       ArrayList<Events> list = se.findByCategorie(text.getText());
-                       
-                    try {
-                        ScrollPane lis = new SearchEvent(list);
-
-                        contenu.setAlignment(Pos.CENTER);
-                        contenu.getChildren().clear();
-                        contenu.getChildren().addAll( lis);
-                        
-                        VBox V = new VBox();
-                        V.getChildren().addAll(filter, contenu);
-                        
-                        rightPane.getChildren().addAll(V);
-                        
-                    } catch (DataBaseException ex) {
-                    } 
-                    }
-                    else if (typeFilter.getValue().toString().equals("Emplacement"))
-                    {
-                        
-                       ArrayList<Events> list = se.findByLocation(text.getText());
-                       
-                    try {
-                        ScrollPane lis = new SearchEvent(list);
-
-                        contenu.setAlignment(Pos.CENTER);
-                        contenu.getChildren().clear();
-                        contenu.getChildren().addAll( lis);
-                        
-                        VBox V = new VBox();
-                        V.getChildren().addAll(filter, contenu);
-                        
-                        rightPane.getChildren().addAll(V);
-                        
-                    } catch (DataBaseException ex) {
-                    } 
-                    }
-                    });
-
-                BTN_ADD.setOnMouseClicked((event) -> {
-                    
-                    rightPane.getChildren().clear();
-
-                try {
-                    
-                    VBox add = new AddEvents();
-                    contenu = new HBox();
-                    
-                    add.setMinWidth(400);
-                    add.setSpacing(20);
-                    add.setPadding(new Insets(4, 10, 10, 4));
-
-                    contenu.setAlignment(Pos.CENTER);
-                    contenu.getChildren().addAll(add);
-
-                    rightPane.getChildren().addAll(right, contenu);
-
-                } catch (DataBaseException ex) {
-
+        
+        LAB_ADOPTION.setOnMouseClicked(e
+                -> {
+           rightPane.getChildren().clear(); 
+           //catt.getStyleClass().add("/edu/fundup/ressources/css/StyleJubran.css");     	
+           rightPane.getChildren().addAll(catt);
+            //   new SlideInRight(rightPane).play(); 
+           new  SlideInRight(rightPane).play();
+        
                 }
-                    });
-                 listEvents = new ListEvents();   
-                 listEvents.setMinWidth(600);
-                listEvents.setPadding(new Insets(4, 10, 10, 4));
-                v.getChildren().addAll(filter, listEvents);
-                contenu.setAlignment(Pos.CENTER);
-                contenu.getChildren().addAll(v);
-                filter.getChildren().addAll(typeFilter, text, BTN_SEARCH, BTN_ADD);
-                rightPane.getChildren().addAll(right, contenu);
+                );
 
-            } catch (DataBaseException ex) {
-
-            }
-
-        }
-           }
-        );
+       
+        // FIRST PAGE LOGIN ***********************************************
         
-        
-        right.getChildren()
-                .addAll(leftPaneChild, rightPaneChild);
-        leftPane.getChildren()
-                .addAll(TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
+       
 
-        this.getChildren()
-                .addAll(leftPane, rightPane);
+        leftPane.getChildren().addAll(userbox,TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
 
-    }
+
+        this.getChildren().addAll(leftPane, rightPane);
+
+        // ********************* MAIN FOR INTEGRATION ***********************
+    
+       
 
     /**
      *
      */
-    public static void loadLoginGuiLang() {
-        Acceuil.TXT_SEARCH.setPromptText("    Search..........");
-        Acceuil.LOGIN.setText("Login");
-        Acceuil.INSCRIPTION.setText("Inscription");
 
     }
-
-
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Member) {
@@ -407,5 +271,14 @@ public class Acceuil extends HBox implements Observer {
             System.out.println("FROM ACCEUIL  Member: Some other change to subject!");
         }
     }
+    
+        public static void loadLoginGuiLang() {
+        Acceuil.TXT_SEARCH.setPromptText("    Search..........");
+        Acceuil.LOGIN.setText("Login");
+        Acceuil.INSCRIPTION.setText("Inscription");
+
+    }
 
 }
+    
+

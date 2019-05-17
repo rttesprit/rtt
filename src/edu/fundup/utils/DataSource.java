@@ -1,7 +1,5 @@
 package edu.fundup.utils;
 
-import com.mysql.cj.util.TimeUtil;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,11 +11,10 @@ import java.sql.SQLException;
 public class DataSource {
     String myDriver = "com.mysql.jdbc.Driver";
 
-
     String url = "jdbc:mysql://localhost:3307/charity?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 
     String login = "root";
-    String password = "";
+    String password = ""; 
     private Connection connection;
     private static DataSource instance;
 

@@ -12,20 +12,20 @@ package edu.fundup.model.entity;
 public class PartRatiEvent {
     
     private String nom;
-    private String prénom;
+    private String préom;
     private String email;
     private Double rating;
 
-    public PartRatiEvent(String nom, String prénom, String email, Double rating) {
+    public PartRatiEvent(String nom, String préom, String email, Double rating) {
         this.nom = nom;
-        this.prénom = prénom;
+        this.préom = préom;
         this.email = email;
         this.rating = rating;
     }
 
-    public PartRatiEvent(String nom, String prénom, String email) {
+    public PartRatiEvent(String nom, String préom, String email) {
         this.nom = nom;
-        this.prénom = prénom;
+        this.préom = préom;
         this.email = email;
     }
 
@@ -36,8 +36,8 @@ public class PartRatiEvent {
         return nom;
     }
 
-    public String getPrénom() {
-        return prénom;
+    public String getPréom() {
+        return préom;
     }
 
     public String getEmail() {
@@ -52,8 +52,8 @@ public class PartRatiEvent {
         this.nom = nom;
     }
 
-    public void setPrénom(String prénom) {
-        this.prénom = prénom;
+    public void setPréom(String préom) {
+        this.préom = préom;
     }
 
     public void setEmail(String email) {

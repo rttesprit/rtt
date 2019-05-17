@@ -5,6 +5,8 @@
  */
 package edu.fundup.model.entity;
 
+import javafx.beans.property.ObjectProperty;
+
 /**
  *
  * @author Guideinfo
@@ -158,17 +160,16 @@ public class Member {
         this.photo = photo_path;
     }
 
-
     public int getId(){
         return id;
     }
-    public String getlogin() {
+    public String getLogin() {
         return login;
     }
     public void setlogin(String login) {
         this.login = login;
     }
-    public String getmail() {
+    public String getMail() {
         return mail;
     }
     public void setmail(String mail) {
@@ -273,12 +274,21 @@ public class Member {
     public String getRegister_date(){ return this.register_date; }
 
     @Override
-    public String toString(){
-        return "[ id :"+this.getId()+" role : "+this.getRole()+" login : "+this.getlogin()+ " @mail : "+this.getmail()+"password : "+this.getPassword()+
-                " first_name : "+this.getfirst_name()+" last_name : "+this.getlast_name()+" address "+this.getAddress()+" city : "+this.getCity()+
-                " country : "+this.getCountry()+" payment_type : "+this.getPayment_type()+"credit_card_number"+this.getCredit_card_number()+
-                " cvv_num : "+this.getCvv_num()+" president : "+this.getPresident()+" foundation_date "+this.getFoundation_date()+
-                "enable : "+this.getEnable()+" photo_path"+"register_date"+this.getRegister_date()+ "]";
+    public String toString() {
+        if (this.getRole().equalsIgnoreCase("paperless")) {
+            return "[ ID :" + this.getId() + "| Role : " + this.getRole() + " Email : " + this.getMail()+" Prenom : " + this.getfirst_name() + " Nom : " + this.getlast_name()+
+                    "enable : " + this.getEnable() + "Login "+this.getLogin()+ "]";
+        } else if (this.getRole().equalsIgnoreCase("contributor")){
+            return "[ ID :" + this.getId() + "| Role : " + this.getRole() + " Email : " + this.getMail()+" Prenom : " + this.getfirst_name() + " Nom : " + this.getlast_name()
+                    + " payment_type : " + this.getPayment_type() + "credit_card_number" + this.getCredit_card_number() +
+                    " cvv_num : " + this.getCvv_num()+"enable : " + this.getEnable() + "Login"+this.getLogin()+ "]";
+        }
+        else if  (this.getRole().equalsIgnoreCase("Entreprise")) {
+            return "[ ID :" + this.getId() + "| Role : " + this.getRole() + " Email : " + this.getMail()
+                    + " president : " + this.getPresident() + " foundation_date " + this.getFoundation_date() +
+                    "enable : " + this.getEnable() + "Login"+this.getLogin()+ "]";
+        }
+        else
+            return "Admin";
     }
-
 }
