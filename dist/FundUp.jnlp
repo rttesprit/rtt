@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="FundUp.jar" size="43804150" download="eager" />
+    <jar href="FundUp.jar" size="43804152" download="eager" />
     <jar href="lib\GMapsFX-2.10.0.jar" size="154471" download="eager" />
     <jar href="lib\JavaFileUploader.jar" size="4633" download="eager" />
     <jar href="lib\TrayNotification.jar" size="41019" download="eager" />

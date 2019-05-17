@@ -112,7 +112,6 @@ public class Acceuil extends HBox implements Observer {
         
         rightPaneChild.setAlignment(Pos.CENTER);
 
-
         // Create the Subject and Observers.
         ObservableUser observableUser = new ObservableUser(onlineMember);
         // Add the Observer
