@@ -97,8 +97,9 @@ public class Evente extends HBox {
         sp.getStylesheets().add("/edu/fundup/ressources/css/theme.css");
         sp.setStyle("scroll-pane");
         sp.setHbarPolicy(ScrollBarPolicy.NEVER);
-        sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+        sp.setVbarPolicy(ScrollBarPolicy.NEVER);
         sp.setPadding(new Insets(50, 50, 50, 50));
+        
         
         VBox firstBox = new VBox();
         firstBox.setSpacing(30);

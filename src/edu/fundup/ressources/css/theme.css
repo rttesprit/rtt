@@ -954,3 +954,376 @@ VBox > .split-menu-button.last > .arrow-button {
 			#a6b5c9,
 			linear-gradient(#768aa5 0%, #34495e 5%, #5877a2 100%);
 }
+
+
+
+#PHONE-FIELD{
+    -fx-min-width: 450px;
+    -fx-max-width: 450px;
+}
+#TEX-VERIFY{
+    -fx-min-width: 50px;
+    -fx-font-size: 16;
+    -fx-text-alignment: center;
+    -fx-text-fill: #757575;
+    -fx-font-family: "Leelawadee UI";
+}
+#BUTTON-VERIF{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 190px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('../../../../images/phone.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+
+}
+
+#BUTTON-RESET{
+    -fx-background-color: #800026;
+    -fx-text-fill: white;
+    -fx-pref-width: 190px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('../../../../images/reset.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+#BUTTON-VERIF-CAMPAIGN{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('../../../../images/phone.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+
+#HEADER{
+    -fx-min-width: 50px;
+    -fx-font-weight: BOLD;
+    -fx-text-alignment: LEFT;
+    -fx-font-size: 25;
+    -fx-text-fill: #7B1FA2;
+}
+#HBOX-HEADER{
+    -fx-min-width: 850px;
+    -fx-border-color: #C2185B;
+    -fx-border-width: 0 0 1 0;
+   -fx-border-image-insets: 20;
+}
+
+#LBL-HEADER{
+    -fx-min-width: 50px;
+    -fx-font-weight: BOLD;
+    -fx-text-alignment: LEFT;
+    -fx-font-size: 25;
+    -fx-text-fill: #7B1FA2;
+}
+.TITLE-LABELS{
+    -fx-font-weight: BOLD;
+    -fx-text-fill: #212121;
+
+}
+.ALLGRID-FIELD{
+
+}
+.TWO-ROW-FIELD{
+    -fx-min-width: 350px;
+    -fx-max-width: 200px;
+
+}
+
+#LBL_SUB_HEADER{
+    -fx-text-alignment: CENTER;
+    -fx-font-size: 26;
+    -fx-text-fill: #757575;
+    -fx-font-family: "Tw Cen MT Condensed";
+}
+
+#BUTTON-NEXT{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 50px;
+    -fx-background-image: url('../../../../images/next.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+.POSTS{
+	-fx-pref-width: 5000px;
+    -fx-min-width: 500px;
+    -fx-pref-height: 150px;
+}
+
+.SUBGRID_GENERAL{
+		    -fx-start-margin:150px;	 
+	        -fx-padding: 10 10 10 10;
+	       
+	        
+	
+}
+.SUB_GRIDGENERAL_RIGHTSIDE{
+	    -fx-start-margin:100px;	 
+	    -fx-background-color: #fff;
+        -fx-padding: 10 10 10 10;
+
+}   
+
+#PHONE-FIELD{
+    -fx-min-width: 450px;
+    -fx-max-width: 450px;
+}
+#TEX-VERIFY{
+    -fx-min-width: 50px;
+    -fx-font-size: 16;
+    -fx-text-alignment: center;
+    -fx-text-fill: #757575;
+    -fx-font-family: "Leelawadee UI";
+}
+#BUTTON-VERIF{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 190px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('/edu/fundup/ressources/images/sms.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+
+}
+
+#BUTTON-RESET{
+    -fx-background-color: #800026;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 50px;
+    -fx-background-image: url('/edu/fundup/ressources/images/reset.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+#BUTTON-VERIF-CAMPAIGN{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 70px;
+    -fx-background-image: url('../../../../images/phone.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+
+#HEADER{
+    -fx-min-width: 50px;
+    -fx-font-weight: BOLD;
+    -fx-text-alignment: LEFT;
+    -fx-font-size: 25;
+    -fx-text-fill: #7B1FA2;
+}
+#HBOX-HEADER{
+    -fx-min-width: 850px;
+    -fx-border-color: #C2185B;
+    -fx-border-width: 0 0 1 0;
+   -fx-border-image-insets: 20;
+}
+
+#LBL-HEADER{
+    -fx-min-width: 50px;
+    -fx-font-weight: BOLD;
+    -fx-text-alignment: LEFT;
+    -fx-font-size: 25;
+    -fx-text-fill: #004d40 ;
+}
+.TITLE-LABELS{
+    -fx-font-weight: BOLD;
+    -fx-text-fill: #212121;
+
+}
+.ALLGRID-FIELD{
+
+}
+.TWO-ROW-FIELD{
+    -fx-min-width: 350px;
+    -fx-max-width: 200px;
+
+}
+
+#LBL_SUB_HEADER{
+    -fx-text-alignment: CENTER;
+    -fx-font-size: 26;
+    -fx-text-fill: #757575;
+    -fx-font-family: "Tw Cen MT Condensed";
+}
+
+#BUTTON-NEXT{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 50px;
+    -fx-background-image: url('/edu/fundup/ressources/images/go.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+.BACK-BUTTON{
+    -fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/back.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#SUBMIT-BUTTON{
+    -fx-background-color: #008039;
+    -fx-text-fill: white;
+    -fx-pref-width: 210px;
+    -fx-min-width: 210px;
+    -fx-pref-height: 50px;
+    -fx-background-image: url('/edu/fundup/ressources/images/submit.png');
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10%;
+}
+
+#MY_POSTS_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/myposts.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+
+#CATEGORIE_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/categorie.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#MY_SETTINGS_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/setting.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#MY_DISLIKE_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/dislike.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#MY_ADD_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/add.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#MY_LIKE_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/like.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#EDIT_BUTTON{
+		-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/edit.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#MY_LIST_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/list.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#MY_LIST2_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/list2.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#MY_TABLE_BUTTON{
+	-fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/table.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#DESC_FIELD{
+	-fx-min-width: 900px;
+    -fx-max-width: 900px;	
+}
+.ANIMAL_POSTS{
+	-fx-background-color:white;
+	-fx-min-width: 250px;
+	-fx-min-height: 300px;	
+	-fx-max-width: 250px;
+	-fx-max-height: 300px;
+
+}
+#DELETT_POST_BUTTON{
+	 -fx-text-fill: white;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('/edu/fundup/ressources/images/delet.png');
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+#TOGGLE_SMS {
+	 -jfx-toggle-color: #009688;
+     -jfx-untoggle-color: #FAFAFA;
+     -jfx-toggle-line-color: #77C2BB;
+     -jfx-untoggle-line-color: #999999;
+     -jfx-size: 10.0;
+     -jfx-disable-visual-focus: false;
+}

@@ -308,8 +308,6 @@ public class PostDetails extends GridPane{
 		editButton.setId("EDIT_BUTTON");
 		SUBGRID_GENERAL.setHgap(400);
 		
-		Gridwidth = FundUp.GLOBAL_SCENE.getWidth()-400;
-		//SUBGRID_GENERAL.setMinWidth(Gridwidth);
  		SUBGRID_GENERAL.getStyleClass().add("SUBGRID_GENERAL");
  		SUB_GRIDGENERAL_RIGHTSIDE.setMargin(BUTTON_CONTRIBUTE, new Insets(0,0,80,0));
 		SUB_GRIDGENERAL_RIGHTSIDE.setMargin(GRIDPANE_DONNORS, new Insets(0,0,80,0));

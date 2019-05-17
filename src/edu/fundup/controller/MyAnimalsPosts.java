@@ -144,6 +144,7 @@ public class MyAnimalsPosts extends GridPane implements Alerts {
 
 		GENERAL_GRID.add(GridPane_HEADER, 0, 0);
 		this.getChildren().addAll(GENERAL_GRID);
+                this.getStyleClass().add("/edu/fundup/ressources/css/StyleJubran.css");
 	}
 
 	private void deletePost() throws DataBaseException {
@@ -279,8 +280,8 @@ public class MyAnimalsPosts extends GridPane implements Alerts {
 				imgEmptyList.setFitHeight(400);
 				imgEmptyList.setFitWidth(500);
 				SUB_GRID.getChildren().add(imgEmptyList);
-				SUB_GRID.setMargin(imgEmptyList,
-						new Insets(50, FundUp.GLOBAL_SCENE.getWidth() / 2, 0, FundUp.GLOBAL_SCENE.getWidth() / 2));
+				/*SUB_GRID.setMargin(imgEmptyList,
+						new Insets(50, FundUp.GLOBAL_SCENE.getWidth() / 2, 0, FundUp.GLOBAL_SCENE.getWidth() / 2));*/
 			}
 			scp.setContent(SUB_GRID);
 			scp.setPrefSize(2000, 1300);

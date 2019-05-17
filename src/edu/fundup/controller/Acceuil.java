@@ -5,6 +5,7 @@
  */
 package edu.fundup.controller;
 
+import animatefx.animation.SlideInRight;
 import com.jfoenix.controls.JFXButton;
 import static edu.fundup.controller.Acceuil.LAB_EVENT;
 import edu.fundup.exception.DataBaseException;
@@ -261,6 +262,17 @@ public class Acceuil extends HBox implements Observer {
 
         contenu = new HBox();
         contenu.setAlignment(Pos.CENTER);
+        
+        LAB_ADOPTION.setOnMouseClicked(e
+                -> {
+           rightPane.getChildren().clear(); 
+           //catt.getStyleClass().add("/edu/fundup/ressources/css/StyleJubran.css");     	
+           rightPane.getChildren().addAll(catt);
+            //   new SlideInRight(rightPane).play(); 
+           new  SlideInRight(rightPane).play();
+        
+                }
+                );
 
        LAB_EVENT.setOnMouseClicked(e
                 -> { 

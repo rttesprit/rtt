@@ -182,8 +182,8 @@ public class AddAnimal extends GridPane implements Alerts {
 		FIELD_Campaign_Title.setValidators(validators);
 		FIELD_GOAL.setValidators(validators);
 		FIELD_Campaign_Title.setValidators(validators);
-		COMBO_FUNDRAISING_REASON.setValidators(validators);
-		COMBO_LOCATION.setValidators(validators);
+		//COMBO_FUNDRAISING_REASON.setValidators(validators);
+//		COMBO_LOCATION.setValidators(validators);
 		ArrayList<Control> tobeValidated = new ArrayList<>();
 		tobeValidated.add(FIELD_Campaign_Title);
 		tobeValidated.add(FIELD_GOAL);
@@ -192,7 +192,7 @@ public class AddAnimal extends GridPane implements Alerts {
 		tobeValidated.add(COMBO_LOCATION);
 		validators.setMessage("No input given ");
 
-		for (Control c : tobeValidated) {
+		/*for (Control c : tobeValidated) {
 			c.focusedProperty().addListener(new ChangeListener<Boolean>() {
 				@Override
 				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -208,7 +208,7 @@ public class AddAnimal extends GridPane implements Alerts {
 				}
 			});
 		}
-
+*/
 		BUTTON_SUBMIT.setOnAction(e -> {
 			new GlowText(LBL_FIELD_GOAL, Color.ORANGE, Color.ORANGERED).setCycleCount(3).setSpeed(0.5)
 					.setResetOnFinished(true).play();
@@ -257,11 +257,9 @@ public class AddAnimal extends GridPane implements Alerts {
 		// this.GRID_GENRAL.setMargin(BUTTON_VERIF_CAMPAIGN, new Insets(250,
 		// 50,60,750));
 
-		this.GRID_GENRAL.getStyleClass().add("/edu/fundup/ressources/css/theme.css");
 		
 		this.setAlignment(Pos.CENTER);
 		this.getChildren().addAll(GRID_GENRAL);
-		this.getStyleClass().add("/edu/fundup/ressources/css/theme.css");
 
 		// this.GRID_GENRAL.setMargin(FIELD_VERIF_CODE, new Insets(100, 170,60,300));
 
