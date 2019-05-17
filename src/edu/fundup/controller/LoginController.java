@@ -75,25 +75,25 @@ public class LoginController extends VBox {
         background.setMaxWidth(500);
         background.setStyle("-fx-background-radius: 30px; -fx-background-color: rgba(0,0,0, 0.4);");
 
-        signinLabel = new Label("Sign in");
-        signinLabel.setTextFill(Color.web("#fdf1b8"));
-        signinLabel.setStyle("-fx-font-size: 30;");
+        signinLabel = new Label("Se connecter");
+        signinLabel.setTextFill(Color.web("#e97970"));
+        signinLabel.setStyle("-fx-font-size: 25;");
         GridPane grid = new GridPane();
         grid.getStyleClass().add("grid");
         grid.setVgap(15);
         grid.setHgap(15);
         grid.setAlignment(Pos.CENTER);
 
-        usernameLabel = new Label("Username :");
-        usernameLabel.setTextFill(Color.web("#fdf1b8"));
-        usernameLabel.setStyle("-fx-font-size: 20;");
+        usernameLabel = new Label("Nom d'utilisateur :");
+        usernameLabel.setTextFill(Color.web("#e97970"));
+        usernameLabel.setStyle("-fx-font-size: 18;");
 
-        pwdLabel = new Label("Password :");
-        pwdLabel.setTextFill(Color.web("#fdf1b8"));
-        pwdLabel.setStyle("-fx-font-size: 20;");
+        pwdLabel = new Label("Mot de passe :");
+        pwdLabel.setTextFill(Color.web("#e97970"));
+        pwdLabel.setStyle("-fx-font-size: 18;");
 
-        newOne = new Label("Are you new ? Register from here.");
-        newOne.setTextFill(Color.web("#fdf1b8"));
+        newOne = new Label("Vous êtes nouveau ? veuillez vous inscrire par ici.");
+        newOne.setTextFill(Color.web("#e97970"));
         newOne.setUnderline(true);
         newOne.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
@@ -119,8 +119,8 @@ public class LoginController extends VBox {
         TextField login = new TextField();
         PasswordField password = new PasswordField();
 
-        login.setPromptText("Username");
-        password.setPromptText("Password");
+        login.setPromptText("Nom d'utilisateur");
+        password.setPromptText("Mot de passe");
 
         // login.getStyleClass().add("text-field");
         // password.getStyleClass().add("text-field");
@@ -143,7 +143,7 @@ public class LoginController extends VBox {
         grid.add(password, 1, 2);
 
 
-        loginButton = new Button("Sign in");
+        loginButton = new Button("Connexion");
         loginButton.getStyleClass().add("success");
         loginButton.setMinHeight(50);
         loginButton.setMaxHeight(50);
@@ -166,7 +166,7 @@ public class LoginController extends VBox {
             }
         });
 
-        Button goBack = new Button("Go Back");
+        Button goBack = new Button("Retour");
 
 
         goBack.setOnAction(new EventHandler<ActionEvent>() {

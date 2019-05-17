@@ -29,6 +29,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import static edu.fundup.controller.Acceuil.filter;
 import static edu.fundup.controller.Acceuil.listEvents;
+import static edu.fundup.controller.FundUp.GLOBAL_STAGE;
 import edu.fundup.model.entity.Member;
 import edu.fundup.utils.UserSession;
 import java.awt.print.PrinterException;
@@ -80,6 +81,9 @@ public class Evente extends HBox {
     public static JFXButton BTN_MODIFIER;
     public static JFXButton BTN_SUPPRIMER;
     public static JFXButton BTN_LIST_PARTICIPANT;
+    
+    public static ReclamationGUI reclamerBtn;
+
     
     private int nbMax;
     private Member connectedm;
@@ -323,12 +327,14 @@ public class Evente extends HBox {
         
         //--------User controle --------
         if ((connectedm != null) &&connectedm.getId() == event.getId_user()) {
-
+                    
             vdroite.getChildren().addAll(montant, participant, categorie, lieu, date, BTN_LIST_PARTICIPANT, BTN_MODIFIER, BTN_SUPPRIMER );
+            
 
         } else {
+            reclamerBtn = new ReclamationGUI(GLOBAL_STAGE, "event", UserSession.getInstance().getMember().getId(), id);
 
-            vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER);
+            vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, reclamerBtn);
             //vdroite.getChildren().addAll(rating, montant, participant, categorie, lieu, date, BTN_PARTICIPER, BTN_RECLAMER, BTN_LIST_PARTICIPANT, BTN_MODIFIER, BTN_SUPPRIMER);
         }
               

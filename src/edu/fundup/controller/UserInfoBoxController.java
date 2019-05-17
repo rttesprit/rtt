@@ -1,5 +1,6 @@
 package edu.fundup.controller;
 
+import static edu.fundup.controller.Acceuil.seConnecterBtn;
 import edu.fundup.model.entity.Member;
 import edu.fundup.utils.UserSession;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
+import javafx.scene.control.ComboBox;
 
 
 public class UserInfoBoxController extends HBox{
@@ -63,7 +65,7 @@ public class UserInfoBoxController extends HBox{
             HBox.setMargin(iv, new Insets(10, 10, 10, 10));
 
             String[] items = {"Profile","Log out"};
-            ChoiceBox btn = new ChoiceBox((FXCollections.observableArrayList(items)));
+            ComboBox btn = new ComboBox((FXCollections.observableArrayList(items)));
             btn.setMaxWidth(30);
             btn.setMinWidth(30);
             HBox.setMargin(btn, new Insets(10, 10, 10, 10));
@@ -84,6 +86,8 @@ public class UserInfoBoxController extends HBox{
                     UserProfile profile = new UserProfile();
                     Acceuil.rightPane.getChildren().clear();
                     Acceuil.rightPane.getChildren().add(profile);
+                    btn.valueProperty().set(null);
+                    
                 }  else if (btn.valueProperty().get().equals("Log out")){
 
                     UserSession.getInstance().cleanUserSession();
@@ -92,8 +96,7 @@ public class UserInfoBoxController extends HBox{
                     LoginController lc = new LoginController();
                     Acceuil.rightPane.getChildren().clear();
                     Acceuil.rightPane.getChildren().addAll(lc);
-                    // TO DO REDIRECT TO HOME
-                    // TO DO remove UserInfoBox
+                    Acceuil.userbox.getChildren().add(seConnecterBtn);
                 }
             });
             this.getChildren().add(btn);

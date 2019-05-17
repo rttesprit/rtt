@@ -1,10 +1,14 @@
 package edu.fundup.controller;
 
+import static edu.fundup.controller.FundUp.GLOBAL_STAGE;
+import edu.fundup.model.entity.Events;
 import edu.fundup.model.entity.Member;
 import edu.fundup.model.entity.Post;
 import edu.fundup.model.entity.Reclamation;
+import edu.fundup.model.iservice.IServiceEvents;
 import edu.fundup.model.service.MemberService;
 import edu.fundup.model.service.ReclamationService;
+import edu.fundup.model.service.ServiceEvents;
 import edu.fundup.utils.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +36,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 
 public class UserProfile extends HBox {
 
@@ -112,9 +119,29 @@ public class UserProfile extends HBox {
         Button editBtn = new Button("Edit");
         editBtn.getStyleClass().add("edit");
 
+        
+        Button logoutAdmin = new Button("Déconnexion");
+        logoutAdmin.getStyleClass().add("warnning");
+        logoutAdmin.setMinHeight(50);
+        logoutAdmin.setMaxHeight(50);
+        logoutAdmin.setMinWidth(120);
+        logoutAdmin.setMaxWidth(100);
+            
+        logoutAdmin.setOnAction(e -> {
+            UserSession.getInstance().cleanUserSession();
+            Acceuil.userbox.getChildren().clear();
+
+            LoginController lc = new LoginController();
+            Acceuil.rightPane.getChildren().clear();
+            Acceuil.rightPane.getChildren().addAll(lc);
+            
+            Platform.exit();
+            System.exit(0);
+        });
+        
         if(connectedm.getRole().equals("Admin")){
-            left.getChildren().addAll(circle,label);
-        }else {
+            left.getChildren().addAll(circle,label,logoutAdmin);
+        }else { 
             left.getChildren().addAll(circle, label, editBtn);
         }
         // ---------------------------------
@@ -160,7 +187,6 @@ public class UserProfile extends HBox {
 
         // //////////////// Edit PROFILE /////////////////////
         VBox editContent = new VBox();
-        editContent.setStyle("-fx-border-color: black");
 
         TextField name = new TextField();
         TextField mail = new TextField();
@@ -179,25 +205,25 @@ public class UserProfile extends HBox {
         TextField cvv_num = new TextField();
         TextField president = new TextField();
 
-        Label nameLabel = new Label("Name :");
+        Label nameLabel = new Label("Nom :");
         Label mailLabel = new Label("E-Mail :");
-        Label passwordLabel = new Label("Password : ");
-        Label passwordConfirmLabel = new Label("Re-enter Password :");
-        Label first_nameLabel = new Label("First name : ");
-        Label last_nameLabel = new Label("Last name : ");
-        Label addressLabel = new Label("Address : ");
-        Label cityLabel = new Label("City : ");
-        Label countryLabel = new Label("Country : ");
-        Label payment_typeLabel = new Label("Payment type :");
-        Label credit_card_numberLabel = new Label("Credit card number :");
-        Label cvv_numLabel = new Label("Cvv number :");
-        Label presidentLabel = new Label();
+        Label passwordLabel = new Label("Mot de passe : ");
+        Label passwordConfirmLabel = new Label("Confirmer mot de passe :");
+        Label first_nameLabel = new Label("Prénom : ");
+        Label last_nameLabel = new Label("Nom : ");
+        Label addressLabel = new Label("adresse : ");
+        Label cityLabel = new Label("Ville : ");
+        Label countryLabel = new Label("Pays : ");
+        Label payment_typeLabel = new Label("Type de paiement :");
+        Label credit_card_numberLabel = new Label("Numéro carte de crédit :");
+        Label cvv_numLabel = new Label("numéro Cvv :");
+        Label presidentLabel = new Label("Président");
 
-        Button changePwd = new Button("Change password");
-        Button disableAccount = new Button("Disable Account");
-        Button becomeContributor = new Button("Become Contributor");
-        Button saveBtn = new Button("Save");
-        Button cancelBtn = new Button("Cancel");
+        Button changePwd = new Button("Changer mot de passe");
+        Button disableAccount = new Button("Désactiver le compte");
+        Button becomeContributor = new Button("Devenir contributeur");
+        Button saveBtn = new Button("Sauvegarder");
+        Button cancelBtn = new Button("Annuler");
 
         changePwd.getStyleClass().add("primary");
         disableAccount.getStyleClass().add("danger");
@@ -222,9 +248,9 @@ public class UserProfile extends HBox {
 
         disableAccount.setOnAction(disable ->{
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Disabling account");
-            alert.setHeaderText("Are you sure to disable your account ?");
-            alert.setContentText("You will be disconnected and redirected to home page");
+            alert.setTitle("Désactivation du compte");
+            alert.setHeaderText("Êtes-vous sûr de désactiver votre compte ?");
+            alert.setContentText("Vous serez déconnecté et redirigé vers la page d'accueil");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
@@ -237,7 +263,7 @@ public class UserProfile extends HBox {
 
         VBox editBox = new VBox();
         editBox.setAlignment(Pos.CENTER);
-        Button annulerEditBtn = new Button("Cancel");
+        Button annulerEditBtn = new Button("Annuler");
         annulerEditBtn.getStyleClass().add("cancel");
 
         annulerEditBtn.setOnAction(a->{
@@ -262,7 +288,7 @@ public class UserProfile extends HBox {
 
             saveP.getStyleClass().add("success");
 
-            Button cancelP = new Button("Cancel");
+            Button cancelP = new Button("Annuler");
             cancelP.getStyleClass().add("warning");
 
             HBox buttonsP = new HBox();
@@ -304,16 +330,16 @@ public class UserProfile extends HBox {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Congratulations");
                             alert.setHeaderText(null);
-                            alert.setContentText("Congratulations ! You have become a contributor member.");
+                            alert.setContentText("Toutes nos félicitations ! Vous êtes devenu membre contributeur.");
                             alert.showAndWait();
                             content.getChildren().clear();
                             editBox.getChildren().remove(becomeContributor);
                         }
                         else{
                             Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Invalid fields");
+                            alert.setTitle("Champs non valides");
                             alert.setHeaderText(null);
-                            alert.setContentText("All fields are required");
+                            alert.setContentText("Tous les champs sont requis");
                             alert.showAndWait();
                         }
                     });
@@ -377,9 +403,9 @@ public class UserProfile extends HBox {
            PasswordField newPwd = new PasswordField();
            PasswordField newPwdConfirm = new PasswordField();
 
-           oldPwd.setPromptText("Actual password");
-           newPwd.setPromptText("New password");
-           newPwdConfirm.setPromptText("New password");
+           oldPwd.setPromptText("Mot de passe actuel");
+           newPwd.setPromptText("Nouveau mot de passe");
+           newPwdConfirm.setPromptText("Nouveau mot de passe");
 
            cancelChpwd.setOnAction(c -> {
                left.getChildren().remove(editBox);
@@ -398,17 +424,17 @@ public class UserProfile extends HBox {
                    editBtn.setVisible(true);
 
                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                   alert.setTitle("Succes");
-                   alert.setHeaderText("Success");
-                   alert.setContentText("Your password has been successfully changed");
+                   alert.setTitle("Succés");
+                   alert.setHeaderText("Succés");
+                   alert.setContentText("Votre mot de passe a été changé avec succès");
                    alert.showAndWait();
 
                } else {
                    System.out.println("d5al else");
                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                   alert.setTitle("Error");
-                   alert.setHeaderText("Wrong fields");
-                   alert.setContentText("The fields you entered are incorrect, please try again");
+                   alert.setTitle("Erreur");
+                   alert.setHeaderText("Champs erronés");
+                   alert.setContentText("Les champs que vous avez entrés sont incorrects, veuillez réessayer");
                    alert.showAndWait();
                }
            });
@@ -444,16 +470,15 @@ public class UserProfile extends HBox {
         VBox.setMargin(searchPosts,new Insets(30,0,30,0));
         searchPosts.setPromptText("Search by title");
 
-
-        TextField searchReclamations = new TextField();
-        searchReclamations.setMaxWidth(250);
-        VBox.setMargin(searchReclamations,new Insets(30,0,30,0));
-        searchReclamations.setPromptText("Search by title");
-
         TextField searchUsers = new TextField();
         searchUsers.setMaxWidth(250);
         VBox.setMargin(searchUsers,new Insets(30,0,30,0));
-        searchUsers.setPromptText("Search by username");
+        searchUsers.setPromptText("Filtrer");
+        
+        TextField searchEvents = new TextField();
+        searchEvents.setMaxWidth(250);
+        VBox.setMargin(searchEvents,new Insets(30,0,30,0));
+        searchEvents.setPromptText("Filtrer");
 
         ListView<Reclamation> reclamations = new ListView<>();
         reclamations.setMinHeight(700);
@@ -473,54 +498,23 @@ public class UserProfile extends HBox {
         users.setMaxHeight(800);
         users.setMaxWidth(800);
 
-        /* UsersBtn.setOnAction(e-> {
-            content.getChildren().clear();
-            content.getChildren().add(searchUsers);
-
-            ObservableList<Member> ObsMembers = FXCollections.observableArrayList();
-            ms.getAllMembers().forEach(m -> ObsMembers.add(m));
-
-            System.out.println("ObsMembers size "+ ObsMembers.size());
-
-            FilteredList<Member> filteredData = new FilteredList<>(ObsMembers, p -> true);
-            searchUsers.setOnKeyReleased(p -> {
-                searchUsers.textProperty().addListener((observableValue, oldValue, newValue) -> {
-                    System.out.println(newValue);
-                    if (!newValue.isEmpty()) {
-                        List<Member> members = ObsMembers.stream().filter(o -> (o.getlogin().toLowerCase().contains(newValue.toLowerCase()))).collect((Collectors.toList()));
-                        members.forEach(o -> {
-                            System.out.println("processed list, only even numbers: " + o);
-                        });
-                        ObservableList<Member> sortedList = FXCollections.observableArrayList(members);
-                        users.setItems(sortedList);
-                    }
-                    else {
-                        users.setItems(ObsMembers);
-                    }
-                });
-
-            });
-            users.setItems(ObsMembers);
-            content.getChildren().add(users);
-        });*/
-
         UsersBtn.setOnAction(e-> {
             TableView table = new TableView();
 
             table.setEditable(false);
             table.setPrefSize(500, 800);
 
-            TableColumn t0 = new TableColumn("role ");
-            TableColumn t1 = new TableColumn("Login ");
-            TableColumn t2 = new TableColumn("Mail ");
-            TableColumn t3 = new TableColumn("Register date ");
+            TableColumn t0 = new TableColumn("role");
+            TableColumn t1 = new TableColumn("Nom d'utilisateur ");
+            TableColumn t2 = new TableColumn("Email ");
+            TableColumn t3 = new TableColumn("Date d'inscription");
 
 
             t0.setCellValueFactory(
-                    new PropertyValueFactory<Member,String>("role")
+                    new PropertyValueFactory<Member,String>("Role")
             );
             t1.setCellValueFactory(
-                    new PropertyValueFactory<Member,String>("login")
+                    new PropertyValueFactory<Member,String>("Login")
             );
             t2.setCellValueFactory(
                     new PropertyValueFactory<Member,String>("mail")
@@ -528,6 +522,7 @@ public class UserProfile extends HBox {
             t3.setCellValueFactory(
                     new PropertyValueFactory<Member,String>("register_date")
             );
+            
 
             final ObservableList<Member> members = FXCollections.observableArrayList(ms.getAllMembers());
 
@@ -536,7 +531,7 @@ public class UserProfile extends HBox {
                 searchUsers.textProperty().addListener((observableValue, oldValue, newValue) -> {
                     System.out.println(newValue);
                     if (!newValue.isEmpty()) {
-                        List<Member> obsRr = members.stream().filter(o -> (o.getLogin().toLowerCase().contains(newValue.toLowerCase()))).collect((Collectors.toList()));
+                        List<Member> obsRr = members.stream().filter(o -> (o.getLogin().toLowerCase().contains(newValue.toLowerCase()) || o.getRole().toLowerCase().contains(newValue.toLowerCase() ))).collect((Collectors.toList()));
                         obsRr.forEach(o -> {
                             System.out.println("processed list, only even numbers: " + o);
                         });
@@ -574,9 +569,9 @@ public class UserProfile extends HBox {
                             ms.disableUser(item);
 
                             Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                            alert2.setTitle("User has been disabled");
+                            alert2.setTitle("L'utilisateur a été désactivé");
                             alert2.setHeaderText(null);
-                            alert2.setContentText("User has been disabled");
+                            alert2.setContentText("L'utilisateur a été désactivé");
                             alert2.showAndWait();
 
                         } else {
@@ -588,6 +583,63 @@ public class UserProfile extends HBox {
             });
             content.getChildren().clear();
             content.getChildren().addAll(searchUsers,table);
+        });
+        
+        eventsBtn.setOnAction(e-> {
+            TableView table = new TableView();
+
+            table.setEditable(false);
+            table.setPrefSize(500, 800);
+
+            TableColumn t0 = new TableColumn("Titre ");
+            TableColumn t1 = new TableColumn("Catégorie ");
+            TableColumn t2 = new TableColumn("Lieu ");
+            TableColumn t3 = new TableColumn("Description");
+            TableColumn t4 = new TableColumn("Date");
+
+            t0.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("title")
+            );
+            t1.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("categorie")
+            );
+            t2.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("location")
+            );
+            t3.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("description")
+            );
+            t4.setCellValueFactory(
+                    new PropertyValueFactory<Member,String>("event_date")
+            );
+            
+            IServiceEvents se = new ServiceEvents();
+            final ObservableList<Events> events = FXCollections.observableArrayList(se.getAll());
+
+            FilteredList<Events> filteredData = new FilteredList<>(events, p -> true);
+            searchEvents.setOnKeyReleased(p -> {
+                searchUsers.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                    System.out.println(newValue);
+                    if (!newValue.isEmpty()) {
+                        List<Events> obsRr = events.stream().filter(o -> (o.getCategorie().toLowerCase().contains(newValue.toLowerCase()) || o.getTitle().toLowerCase().contains(newValue.toLowerCase() ))).collect((Collectors.toList()));
+                        obsRr.forEach(o -> {
+                            System.out.println("processed list, only even numbers: " + o);
+                        });
+                        ObservableList<Events> sortedList = FXCollections.observableArrayList(obsRr);
+                        table.setItems(sortedList);
+                    }
+                    else {
+                        table.setItems(events);
+                    }
+                });
+
+            });
+
+            table.setItems(events);
+            table.getColumns().addAll(t0, t1, t2, t3);
+
+            content.getChildren().clear();
+            content.getChildren().addAll(searchEvents,table);
         });
 
         MypostsBtn.setOnAction(e -> {
@@ -631,9 +683,13 @@ public class UserProfile extends HBox {
         MyreclamationsBtn.setOnAction(e -> {
             left.getChildren().removeAll(becomeContributor,disableAccount,changePwd);
             content.getChildren().clear();
-            content.getChildren().add(searchReclamations);
-            ReclamationService reclamationservice = new ReclamationService();
-            content.getChildren().add(reclamations);
+            ReclamationListGUI rec;
+            try {
+                rec = new ReclamationListGUI(GLOBAL_STAGE);
+                content.getChildren().add(rec);
+            } catch (Exception ex) {
+                Logger.getLogger(UserProfile.class.getName()).log(Level.SEVERE, null, ex);
+            }  
         });
 
         UserEventsList us = new UserEventsList();

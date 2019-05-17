@@ -6,6 +6,8 @@
 package edu.fundup.model.service;
 
 import edu.fundup.controller.Acceuil;
+import static edu.fundup.controller.Acceuil.seConnecterBtn;
+import static edu.fundup.controller.Acceuil.userbox;
 import edu.fundup.controller.FundUp;
 import edu.fundup.controller.UserInfoBoxController;
 import edu.fundup.controller.UserProfile;
@@ -75,6 +77,8 @@ public class MemberService implements IMemberService {
             }
 
             UserInfoBoxController usbox = null;
+            userbox.getChildren().remove(seConnecterBtn);
+            
             try {
                 usbox = new UserInfoBoxController();
             } catch (IOException e) {
