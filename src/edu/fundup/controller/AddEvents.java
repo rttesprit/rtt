@@ -155,7 +155,7 @@ public class AddEvents extends VBox {
                 File selectedFile = filechooser.showOpenDialog(null);
 
                 if (selectedFile != null) {
-                    FileUploader fu = new FileUploader("localhost:8080/pidev");
+                    FileUploader fu = new FileUploader("127.0.0.1/pidev");
 
                     //Upload
                     try {

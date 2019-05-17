@@ -87,7 +87,7 @@ public class Acceuil extends HBox implements Observer {
     public static HBox filter = new HBox();
     public static ScrollPane listEvents ;
     public static HBox userbox = new HBox();
-
+    public static Button seConnecterBtn;
     Member onlineMember = UserSession.getInstance().getMember();
 
     public Acceuil() {
@@ -95,8 +95,22 @@ public class Acceuil extends HBox implements Observer {
         userbox.setMaxHeight(100);
         userbox.setMinWidth(300);
 
+        seConnecterBtn = new Button("Se connecter");
+        seConnecterBtn.setPrefWidth(200);
+        seConnecterBtn.setMinHeight(100);
+        seConnecterBtn.getStyleClass().add("phoenixBtn");
+        userbox.setAlignment(Pos.CENTER);
+        userbox.getChildren().add(seConnecterBtn);
+        
+        seConnecterBtn.setOnAction(c->{
+            rightPane.getChildren().clear();
+            LoginController lc = new LoginController();
+            rightPane.getChildren().clear();
+            rightPane.getChildren().addAll(lc); 
+        });
+        
+        
         rightPaneChild.setAlignment(Pos.CENTER);
-
 
         // Create the Subject and Observers.
         ObservableUser observableUser = new ObservableUser(onlineMember);
@@ -126,7 +140,7 @@ public class Acceuil extends HBox implements Observer {
         leftPane.setPadding(new Insets(20));
         leftPane.setSpacing(30);
         leftPane.setAlignment(Pos.CENTER);
-        leftPane.setStyle("-fx-background-color:#34495e");
+        leftPane.setStyle("-fx-background-color: linear-gradient(#f0b490, #e66465);");
         leftPane.setMinWidth(300);
 
         leftPane.setPrefSize(300, 600);
@@ -147,14 +161,14 @@ public class Acceuil extends HBox implements Observer {
         }
         );
         LAB_POST.getStyleClass()
-                .add("danger");
+                .add("phoenixBtn");
         LAB_POST.setPrefWidth(
                 290);
         LAB_POST.setMinHeight(
                 100);
 
         LAB_EVENT.getStyleClass()
-                .add("warning");
+                .add("phoenixBtn");
         LAB_EVENT.setPrefWidth(
                 290);
         LAB_EVENT.setMinHeight(
@@ -164,7 +178,7 @@ public class Acceuil extends HBox implements Observer {
                 new Font(20));
 
         LAB_ADOPTION.getStyleClass()
-                .add("success");
+                .add("phoenixBtn");
         LAB_ADOPTION.setPrefWidth(
                 290);
         LAB_ADOPTION.setFont(
@@ -173,7 +187,7 @@ public class Acceuil extends HBox implements Observer {
                 100);
 
         LAB_RECLAMATION.getStyleClass()
-                .add("info");
+                .add("phoenixBtn");
         LAB_RECLAMATION.setPrefWidth(
                 290);
         LAB_RECLAMATION.setFont(
@@ -182,7 +196,7 @@ public class Acceuil extends HBox implements Observer {
                 100);
 
         LAB_ABOUT.getStyleClass()
-                .add("primary");
+                .add("phoenixBtn");
         LAB_ABOUT.setPrefWidth(
                 290);
         LAB_ABOUT.setFont(
@@ -423,7 +437,7 @@ public class Acceuil extends HBox implements Observer {
 
         rightPane.getChildren().add(lc);
 
-        leftPane.getChildren().addAll(userbox,TXT_SEARCH, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
+        leftPane.getChildren().addAll(userbox, LAB_POST, LAB_EVENT, LAB_ADOPTION, LAB_RECLAMATION, LAB_ABOUT);
 
 
         this.getChildren().addAll(leftPane, rightPane);
